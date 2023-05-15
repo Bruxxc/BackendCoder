@@ -2,16 +2,19 @@
   "name": "src_e3",
   "version": "1.0.0",
   "description": "",
-  "main": "Product_Manager.js",
+  "main": "./src/app.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./entrega3.js"
+    "start": "nodemon ./src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.22"
   }
 }

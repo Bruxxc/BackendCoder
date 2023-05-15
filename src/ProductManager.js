@@ -1,7 +1,6 @@
+import fs from "fs";
 
-const fs = require("fs");
-
-class ProductManager{
+export class ProductManager{
 
     constructor(path){
         this.path=path;
@@ -20,7 +19,7 @@ class ProductManager{
         let product=undefined;
 
         if(products.length>0){
-            product=products.find(p => p.id===id);
+            product=products.find(p => p.id==id);
         }
         
         
@@ -41,14 +40,16 @@ class ProductManager{
 
     addProduct(product){
         let products=this.getProducts();
-        if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock){
-            console.log("Todos los campos son obligatorios")
+        if (!product.title || !product.description || !product.price || !product.code || !product.stock|| !product.category){
+            console.log("Todos los campos son obligatorios");
+            return 0;
         }
+
         else{
 
 
             if(( products.length>0) && (products.some((prod)=>prod.code===product.code))){
-                console.log("ERROR: code repeat");
+                return 2;
             }
 
             else{
@@ -60,34 +61,43 @@ class ProductManager{
                 }
                 const newProduct ={
                     id,
+                    status:true,
                     ...product
 
                 }
                 products=[...products, newProduct];
                 this.saveData(products);
+                return 1;
             }
         
         }
         
     }
 
-    updateProduct(id,title,description,price,thumbnail,code,stock){
+    updateProduct(id,edit){
         let products=this.getProducts();
         if (products){
             let target=this.getProductById(id);
             if (target){
                 let index=products.findIndex((prod)=>prod.id==id);
-                let edit={
+                let edited={
                     id:target.id,
-                    title:title ? title : target.title,
-                    description:description ? description : target.description,
-                    price: price ? price : target.price,
-                    thumbnail: thumbnail ? thumbnail : target.thumbnail,
-                    code: code ? code : target.code,
-                    stock: stock ? stock : target.stock,
+                    status:edit.status ? edit.status : target.status,
+                    title:edit.title ? edit.title : target.title,
+                    description:edit.description ? edit.description : target.description,
+                    price: edit.price ? edit.price : target.price,
+                    thumbnail: edit.thumbnail ? edit.thumbnail : target.thumbnail,
+                    code: target.code,
+                    stock: edit.stock ? edit.stock : target.stock,
                 }
-                products[index]=edit;
+                products[index]=edited;
                 this.saveData(products);
+                return 1;
+            }
+
+            else{
+                console.log("ERROR: Product not found");
+                return 0;
             }
         }
 
@@ -101,20 +111,21 @@ class ProductManager{
             if(index!=-1){
                 let result=products.filter((prod)=>prod.id!=id);
                 this.saveData(result);
+                return 1;
             }
 
             else{
                 console.log("ERROR: Product not found");
+                return 0;
             }
 
         }
 
         else{
             console.log("ERROR: Product not found");
+            return 0;
         }
     }
 
 
 }
-
-module.exports=ProductManager;
