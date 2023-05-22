@@ -12,6 +12,11 @@ cartsRouter.post("/",(req,res)=>{
 
 });
 
+cartsRouter.get("/",(req,res)=>{
+    const result=CManager.getCarts();
+    return res.status(200).json({status:"Success",carts:result});
+});
+
 cartsRouter.get("/:cid",(req,res)=>{
     let id=req.params.cid;
     let result=CManager.getCartById(id);
