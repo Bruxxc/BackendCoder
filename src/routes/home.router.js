@@ -1,12 +1,12 @@
 import express from "express";
-import { ProductManager } from "../ProductManager.js";
+import { ProductModel } from "../dao/models/products.model.js";
 export const home = express.Router();
 
-const Manager=new ProductManager("data/products.json");
+home.get("/home",async (req,res)=>{
 
-home.get("/home",(req,res)=>{
-    const products=Manager.getProducts();
+    let products=await ProductModel.find({}).lean();
+    console.log(products);
     const style="home.css";
-    return res.status(200).render('home',{style,products})
+    return res.status(200).render('home',{style,products});
   
-  })
+  });

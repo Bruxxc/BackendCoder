@@ -16,7 +16,7 @@ socket.on("set_products_res",(products)=>{
     listItem.classList.add("prod_card");
     
     const pId=document.createElement("p");
-    pId.innerText=`${product.id}`;
+    pId.innerText=`${product._id}`;
     pId.classList.add("prod_id");
 
     const pImg=document.createElement("img");
@@ -39,7 +39,7 @@ socket.on("set_products_res",(products)=>{
     prodList.appendChild(listItem);
   });
   console.log(products);
-})
+});
 
 //DELETE PRODUCT
 const deleteProductButton=document.querySelector(".delete_btn");
@@ -98,18 +98,16 @@ addProductButton.addEventListener('click',(event)=>{
 });
 
 socket.on("add_res",(res)=>{
-  
-  if(res.res==1){
     setProducts();
     alert("Producto añadido");
-    
-  }
-
-  else{
-    alert("Producto NO añadido");
-  }
-
 });
 
+socket.on("add_error",(res)=>{
+  alert("Producto NO añadido");
+  if(res.res==1){
+    alert("Por favor completa todos los campos requeridos");
+  }
+  ;
+})
 
 setProducts();
