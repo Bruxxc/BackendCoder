@@ -4,8 +4,7 @@
     box-shadow: 0px 0px 5px black;
     padding:5px;
 }
-.chat_sub_container{
-}
+
 .chat_msg_list{
     height: 400px;
     overflow:auto;

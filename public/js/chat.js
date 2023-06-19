@@ -2,7 +2,7 @@ const socket=io();
 
 let user = "";
 
-async function main() {
+async function userValidation() {
     const { value: userName } = await Swal.fire({
       title: "Enter your username",
       input: "text",
@@ -19,8 +19,9 @@ async function main() {
   
     user = userName;
 }
+userValidation();
 
-main();
+
 //SET CHAT
 const setChat= ()=>{
     socket.emit("set_chat");

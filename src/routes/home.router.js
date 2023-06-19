@@ -2,7 +2,7 @@ import express from "express";
 import { ProductModel } from "../dao/models/products.model.js";
 export const home = express.Router();
 
-home.get("/home",async (req,res)=>{
+home.get("/",async (req,res)=>{
 
     let products=await ProductModel.find({}).lean();
     console.log(products);

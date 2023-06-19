@@ -1,7 +1,7 @@
 import express from "express";
 export const chatRouter = express.Router();
 
-chatRouter.get("/chat", (req, res) => {
+chatRouter.get("/", (req, res) => {
   const style="chat.css";
   return res.render("chat", {style});
 });

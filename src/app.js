@@ -40,9 +40,9 @@ app.use("/api/users", usersRouter);
 
 //TEST PLANTILLAS
 
-app.use("/views",home);
-app.use("/views",realtimeproducts);
-app.use("/views",chatRouter);
+app.use("/views/home",home);
+app.use("/views/realtimeproducts",realtimeproducts);
+app.use("/views/chat",chatRouter);
 
 //OTROS ENDPOINTS
 app.get("*", (req, res) => {
@@ -50,5 +50,7 @@ app.get("*", (req, res) => {
     .status(404)
     .json({ status: "error", msg: "no se encuentra esa ruta", data: {} });
 });
+
+
 
 
