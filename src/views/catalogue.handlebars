@@ -1,0 +1,39 @@
+<div class="catalogue_main">
+
+    <div class="catalogue">
+
+        <div class="catalogue_container">
+
+            {{#each products}}
+                <div class="prod_card">
+                    <p class="prod_id">{{this._id}}</p>
+                    <img src="../../static/example.jpg" class="example_image">
+                    <h3 class="prod_title">{{this.title}}</h3>
+                    <h5 class="prod_price">USD {{this.price}}</h5>
+                    <button onclick="putIntoCart('{{this._id}}')" class="add_button add{{this._id}}">Agregar al carrito</button>
+                </div>
+            {{/each}}
+
+        </div>
+
+    </div>
+  <div class="change_page">
+
+    <div>
+      <p>Página {{page}} de {{totalPages}}</p>
+    </div>
+
+    <div class="page_arrows">
+      {{#if hasPrevPage}}
+        <a class="prev_arrow" style='text-decoration: none' href='http://localhost:8080/views/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}'> ⬅️ </a>
+      {{/if}}
+      {{#if hasNextPage}}
+        <a class="next_arrow" style='text-decoration: none' href='http://localhost:8080/views/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}'> ➡️</a>
+      {{/if}}
+    </div>
+
+  </div>
+
+</div>
+
+<script src="../../static/js/catalogue.js"></script>

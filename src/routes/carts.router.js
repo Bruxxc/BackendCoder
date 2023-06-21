@@ -1,6 +1,4 @@
 import express from "express";
-import { CartModel } from "../dao/models/carts.model.js";
-import { ProductModel } from "../dao/models/products.model.js";
 import { MDBCartManager } from "../dao/MDBManagers/MDBCartManager.js";
 
 export const cartsRouter = express.Router();
@@ -65,6 +63,25 @@ cartsRouter.post("/", async (req,res)=>{
 
 });
 
+cartsRouter.put("/:cid", async (req,res)=>{
+  let cid=req.params.cid;
+  let products=req.body;
+  try{
+    const editCart= await CartManager.addProductsArray(cid,products);
+    return res.status(200).json({
+      status: "success",
+      msg: "cart updated",
+    });
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      status: "error",
+      msg: "something went wrong :(",
+      data: {},
+    });
+  }
+});
 
 cartsRouter.post("/:cid/products/:pid", async (req,res)=>{
     let cid=req.params.cid;

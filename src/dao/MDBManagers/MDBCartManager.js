@@ -17,7 +17,7 @@ export class MDBCartManager{
 
     async getCartById(id){
         try{
-            const cart = await CartModel.find({_id:id});
+            const cart = await CartModel.find({_id:id}).lean();
             console.log(`get cart ${id}`);      
 
             if(cart[0]){
@@ -78,6 +78,18 @@ export class MDBCartManager{
             throw e;
         }
     };
+
+    async addProductsArray(cid, productsArray) {
+        try {
+          console.log(productsArray);
+          for (const product of productsArray) {
+            console.log(product._id);
+            await this.addProductToCart(product._id, cid);
+          }
+        } catch (e) {
+          throw e;
+        }
+    }
 
     async deleteProductFromCart(pid,cid){
         try{

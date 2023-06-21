@@ -1,0 +1,74 @@
+h1{
+    color:red;
+}
+
+.prod_list_container{
+    width: 100%;
+    display: grid;
+    justify-content: center;
+}
+
+.prod_list{
+    display: flex;
+    justify-content:start;
+    column-gap: 20px;
+    row-gap: 20px;
+    flex-wrap: wrap;
+}
+
+.prod_card{
+    width: 200px;
+    height: 330px;
+    box-shadow: 0px 0px 3px black;
+    display: grid;
+    justify-items: center;
+}
+
+.example_image{
+    width: 150px;
+    height: 130px;
+}
+
+.catalogue{
+    width: 900px;
+    height: 700px;
+    border: solid black;
+    display: grid;
+    justify-content:center;
+    padding-top: 20px;
+}
+
+.catalogue_container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
+}
+
+.catalogue_main{
+    display: grid;
+    justify-items: center;
+}
+
+.add_button{
+    width: 100%;
+    border-radius: 0%;
+    border-color: unset;
+    box-shadow: 0px 0px 3px black;
+}
+
+.page_arrows{
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+    "prev next";
+}
+
+.prev_arrow{
+    grid-area: prev;
+}
+
+.next_arrow{
+    grid-area: next;
+}

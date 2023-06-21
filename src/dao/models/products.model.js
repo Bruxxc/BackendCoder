@@ -12,5 +12,9 @@ const schema = new Schema({
   status:{ type: Boolean, required: true, max: 100 },
 });
 
+mongoosePaginate.paginate.options = {
+  lean: true,
+};
+
 schema.plugin(mongoosePaginate);
 export const ProductModel = model("product", schema);

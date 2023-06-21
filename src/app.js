@@ -4,6 +4,8 @@ import { productsRouter } from "./routes/products.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { usersRouter } from "./routes/users.router.js";
 import { chatRouter } from "./routes/chat.router.js";
+import { catalogueRouter } from "./routes/catalogue.router.js";
+import { viewCart } from "./routes/viewcart.route.js";
 import handlebars from "express-handlebars";
 import { __dirname, connectMongo, connectSocket  } from "./utils.js";
 import { home } from "./routes/home.router.js";
@@ -43,7 +45,8 @@ app.use("/api/users", usersRouter);
 app.use("/views/home",home);
 app.use("/views/realtimeproducts",realtimeproducts);
 app.use("/views/chat",chatRouter);
-
+app.use("/views/products",catalogueRouter);
+app.use("/views/carts",viewCart);
 //OTROS ENDPOINTS
 app.get("*", (req, res) => {
   return res
