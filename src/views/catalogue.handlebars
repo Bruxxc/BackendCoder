@@ -1,4 +1,18 @@
 <div class="catalogue_main">
+  
+    {{#if username}}
+      <p>
+        <span class="role">{{role}}</span>:
+
+        {{username}}
+      </p>
+      <button class="logout_redir">Logout</button>
+      {{else}}
+
+      <button class="login_redir">Login</button>
+      <button class="register_redir">Register</button>
+
+    {{/if}}
 
     <div class="catalogue">
 

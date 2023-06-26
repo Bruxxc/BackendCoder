@@ -8,4 +8,4 @@ realtimeproducts.get("/", async (req,res)=>{
     const style="realTimeProducts.css";
     return res.status(200).render('realTimeProducts',{style,products});
   
-  });
+  }); 

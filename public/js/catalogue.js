@@ -69,3 +69,33 @@ function putIntoCart(_id){
             alert(JSON.stringify(error));
         })
 }
+
+let login_redir=document.querySelector(".login_redir");
+
+if(login_redir){
+    login_redir.addEventListener("click",(e)=>{
+        e.preventDefault();
+        window.location.href = "/views/sessions/login";
+        console.log("login");
+    });
+}
+
+let logout_redir=document.querySelector(".logout_redir");
+
+if(logout_redir){
+    logout_redir.addEventListener("click",(e)=>{
+        e.preventDefault();
+        window.location.href = "/views/sessions/logout";
+        console.log("logout");
+    });
+}
+
+let register_redir=document.querySelector(".register_redir");
+
+if(register_redir){
+    register_redir.addEventListener("click",(e)=>{
+        e.preventDefault();
+        window.location.href = "/views/sessions/register";
+        console.log("register");
+    });
+}

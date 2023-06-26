@@ -1,0 +1,16 @@
+<div class="form-container">
+    <h2>Login</h2>
+    <form action="/views/sessions/login" method="post">
+      <label for="email">Email:</label>
+      <input type="text" id="email" name="email" required><br>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required><br>
+      {{#if error}}
+      <p class="login_error">Incorrect username or password</p>
+      {{else}}
+      <p class="no_error"></p>
+      {{/if}}
+      <input type="submit" class="login_button" value="Login">
+    </form>
+</div>

@@ -25,6 +25,42 @@ export function connectSocket(httpServer){
   const socketServer= new Server(httpServer);
   socketServer.on("connection",(socket)=>{
 
+    socket.on("create_user", async (user)=>{
+      user=user.newUser;
+      console.log(user);
+      try{
+        const usedEmail= await UserModel.find({email:user.email});
+        const usedUserName= await UserModel.find({userName:user.userName});
+        console.log(usedEmail);
+        
+        if(usedEmail[0]){
+          const error={
+            message:"email in use"
+          }
+          throw error;
+        }
+        
+        else if(usedUserName[0]){
+          const error={
+            message:"username in use"
+          }
+          throw error;
+        }
+
+        else{
+          const createUser= await UserModel.create({ firstName:user.firstName, lastName:user.lastName,  userName:user.userName, email:user.email, password:user.password});
+          socket.emit("userCreated",createUser);
+        }
+        
+      }
+      catch(e){
+        console.log(e.message);
+        socket.emit("errorCreatingUser",{error:e.message});
+      }
+
+    });
+
+
 /// CHAT START
 
     socket.on("set_chat",async ()=>{

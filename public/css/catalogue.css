@@ -72,3 +72,7 @@ h1{
 .next_arrow{
     grid-area: next;
 }
+
+.role{
+    color:rgb(69, 69, 231);
+}

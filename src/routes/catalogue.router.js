@@ -11,6 +11,11 @@ catalogueRouter.get("/", async (req,res)=>{
     let sort = req.query.sort || "";
     let filter = {};
     let products = await ProductManager.getProducts(filter,limit,page,sort);
+    const username = req.session.user ;
+    const role = req.session.role;
+    console.log(req.session);
+    console.log(role,username);
+
     const style="catalogue.css";
     return res.status(200).render('catalogue',{
         style:style,
@@ -24,6 +29,8 @@ catalogueRouter.get("/", async (req,res)=>{
         nextPage: products.nextPage,
         limit:limit,
         sort:sort,
+        username: username,
+        role:role
     })
   
   });

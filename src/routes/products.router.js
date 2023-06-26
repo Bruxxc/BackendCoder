@@ -10,13 +10,10 @@ productsRouter.get("/", async (req, res) => {
   let limit = req.query.limit ? parseInt(req.query.limit) : 10;
   let page = req.query.page ? parseInt(req.query.page) : 1;
   let sort = req.query.sort || "";
-  let query = req.query.query || "";
 
   try {
     let filter = {};
-    
     const products = await ProductManager.getProducts(filter,limit,page,sort);
-
     console.log("get products");
 
     return res.status(200).json({
@@ -30,7 +27,7 @@ productsRouter.get("/", async (req, res) => {
       hasPrevPage: products.hasPrevPage,
       hasNextPage: products.hasNextPage,
       prevPage: products.prevPage,
-      nextPage: products.nextPage
+      nextPage: products.nextPage,
     });
   } catch (error) {
     console.error("Error retrieving products:", error);
