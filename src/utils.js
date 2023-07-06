@@ -8,6 +8,7 @@ import { connect } from "mongoose";
 import { ProductModel } from "./dao/models/products.model.js";
 import { UserModel } from "./dao/models/users.model.js";
 import { MsgModel } from "./dao/models/messages.model.js";
+import { createHash } from "../src/utils/bcrypt.js";
 
 
 const storage = multer.diskStorage({
@@ -48,7 +49,8 @@ export function connectSocket(httpServer){
         }
 
         else{
-          const createUser= await UserModel.create({ firstName:user.firstName, lastName:user.lastName,  userName:user.userName, email:user.email, password:user.password});
+          let encrypted=createHash(user.password);
+          const createUser= await UserModel.create({ firstName:user.firstName, lastName:user.lastName,  userName:user.userName, email:user.email, password:encrypted});
           socket.emit("userCreated",createUser);
         }
         

@@ -20,7 +20,7 @@ socket.on("set_products_res",(products)=>{
     pId.classList.add("prod_id");
 
     const pImg=document.createElement("img");
-    pImg.src="../../static/example.jpg";
+    pImg.src="../../static/img/example.jpg";
     pImg.classList.add("example_image");
 
     const pTitle=document.createElement("h3");

@@ -21,7 +21,7 @@
             {{#each products}}
                 <div class="prod_card">
                     <p class="prod_id">{{this._id}}</p>
-                    <img src="../../static/example.jpg" class="example_image">
+                    <img src="../../static/img/example.jpg" class="example_image">
                     <h3 class="prod_title">{{this.title}}</h3>
                     <h5 class="prod_price">USD {{this.price}}</h5>
                     <button onclick="putIntoCart('{{this._id}}')" class="add_button add{{this._id}}">Agregar al carrito</button>

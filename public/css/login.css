@@ -42,11 +42,15 @@ input[type="submit"]:hover {
   background-color: #45a049;
 }
 
-  .login_error{
-    height: 20px;
-    color:rgb(221, 30, 30);
-  }
+.login_error{
+  height: 20px;
+  color:rgb(221, 30, 30);
+}
 
-  .no_error{
-    height: 20px ;
-  }
+.no_error{
+  height: 20px ;
+}
+
+.github-logo{
+  width: 50px;
+}

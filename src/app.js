@@ -1,22 +1,25 @@
-import { urlencoded } from "express";
-import express from "express";
-import { productsRouter } from "./routes/products.router.js";
-import { cartsRouter } from "./routes/carts.router.js";
-import { usersRouter } from "./routes/users.router.js";
-import { chatRouter } from "./routes/chat.router.js";
-import { catalogueRouter } from "./routes/catalogue.router.js";
-import {registerRouter} from "./routes/register.router.js";
-import {loginRouter} from "./routes/login.router.js";
-import { logoutRouter } from "./routes/logout.router.js";
-import { viewCart } from "./routes/viewcart.route.js";
-import handlebars from "express-handlebars";
-import { __dirname, connectMongo, connectSocket  } from "./utils.js";
-import { home } from "./routes/home.router.js";
-import { realtimeproducts } from "./routes/realTimeProducts.router.js";
-import session from "express-session";
-import FileStore from "session-file-store";
 import MongoStore from "connect-mongo";
 import cookieParser from 'cookie-parser';
+import express, { urlencoded } from "express";
+import handlebars from "express-handlebars";
+import session from "express-session";
+import passport from "passport";
+import FileStore from "session-file-store";
+import { cartsRouter } from "./routes/carts.router.js";
+import { catalogueRouter } from "./routes/catalogue.router.js";
+import { chatRouter } from "./routes/chat.router.js";
+import { home } from "./routes/home.router.js";
+import { loginRouter } from "./routes/login.router.js";
+import { logoutRouter } from "./routes/logout.router.js";
+import { productsRouter } from "./routes/products.router.js";
+import { realtimeproducts } from "./routes/realTimeProducts.router.js";
+import { registerRouter } from "./routes/register.router.js";
+import { usersRouter } from "./routes/users.router.js";
+import { viewCart } from "./routes/viewcart.route.js";
+import { __dirname, connectMongo, connectSocket } from "./utils.js";
+import { iniPassport } from "./config/passport.config.js";
+
+
 
 
 const app = express();
@@ -41,6 +44,10 @@ app.use(
 		}),
 	})
 );
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 //HTTP SERVER
 const httpServer=app.listen(port, () => {
@@ -77,6 +84,19 @@ app.use("/views/carts",viewCart);
 app.use("/views/sessions/login", loginRouter);
 app.use("/views/sessions/logout", logoutRouter);
 app.use("/views/sessions/register", registerRouter);
+app.get(
+	"/views/sessions/github",
+	passport.authenticate("github", { scope: ["user:email"] })
+);
+app.get(
+	"/views/sessions/githubcallback",
+	passport.authenticate("github", { failureRedirect: "/views/sessions/login" }),
+	(req, res) => {
+		req.session.user = req.user.userName;
+		req.session.role = req.user.role;
+		res.redirect("/views/products");
+	}
+);
 
 //OTROS ENDPOINTS
 app.get("*", (req, res) => {
