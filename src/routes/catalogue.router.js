@@ -13,8 +13,9 @@ catalogueRouter.get("/", async (req,res)=>{
     let products = await ProductManager.getProducts(filter,limit,page,sort);
     const username = req.session.user ;
     const role = req.session.role;
+    const cart= req.session.cart;
     console.log(req.session);
-    console.log(role,username);
+    console.log(role,username,cart);
 
     const style="catalogue.css";
     return res.status(200).render('catalogue',{
@@ -30,7 +31,8 @@ catalogueRouter.get("/", async (req,res)=>{
         limit:limit,
         sort:sort,
         username: username,
-        role:role
+        role:role,
+        cart:cart
     })
   
   });

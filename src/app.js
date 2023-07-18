@@ -94,6 +94,7 @@ app.get(
 	(req, res) => {
 		req.session.user = req.user.userName;
 		req.session.role = req.user.role;
+		req.session.cart= req.user.cart;
 		res.redirect("/views/products");
 	}
 );

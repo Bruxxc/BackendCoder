@@ -8,6 +8,7 @@ import { connect } from "mongoose";
 import { ProductModel } from "./dao/models/products.model.js";
 import { UserModel } from "./dao/models/users.model.js";
 import { MsgModel } from "./dao/models/messages.model.js";
+import { CartModel } from "./dao/models/carts.model.js";
 import { createHash } from "../src/utils/bcrypt.js";
 
 
@@ -63,7 +64,21 @@ export function connectSocket(httpServer){
     });
 
 
-/// CHAT START
+  ///GET CARTID
+    socket.on("get_cart_ID",async ()=>{
+      try{
+        
+      }
+      catch(e){
+        throw e;
+      }
+    })
+
+
+
+
+
+  /// CHAT START
 
     socket.on("set_chat",async ()=>{
       const msgs= await MsgModel.find({});

@@ -1,4 +1,3 @@
-
 const addProduct=(cid,pid)=>{
     socket.emit("add_to_cart",{
         product:pid,
@@ -6,50 +5,48 @@ const addProduct=(cid,pid)=>{
     });
 };
 
-
 const getPagProducts=()=>{
     socket.emit("getPagProducts");
 }
 
+let carritoId= localStorage.getItem("carritoId");
 
-const carritoId=localStorage.getItem("carrito-id");
-const API_URL = "http://localhost:8080/api";
+const get_cart=()=>{
 
+    if(carritoId=="undefined"|| carritoId==null){
 
+        const url="http://localhost:8080/api/carts/actual/cart";
 
+        const options={
+            method: "GET",
+            headers:{
+                "Content-Type":"application/json",
+            }
+        };
 
-if(!carritoId){
-    alert("no id");
-
-    const url="http://localhost:8080/api/carts";
-
-    const data={};
-
-    const options={
-        method: "POST",
-        headers:{
-            "Content-Type":"application/json",
-        },
-        body:JSON.stringify(data),
-    };
-
-    fetch(url,options)
-        .then((response)=>response.json())
-        .then((data)=>{
-            alert("Response", data.data._id);
-            localStorage.setItem("carrito-id",data.data._id);
-        })
-        .catch((error)=>{
-            console.error("Error:",error);
-        })
-
+        fetch(url,options)
+            .then((response)=>response.json())
+            .then((data)=>{
+                console.log('RESPONSE', data);
+                localStorage.setItem("carritoId",data.cart);
+                carritoId=data.cart;
+            })
+            .catch((error)=>{
+                console.error("Error:",error);
+            })
+        
+    }
+    else{
+        console.log(carritoId);
+    }
 
 }
-else{
-    alert(carritoId);
-}
+get_cart();
 
 function putIntoCart(_id){
+    if(carritoId!="undefined" && carritoId!=null){
+    console.log("cart:",carritoId,"product:",_id);
+    const API_URL="http://localhost:8080/api";
     const url = API_URL + "/carts/" + carritoId + "/products/" + _id;
 
     const options={
@@ -68,6 +65,7 @@ function putIntoCart(_id){
             console.log("Error:", error);
             alert(JSON.stringify(error));
         })
+    }
 }
 
 let login_redir=document.querySelector(".login_redir");
@@ -85,8 +83,10 @@ let logout_redir=document.querySelector(".logout_redir");
 if(logout_redir){
     logout_redir.addEventListener("click",(e)=>{
         e.preventDefault();
-        window.location.href = "/views/sessions/logout";
         console.log("logout");
+        localStorage.removeItem("carritoId");
+        window.location.href = "/views/sessions/logout";
+        
     });
 }
 
@@ -99,3 +99,4 @@ if(register_redir){
         console.log("register");
     });
 }
+

@@ -42,9 +42,15 @@ function checkUsername() {
 function checkNames(){
     let firstName = document.getElementById("first-name").value;
     let lastName = document.getElementById("last-name").value;
-     if (firstName.length == 0 || lastName.length==0) {
+    let age= document.getElementById("age").value;
+    if (firstName.length == 0 || lastName.length==0) {
         alert("Ingrese su nombre completo");
         return false;
+    }
+
+    else if(!age){
+      alert("Ingrese su edad");
+      return false;
     }
   
     return true;
@@ -73,26 +79,45 @@ function validateForm() {
     return isValid;
 }
 
-
-register_btn.addEventListener("click",(e)=>{
-    e.preventDefault();
-    if(validateForm()){
+register_btn.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (validateForm()) {
     let email = document.getElementById("email").value;
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
     let firstName = document.getElementById("first-name").value;
     let lastName = document.getElementById("last-name").value;
-    let newUser={
-        email:email,
-        firstName:firstName,
-        lastName:lastName,
-        userName:username,
-        password:password
-    }
-    console.log(newUser);
-    socket.emit("create_user",{newUser});
-    }
-    
+    let age = document.getElementById("age").value;
+    let newUser = {
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      userName: username,
+      password: password,
+      age: age
+    };
+
+    fetch("/views/sessions/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newUser)
+    })
+      .then(response => response.json())
+      .then(data => {
+        Swal.fire({
+          icon: 'success',
+          title: 'User created',
+        }).then(()=>{
+          console.log("Registro exitoso:", data);
+          window.location.href="/views/sessions/login";
+        })       
+      })
+      .catch(error => {
+        console.error("Error al registrar:", error);
+      });
+  }
 });
 
 socket.on("userCreated",()=>{

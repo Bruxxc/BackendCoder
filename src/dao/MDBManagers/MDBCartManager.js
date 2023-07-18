@@ -39,8 +39,9 @@ export class MDBCartManager{
     async createCart(){
         try{
         const cartCreated = await CartModel.create({});
+        console.log("Cart created");
         return cartCreated;
-    }
+        }
         catch(e){
             throw e;
         }
