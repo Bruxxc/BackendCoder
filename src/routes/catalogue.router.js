@@ -1,6 +1,6 @@
 import express from "express";
 export const catalogueRouter = express.Router();
-import { MDBProductManager } from "../dao/MDBManagers/MDBProductManager.js";
+import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.js";
 
 
 const ProductManager= new MDBProductManager();

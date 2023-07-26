@@ -1,5 +1,5 @@
-import { CartModel } from "../models/carts.model.js";
-import { ProductModel } from "../models/products.model.js";
+import { CartModel } from "../../models/Mongoose/carts.mongoose.js";
+import { ProductModel } from "../../models/Mongoose/products.mongoose.js";
 
 export class MDBCartManager{
 
@@ -106,7 +106,7 @@ export class MDBCartManager{
         }
     };
 
-    async emptyCart(id){
+    async emptyCart(cid){
         try{
 
             const cart = await CartModel.find({_id:cid});

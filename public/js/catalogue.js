@@ -15,7 +15,7 @@ const get_cart=()=>{
 
     if(carritoId=="undefined"|| carritoId==null){
 
-        const url="http://localhost:8080/api/carts/actual/cart";
+        const url="http://localhost:8080/api/sessions/current";
 
         const options={
             method: "GET",

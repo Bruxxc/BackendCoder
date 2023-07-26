@@ -18,14 +18,14 @@ import { usersRouter } from "./routes/users.router.js";
 import { viewCart } from "./routes/viewcart.route.js";
 import { __dirname, connectMongo, connectSocket } from "./utils.js";
 import { iniPassport } from "./config/passport.config.js";
+import { sessionsRouter } from "./routes/sessions.router.js";
+import cors from "cors";
+import env from './config/enviroment.config.js';
 
-
-
-
+console.log(env);
 const app = express();
-const port = 8080;
+const port = env.port;
 const fileStore = FileStore(session);
-
 
 app.use(urlencoded({extended:true}));
 app.use(express.json());
@@ -36,8 +36,7 @@ app.use(
 		resave: false,
 		saveUninitialized: false,
 		store: MongoStore.create({
-			mongoUrl:
-				"mongodb+srv://bru_conde:xTuT2f8xzqLPDNNP@backendcoder.kqvwier.mongodb.net/?retryWrites=true&w=majority",
+			mongoUrl: env.mongoUrl,
 			dbName: 'sessions',
 			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
 			ttl: 15,
@@ -47,7 +46,7 @@ app.use(
 iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(cors());
 
 //HTTP SERVER
 const httpServer=app.listen(port, () => {
@@ -99,13 +98,11 @@ app.get(
 	}
 );
 
+app.use("/api/sessions",sessionsRouter);
+
 //OTROS ENDPOINTS
 app.get("*", (req, res) => {
   return res
     .status(404)
     .json({ status: "error", msg: "no se encuentra esa ruta", data: {} });
 });
-
-
-
-

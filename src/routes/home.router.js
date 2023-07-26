@@ -1,5 +1,5 @@
 import express from "express";
-import { ProductModel } from "../dao/models/products.model.js";
+import { ProductModel } from "../dao/models/Mongoose/products.mongoose.js";
 export const home = express.Router();
 
 home.get("/",async (req,res)=>{

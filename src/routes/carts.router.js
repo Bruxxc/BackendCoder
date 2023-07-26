@@ -1,5 +1,5 @@
 import express from "express";
-import { MDBCartManager } from "../dao/MDBManagers/MDBCartManager.js";
+import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
 
 export const cartsRouter = express.Router();
 
@@ -198,18 +198,3 @@ cartsRouter.put("/:cid/products/:pid", async (req,res)=>{
 });
 
 
-cartsRouter.get("/actual/cart",async (req,res)=>{
-  const cart=req.session.cart;
-
-  if(cart){
-    return res.status(201).json({
-      cart:cart
-    });
-  }
-
-  else{
-    return res.status(201).json({
-      msg:"Not logged"
-    })
-  }
-});

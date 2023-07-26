@@ -1,5 +1,5 @@
 import express from "express";
-import { UserModel } from "../dao/models/users.model.js";
+import { UserModel } from "../dao/models/Mongoose/users.mongoose.js";
 
 export const usersRouter = express.Router();
 

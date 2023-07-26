@@ -1,8 +1,8 @@
-import { ProductModel } from "../models/products.model.js";
+import { ProductModel } from "../Mongoose/products.mongoose.js";
 
-export class MDBProductManager{
+export class ProductsModel{
 
-    async getProducts(filter,limit,page,sort){
+    async getPaginated(filter,limit,page,sort){
 
         try{
             const products = await ProductModel.paginate(filter, {
@@ -19,7 +19,18 @@ export class MDBProductManager{
         
     };
 
-    async getProductById(id){
+    async getAll(){
+        try{
+           const products= await ProductModel.find({}).lean();
+           return products; 
+        }
+        catch(e){
+            console.log(e);
+            throw e;
+        }
+    }
+
+    async getById(id){
 
         try{
             const product = await ProductModel.find({"_id":id});
@@ -36,7 +47,7 @@ export class MDBProductManager{
     };
 
 
-    async createProduct(title, description, price, code, stock ,category, thumbnail){
+    async create(title, description, price, code, stock ,category, thumbnail){
 
         if (!title || !description || !price || !code || !stock|| !category){
             console.log(
@@ -53,7 +64,8 @@ export class MDBProductManager{
        
     };
 
-    async editProduct(id,title, description, price, stock ,category, thumbnail, status){
+
+    async update(id,title, description, price, stock ,category, thumbnail, status){
     
         if (!title && !description && !price && !stock && !category && !thumbnail && !status ) {
             console.log(
@@ -84,7 +96,7 @@ export class MDBProductManager{
 
     };
 
-    async deleteProduct(id){
+    async delete(id){
         const product = await ProductModel.find({"_id":id});
         console.log(product);
         if(product[0]){
@@ -99,4 +111,5 @@ export class MDBProductManager{
             throw error;
         }
     }
+
 }

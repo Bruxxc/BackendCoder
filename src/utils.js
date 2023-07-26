@@ -5,12 +5,11 @@ export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
 import multer from "multer";
 import { connect } from "mongoose";
-import { ProductModel } from "./dao/models/products.model.js";
-import { UserModel } from "./dao/models/users.model.js";
-import { MsgModel } from "./dao/models/messages.model.js";
-import { CartModel } from "./dao/models/carts.model.js";
+import { ProductModel } from "./dao/models/Mongoose/products.mongoose.js";
+import { UserModel } from "./dao/models/Mongoose/users.mongoose.js";
+import { MsgModel } from "./dao/models/Mongoose/messages.mongoose.js";
 import { createHash } from "../src/utils/bcrypt.js";
-
+import env from "./config/enviroment.config.js";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -153,7 +152,7 @@ export function connectSocket(httpServer){
 export async function connectMongo() {
   try {
     await connect(
-      "mongodb+srv://bru_conde:xTuT2f8xzqLPDNNP@backendcoder.kqvwier.mongodb.net/?retryWrites=true&w=majority",
+      env.mongoUrl,
       {dbName:"ecommerce"}
     );
     console.log("plug to mongo!");

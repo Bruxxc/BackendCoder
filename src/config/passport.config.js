@@ -2,11 +2,12 @@ import fetch from "node-fetch";
 import passport from "passport";
 import GitHubStrategy from "passport-github2";
 import local from "passport-local";
-import { UserModel } from "../dao/models/users.model.js";
+import { UserModel } from "../dao/models/Mongoose/users.mongoose.js";
 import { createHash } from "../utils/bcrypt.js";
 import { isValidPassword } from "../utils/bcrypt.js";
-import { MDBCartManager } from "../dao/MDBManagers/MDBCartManager.js";
-import { CartModel } from "../dao/models/carts.model.js";
+import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
+import { CartModel } from "../dao/models/Mongoose/carts.mongoose.js";
+import env from "../config/enviroment.config.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -19,7 +20,7 @@ export function iniPassport() {
 			{
 				clientID: "Iv1.605ab076a5c92dc7",
 				clientSecret: "52cd06469228744f203de7c1d8dedf7cd6e5db26",
-				callbackURL: "http://localhost:8080/views/sessions/githubcallback",
+				callbackURL: `http://localhost:${env.port}/views/sessions/githubcallback`,
 			},
 			async (accesToken, _, profile, done) => {
 				try {
@@ -36,11 +37,11 @@ export function iniPassport() {
 						return done(new Error("cannot get a valid email for this user"));
 					}
 					profile.email = emailDetail.email;
-
 					let user = await UserModel.findOne({ email: profile.email });
 					if (!user) {
 						const newCart = await CartModel.create({});
 						console.log("Nuevo carrito:", newCart);
+						const hashedpwd=createHash(profile.id);
 						const newUser = {
 							email: profile.email,
                             firstName: profile._json.name || profile._json.login || "noname",
@@ -48,7 +49,7 @@ export function iniPassport() {
 							userName: profile._json.login || profile._json.name || "noname",
 							age:null,
 							role: "user",
-							password: "nopass",
+							password: hashedpwd,
 							cart: newCart._id
 						};
 						
@@ -71,20 +72,61 @@ export function iniPassport() {
 	
 	passport.use('login',new LocalStrategy({usernameField:'email'},async(email,password,done)=>{
 		try{
-			let user = await UserModel.findOne({ email: email });
-			console.log(email,password);
-			console.log(user);
-			if(!user){
-				console.log("user doesnt exist");
-				return done(null,false);
-			}
-			else{
-				if(!isValidPassword(password,user.password)){
-					return done(null,false);
+			if(email==env.adminEmail){
+				let admin= await UserModel.findOne({email: env.adminEmail});
+
+				if(admin){
+					if(!isValidPassword(password,admin.password)){
+						return done(null, false);
+					}
+
+					else{
+						return done (null, admin);
+					}
 				}
 
 				else{
-					return done(null,user);
+					const hashedpwd=createHash(env.adminPassword);
+					const newCart = await CartModel.create({});
+			  		console.log("Nuevo carrito:", newCart);
+					let createAdmin= await UserModel.create({
+						firstName: 'ADMIN',
+						lastName: 'CODER',
+						age: 666,
+						userName: '4DM1N',
+						email: env.adminEmail,
+						password: hashedpwd,
+						cart: newCart._id,
+						role:"admin"
+					});
+
+					if(!isValidPassword(password,env.adminPassword)){
+						return done(null, false);
+					}
+
+					else{
+						return done (null, admin);
+					}
+
+				}
+			}
+
+			else{
+				let user = await UserModel.findOne({ email: email });
+				console.log(email,password);
+				console.log(user);
+				if(!user){
+					console.log("user doesnt exist");
+					return done(null,false);
+				}
+				else{
+					if(!isValidPassword(password,user.password)){
+						return done(null,false);
+					}
+
+					else{
+						return done(null,user);
+					}
 				}
 			}
 		}catch(e){
@@ -100,7 +142,7 @@ export function iniPassport() {
 			let user = await UserModel.findOne({ email: email });
 			let user2 = await UserModel.findOne({ userName: userName });
 	  
-			if (user) {
+			if (user || email==env.adminEmail) {
 			  console.log("Email already in use");
 			  return done(null, false, { message: 'Email already in use' });
 			} else if (user2) {

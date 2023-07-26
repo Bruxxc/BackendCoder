@@ -1,5 +1,5 @@
 import express from "express";
-import { MDBProductManager } from "../dao/MDBManagers/MDBProductManager.js";
+import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.js";
 
 export const productsRouter = express.Router();
 
