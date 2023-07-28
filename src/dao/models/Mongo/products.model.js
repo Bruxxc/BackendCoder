@@ -1,11 +1,11 @@
-import { ProductModel } from "../Mongoose/products.mongoose.js";
+import { ProductMongoose } from "../Mongoose/products.mongoose.js";
 
 export class ProductsModel{
 
     async getPaginated(filter,limit,page,sort){
 
         try{
-            const products = await ProductModel.paginate(filter, {
+            const products = await ProductMongoose.paginate(filter, {
                 limit,
                 page,
                 sort: sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : undefined,
@@ -21,7 +21,7 @@ export class ProductsModel{
 
     async getAll(){
         try{
-           const products= await ProductModel.find({}).lean();
+           const products= await ProductMongoose.find({}).lean();
            return products; 
         }
         catch(e){
@@ -33,7 +33,7 @@ export class ProductsModel{
     async getById(id){
 
         try{
-            const product = await ProductModel.find({"_id":id});
+            const product = await ProductMongoose.find({"_id":id});
             if(product[0]){
             return product;
             }
@@ -58,49 +58,41 @@ export class ProductsModel{
         }
         else{
             const status=true;
-            const productCreated = await ProductModel.create({ title, description, price, code, stock ,category, thumbnail,status });
+            const productCreated = await ProductMongoose.create({ title, description, price, code, stock ,category, thumbnail,status });
             return productCreated;
         }
        
     };
 
 
-    async update(id,title, description, price, stock ,category, thumbnail, status){
+    async update(id, title, description, price, stock, category, thumbnail, status) {
+        try {
+           console.log(title,description,price,stock,category,thumbnail,status);
+            const found = await ProductMongoose.find({ "_id": id });
     
-        if (!title && !description && !price && !stock && !category && !thumbnail && !status ) {
-            console.log(
-              "validation error: all fields are empty."
-            );
-            const error={message:"validation error: all fields are empty."};
-            throw error;
-        }
-
-
-        else{
-
-            const found= await ProductModel.find({"_id":id});
-
-            if(found[0]){
-                const productUpdated = await ProductModel.updateOne(
+            if (found[0]) {
+                
+                const productUpdated = await ProductMongoose.updateOne(
                     { _id: id },
-                    { title, description, price, stock, category, thumbnail, status  }
+                    { title, description, price, stock, category, thumbnail, status }
                 );
                 return productUpdated;
-            }
-
-            else{
-                const error={message:"product not found"};
+            } else {
+               
+                const error = { message: "product not found" };
                 throw error;
             }
+        } catch (e) {
+            
+            throw e;
         }
-
-    };
+    }
 
     async delete(id){
-        const product = await ProductModel.find({"_id":id});
+        const product = await ProductMongoose.find({"_id":id});
         console.log(product);
         if(product[0]){
-          const productDeleted = await ProductModel.deleteOne(
+          const productDeleted = await ProductMongoose.deleteOne(
             { _id: id },
           );
           return productDeleted;

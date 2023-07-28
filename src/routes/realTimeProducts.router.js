@@ -1,10 +1,10 @@
 import express from "express";
+import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.js";
 export const realtimeproducts = express.Router();
-import { ProductModel } from "../dao/models/Mongoose/products.mongoose.js";
-
+const PManager= new MDBProductManager;
  
 realtimeproducts.get("/", async (req,res)=>{
-    const products=await ProductModel.find({});
+    const products=await PManager.getAll();
     const style="realTimeProducts.css";
     return res.status(200).render('realTimeProducts',{style,products});
   

@@ -1,15 +1,13 @@
-import { ProductModel } from "../../models/Mongoose/products.mongoose.js";
+import { ProductsModel } from "../../models/Mongo/products.model.js";
+
+const PModel= new ProductsModel;
 
 export class MDBProductManager{
 
     async getProducts(filter,limit,page,sort){
 
         try{
-            const products = await ProductModel.paginate(filter, {
-                limit,
-                page,
-                sort: sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : undefined,
-            });
+            const products = await PModel.getPaginated(filter,limit,page,sort);
             return products;
 
         }catch(e){
@@ -19,10 +17,22 @@ export class MDBProductManager{
         
     };
 
+    async getAll(){
+
+        try{
+            const products = await PModel.getAll();
+            return products;
+
+        }catch(e){
+            throw e;
+        }
+        
+    }
+
     async getProductById(id){
 
         try{
-            const product = await ProductModel.find({"_id":id});
+            const product = await PModel.getById(id);
             if(product[0]){
             return product;
             }
@@ -46,57 +56,47 @@ export class MDBProductManager{
             throw error;
         }
         else{
-            const status=true;
-            const productCreated = await ProductModel.create({ title, description, price, code, stock ,category, thumbnail,status });
+            const productCreated = await PModel.create( title, description, price, code, stock ,category, thumbnail);
             return productCreated;
         }
        
     };
 
-    async editProduct(id,title, description, price, stock ,category, thumbnail, status){
-    
-        if (!title && !description && !price && !stock && !category && !thumbnail && !status ) {
-            console.log(
-              "validation error: all fields are empty."
-            );
-            const error={message:"validation error: all fields are empty."};
-            throw error;
-        }
-
-
-        else{
-
-            const found= await ProductModel.find({"_id":id});
-
-            if(found[0]){
-                const productUpdated = await ProductModel.updateOne(
-                    { _id: id },
-                    { title, description, price, stock, category, thumbnail, status  }
-                );
-                return productUpdated;
-            }
-
-            else{
-                const error={message:"product not found"};
+    async editProduct(id, title, description, price, stock, category, thumbnail, status) {
+        try {
+            console.log(title,description,price,stock,category,thumbnail,status);
+            if (!title && !description && !price && !stock && !category && !thumbnail && status==undefined) {
+                console.log("validation error: all fields are empty. Nivel 1");
+                const error = { message: "validation error: all fields are empty. Nivel 1" };
                 throw error;
-            }
-        }
+            } else {
+                const found = await PModel.getById(id);
+    
+                if (found[0]) {
+                    const productUpdated = await PModel.update(
+                        id, title, description, price, stock, category, thumbnail, status
+                    );
+                    return productUpdated;
+                } else {
 
-    };
+                    const error = { message: "product not found" };
+                    throw error;
+                }
+            }
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    }
 
     async deleteProduct(id){
-        const product = await ProductModel.find({"_id":id});
-        console.log(product);
-        if(product[0]){
-          const productDeleted = await ProductModel.deleteOne(
-            { _id: id },
-          );
+        try{
+          const productDeleted = await PModel.delete(id);
           return productDeleted;
         }
-
-        else{
-            const error={message:"product not found"};
-            throw error;
+        catch(e){
+            console.log(e);
+            throw e;
         }
     }
 }

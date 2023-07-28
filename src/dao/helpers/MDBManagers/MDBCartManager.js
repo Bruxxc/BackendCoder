@@ -1,12 +1,14 @@
-import { CartModel } from "../../models/Mongoose/carts.mongoose.js";
-import { ProductModel } from "../../models/Mongoose/products.mongoose.js";
+import { ProductsModel } from "../../models/Mongo/products.model.js";
+import { CartsModel } from "../../models/Mongo/carts.model.js";
+
+const CModel= new CartsModel;
+const PModel = new ProductsModel;
 
 export class MDBCartManager{
 
     async getCarts(){
         try{
-        const carts = await CartModel.find({});
-        console.log("get carts");
+        const carts= await CModel.getAll();
         return carts;
         }
 
@@ -17,7 +19,7 @@ export class MDBCartManager{
 
     async getCartById(id){
         try{
-            const cart = await CartModel.find({_id:id}).lean();
+            const cart = await CModel.getById(id);
             console.log(`get cart ${id}`);      
 
             if(cart[0]){
@@ -38,7 +40,7 @@ export class MDBCartManager{
 
     async createCart(){
         try{
-        const cartCreated = await CartModel.create({});
+        const cartCreated = await CModel.create();
         console.log("Cart created");
         return cartCreated;
         }
@@ -50,8 +52,8 @@ export class MDBCartManager{
     async addProductToCart(pid,cid){
 
         try{
-            const cart = await CartModel.find({_id:cid});
-            const product= await ProductModel.find({_id:pid});
+            const cart = await CModel.getById(cid);
+            const product= await PModel.getById(pid);
             let products= cart[0].products;
             let ANY=products.filter(prod=>prod.product._id==pid);
 
@@ -62,16 +64,16 @@ export class MDBCartManager{
 
             else{
 
-            const newProd={
-                product:product[0]._id,
-                quantity:1,
+                const newProd={
+                    product:product[0]._id,
+                    quantity:1,
+                }
+
+                products.push(newProd);
+
             }
 
-            products.push(newProd);
-
-            }
-
-            const editCart= await CartModel.updateOne({ _id: cid }, {products});
+            const editCart= await CModel.update(cid,products);
             return editCart;
         }
 
@@ -94,10 +96,10 @@ export class MDBCartManager{
 
     async deleteProductFromCart(pid,cid){
         try{
-        const cart = await CartModel.find({_id:cid});
+        const cart = await CModel.getById(cid);
         let products= cart[0].products;
         let newARR = products.filter(prod => prod.product._id.toString() !== pid);
-        const editCart= await CartModel.updateOne({ _id: cid }, {products:newARR});
+        const editCart= await CModel.update(cid, newARR);
         return editCart;
     }
         
@@ -109,9 +111,9 @@ export class MDBCartManager{
     async emptyCart(cid){
         try{
 
-            const cart = await CartModel.find({_id:cid});
+            const cart = await CModel.getById(cid);
             let newARR=[];
-            const editCart= await CartModel.updateOne({ _id: cid }, {products:newARR});
+            const editCart= await CModel.update(cid, newARR);
             return editCart;
         }
 
@@ -123,7 +125,7 @@ export class MDBCartManager{
     async editProductQuantity(cid,pid,newquant){
 
         try{
-        const cart = await CartModel.find({_id:cid});
+        const cart = await CModel.find(cid);
         let products= cart[0].products;
         console.log(products);
         let ANY=products.filter(prod=>prod.product._id==pid);
@@ -131,7 +133,7 @@ export class MDBCartManager{
             let index=products.findIndex(prod=>prod.product._id==pid);
             if(newquant){
               (products[index].quantity)=newquant;
-              const editCart= await CartModel.updateOne({ _id: cid }, {products});
+              const editCart= await CModel.update(cid, products);
               return editCart;  
             }
     

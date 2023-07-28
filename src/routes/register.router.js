@@ -13,7 +13,7 @@ registerRouter.post("/", async (req, res, next) => {
     }
     else{
       const userCreated = user;
-      return res.status(201).send({ userCreated: userCreated });
+      return res.status(201).send({ status: "success", userCreated: userCreated });
     }
 
   })(req, res, next);

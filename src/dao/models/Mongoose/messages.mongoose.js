@@ -5,4 +5,4 @@ const schema = new Schema({
   userName: { type: String, required: true, max: 100 },
 });
 
-export const MsgModel = model("messages", schema);
+export const MsgMongoose = model("messages", schema);

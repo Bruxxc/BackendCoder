@@ -1,9 +1,10 @@
-import { MsgMongoose } from "../Mongoose/messages.mongoose.js";
+import { MsgsModel } from "../dao/models/Mongo/messages.model.js";
+const MsgModel= new MsgsModel;
 
-export class MsgsModel {
+export class MsgService{
     async getAll(){
         try{
-            const msgs= await MsgMongoose.find({});
+            const msgs = await MsgModel.getAll();
             return msgs;
         }
         catch(e){
@@ -14,12 +15,13 @@ export class MsgsModel {
 
     async create(text,userName){
         try{
-            const createmsg= await MsgMongoose.create({"text":text, "userName":userName});
-            return createmsg;
-        }
+        const createmsg= await MsgModel.create(text,userName);
+        return createmsg;}
         catch(e){
             console.log(e);
             throw e;
         }
     }
 }
+
+

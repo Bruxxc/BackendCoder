@@ -1,10 +1,10 @@
-import { CartModel } from "../Mongoose/carts.mongoose.js";
+import { CartMongoose } from "../Mongoose/carts.mongoose.js";
 
 export class CartsModel{
 
     async getAll(){
         try{
-        const carts = await CartModel.find({});
+        const carts = await CartMongoose.find({});
         console.log("get carts");
         return carts;
         }
@@ -16,7 +16,7 @@ export class CartsModel{
 
     async getById(id){
         try{
-            const cart = await CartModel.find({_id:id}).lean();
+            const cart = await CartMongoose.find({_id:id}).lean();
             console.log(`get cart ${id}`);      
 
             if(cart[0]){
@@ -37,7 +37,7 @@ export class CartsModel{
 
     async create(){
         try{
-        const cartCreated = await CartModel.create({});
+        const cartCreated = await CartMongoose.create({});
         console.log("Cart created");
         return cartCreated;
         }
@@ -48,7 +48,7 @@ export class CartsModel{
 
     async update(cid,info){
         try{
-            const cart = await CartModel.findByIdAndUpdate({_id:cid},{info});
+            const cart = await CartMongoose.findByIdAndUpdate({_id:cid},{products: info});
             return cart;
 
         }
@@ -60,14 +60,14 @@ export class CartsModel{
 
     async delete(cid) {
         try {
-          const deletedCart = await CartModel.findByIdAndDelete(id);
+          const deletedCart = await CartMongoose.findByIdAndDelete(cid);
       
           if (!deletedCart) {
             const error = { message: "Cart not found" };
             throw error;
           }
       
-          console.log(`Cart deleted: ${id}`);
+          console.log(`Cart deleted: ${cid}`);
           return deletedCart;
         } catch (e) {
           throw e;

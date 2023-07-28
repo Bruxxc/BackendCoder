@@ -1,200 +1,43 @@
 import express from "express";
-import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
-
+import { CartsController } from "../controllers/carts.controller.js";
 export const cartsRouter = express.Router();
 
-const CartManager= new MDBCartManager();
-
+const CController= new CartsController;
 cartsRouter.get("/", async (req, res) => {
-    try {
-        const carts=await CartManager.getCarts();
-        return res.status(200).json({
-          status: "success",
-          msg: "carts list",
-          data: carts,
-        });
-      } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-          status: "error",
-          msg: "something went wrong :(",
-          data: {},
-        });
-      }
+  CController.getAll(req,res);
 
 });
 
 
 cartsRouter.get("/:cid", async (req,res)=>{
-    let id=req.params.cid;
-    
-    try {
-        const cart =await CartManager.getCartById(id);
-        return res.status(200).json({
-          status: "success",
-          msg: "cart found",
-          data: cart,
-        });
-
-      } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-          status: "error",
-          msg: e.message,
-          data: {},
-        });
-      }
-
+   CController.getById(req,res);
 });
 
 
 cartsRouter.post("/", async (req,res)=>{
-  try{
-    const cartCreated = await CartManager.createCart();
-    return res.status(201).json({status:"Success",msg:"Cart created", data:cartCreated});
-  } catch (e) {
-      console.log(e);
-      return res.status(500).json({
-        status: "error",
-        msg: error.message,
-        data: {},
-      });
-    }
+  CController.create(req,res);
 
 });
 
 cartsRouter.put("/:cid", async (req,res)=>{
-  let cid=req.params.cid;
-  let products=req.body;
-  try{
-    const editCart= await CartManager.addProductsArray(cid,products);
-    return res.status(200).json({
-      status: "success",
-      msg: "cart updated",
-    });
-  }
-  catch(e){
-    console.log(e);
-    return res.status(500).json({
-      status: "error",
-      msg: "something went wrong :(",
-      data: {},
-    });
-  }
+  CController.update(req,res);
 });
 
 cartsRouter.post("/:cid/products/:pid", async (req,res)=>{
-    let cid=req.params.cid;
-    let pid=req.params.pid;
-
-    try {
-        const editCart= await CartManager.addProductToCart(pid,cid);
-
-        return res.status(200).json({
-            status: "success",
-            msg: "cart updated",
-          });
-
-    } catch(e){
-        console.log(e);
-        return res.status(500).json({
-          status: "error",
-          msg: "something went wrong :(",
-          data: {},
-        });
-
-    }
-
+    CController.addProduct(req,res);
 
 });
 
-
-/////NUEVO
-
-//ELIMINAR PRODUCTO DEL CARRITO
 cartsRouter.delete("/:cid/products/:pid", async (req,res)=>{
-  let cid=req.params.cid;
-  let pid=req.params.pid;
-
-  try {
-      
-      const editCart= await CartManager.deleteProductFromCart(pid,cid);
-      return res.status(200).json({
-          status: "success",
-          msg: "cart updated",
-          data: {
-            editCart,
-          },
-        });
-
-  } catch(e){
-      console.log(e);
-      return res.status(500).json({
-        status: "error",
-        msg: "something went wrong :(",
-        data: {},
-      });
-
-  }
-
-
+  CController.deleteProduct(req,res);
 });
 
-///VACIAR CARRITO
 cartsRouter.delete("/:cid", async (req,res)=>{
-  let cid=req.params.cid;
-  try {
-     
-    const editCart=await CartManager.emptyCart(cid);
-      return res.status(200).json({
-          status: "success",
-          msg: "cart emptied",
-          data: {
-              editCart
-          },
-        });
-
-  } catch(e){
-      console.log(e);
-      return res.status(500).json({
-        status: "error",
-        msg: "something went wrong :(",
-        data: {},
-      });
-
-  }
-
-
+  CController.emptyCart(req,res);
 });
 
-///MODIFICAR CANTIDAD DE UN PRODUCTO DEL CARRITO
 cartsRouter.put("/:cid/products/:pid", async (req,res)=>{
-  let cid=req.params.cid;
-  let pid=req.params.pid;
-  let {newquant}=req.body;
-
-  try {
-          const editCart= await CartManager.editProductQuantity(cid,pid,newquant);
-          return res.status(200).json({
-              status: "success",
-              msg: "cart updated",
-              data: {
-                  cart:editCart,
-                  product:pid,
-              },
-            });
-
-  } catch(e){
-      console.log(e);
-      return res.status(500).json({
-        status: "error",
-        msg: e.message,
-        data: {},
-      });
-
-  }
-
-
+  CController.editProductQuantity(req,res);
 });
 
 

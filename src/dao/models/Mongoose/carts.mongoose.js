@@ -28,4 +28,4 @@ schema.pre('find', function () {
 });
 
 
-export const CartModel = model("cart", schema);
+export const CartMongoose = model("cart", schema);

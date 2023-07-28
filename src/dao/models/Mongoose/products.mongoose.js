@@ -17,4 +17,4 @@ mongoosePaginate.paginate.options = {
 };
 
 schema.plugin(mongoosePaginate);
-export const ProductModel = model("product", schema);
+export const ProductMongoose = model("product", schema);

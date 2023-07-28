@@ -106,14 +106,23 @@ register_btn.addEventListener("click", (e) => {
     })
       .then(response => response.json())
       .then(data => {
-        Swal.fire({
-          icon: 'success',
-          title: 'User created',
-        }).then(()=>{
-          console.log("Registro exitoso:", data);
-          window.location.href="/views/sessions/login";
-        })       
-      })
+        console.log(data);
+        if(data.status=="error"){
+          alert(data.error);
+        }
+        else if(data.status=="success"){   
+          Swal.fire({
+            icon: 'success',
+            title: 'User created',
+          })
+          .then(()=>{
+            console.log("Registro exitoso:", data);
+            window.location.href="/views/sessions/login";
+          })      
+        }
+ 
+      }
+      )
       .catch(error => {
         console.error("Error al registrar:", error);
       });
