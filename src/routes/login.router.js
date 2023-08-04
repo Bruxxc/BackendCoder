@@ -4,11 +4,14 @@ export const loginRouter = express.Router();
 
 
 loginRouter.post("/",passport.authenticate('login',{failureRedirect:"/views/sessions/login?error=true"}),async (req,res)=>{
+  console.log(req.user);
+ 
   if(!req.user) {
     return res.status(400).send({status:"error", error:"Invalid credentials"});
   }
 
   else{
+    req.session.fullName= req.user.fullName;
     req.session.user = req.user.userName;
     req.session.role = req.user.role;
     req.session.cart= req.user.cart;

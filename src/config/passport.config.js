@@ -7,6 +7,7 @@ import { isValidPassword } from "../utils/bcrypt.js";
 import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
 import env from "../config/enviroment.config.js";
 import { UserService } from "../services/User.service.js";
+import UserDTO_OUTPUT from "../dto/user.dto.js";
 
 const LocalStrategy = local.Strategy;
 const UService= new UserService;
@@ -43,10 +44,14 @@ export function iniPassport() {
 						console.log(profile);	
 						let userCreated = await UService.create(profile._json.name,profile._json.name,null,profile._json.login,profile.email,hashedpwd,"user",newCart._id);
 						console.log("User registration succesful");
+						let outputUser= new UserDTO_OUTPUT(userCreated);
+						console.log(outputUser);
 						return done(null, userCreated);
 					} else {
 						console.log("User already exists");
-						return done(null, user);
+						let outputUser= new UserDTO_OUTPUT(user);
+						console.log(outputUser);
+						return done(null, outputUser);
 					}
 				} catch (e) {
 					console.log("Error en auth github");
@@ -102,6 +107,10 @@ export function iniPassport() {
 					}
 
 					else{
+						const outputUser=new UserDTO_OUTPUT(user);
+						console.log("user---->",user)
+						console.log("outputUser---->",outputUser);
+						user=outputUser;
 						return done(null,user);
 					}
 				}

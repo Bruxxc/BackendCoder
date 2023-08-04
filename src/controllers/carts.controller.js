@@ -62,7 +62,7 @@ export class CartsController{
         let cid=req.params.cid;
         let products=req.body;
         try{
-            const editCart= await CartManager.addProductsArray(cid,products);
+            const editCart= await CManager.addProductsArray(cid,products);
             return res.status(200).json({
             status: "success",
             msg: "cart updated",
@@ -83,7 +83,7 @@ export class CartsController{
         let pid=req.params.pid;
 
         try {
-            const editCart= await CartManager.addProductToCart(pid,cid);
+            const editCart= await CManager.addProductToCart(pid,cid);
 
             return res.status(200).json({
                 status: "success",
@@ -109,7 +109,7 @@ export class CartsController{
       
         try {
             
-            const editCart= await CartManager.deleteProductFromCart(pid,cid);
+            const editCart= await CManager.deleteProductFromCart(pid,cid);
             return res.status(200).json({
                 status: "success",
                 msg: "cart updated",

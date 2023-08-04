@@ -14,6 +14,7 @@ catalogueRouter.get("/", async (req,res)=>{
     const username = req.session.user ;
     const role = req.session.role;
     const cart= req.session.cart;
+    const fullName= req.session.fullName;
     console.log(req.session);
     console.log(role,username,cart);
 
@@ -31,6 +32,7 @@ catalogueRouter.get("/", async (req,res)=>{
         limit:limit,
         sort:sort,
         username: username,
+        fullName:fullName,
         role:role,
         cart:cart
     })
