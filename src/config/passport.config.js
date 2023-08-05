@@ -7,7 +7,7 @@ import { isValidPassword } from "../utils/bcrypt.js";
 import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
 import env from "../config/enviroment.config.js";
 import { UserService } from "../services/User.service.js";
-import UserDTO_OUTPUT from "../dto/user.dto.js";
+import {UserDTO_INPUT } from "../dto/user.dto.js";
 
 const LocalStrategy = local.Strategy;
 const UService= new UserService;
@@ -39,19 +39,15 @@ export function iniPassport() {
 					profile.email = emailDetail.email;
 					let user = await UService.getByEmail(profile.email);
 					if (user==undefined) {
-						const newCart = await CManager.createCart();
-						const hashedpwd=createHash(profile.id);
-						console.log(profile);	
-						let userCreated = await UService.create(profile._json.name,profile._json.name,null,profile._json.login,profile.email,hashedpwd,"user",newCart._id);
+						let newUser= new UserDTO_INPUT(profile._json.name,profile._json.name,null,profile._json.login,profile.email,profile.id,"user");
+						const createCart=await newUser.initCart();
+						console.log(newUser);
+						let userCreated = await UService.create(newUser);
 						console.log("User registration succesful");
-						let outputUser= new UserDTO_OUTPUT(userCreated);
-						console.log(outputUser);
 						return done(null, userCreated);
 					} else {
 						console.log("User already exists");
-						let outputUser= new UserDTO_OUTPUT(user);
-						console.log(outputUser);
-						return done(null, outputUser);
+						return done(null, user);
 					}
 				} catch (e) {
 					console.log("Error en auth github");
@@ -107,10 +103,6 @@ export function iniPassport() {
 					}
 
 					else{
-						const outputUser=new UserDTO_OUTPUT(user);
-						console.log("user---->",user)
-						console.log("outputUser---->",outputUser);
-						user=outputUser;
 						return done(null,user);
 					}
 				}
@@ -136,12 +128,12 @@ export function iniPassport() {
 			  return done(null, false, { message: 'Username already in use' });
 			} else {
 			  console.log("creating user...");	
-			  const newCart = await CManager.createCart();
-			  const hashedpwd=createHash(password);
-			  const newUser = await UService.create(firstName,lastName,age,userName,email,hashedpwd,"user",newCart._id);
-			  console.log(newUser);
+			  const newUser= new UserDTO_INPUT(firstName,lastName,age,userName,email,password,"user");
+			  const createCart= await newUser.initCart();
+			  const userCreated= await UService.create(newUser);		
+			  console.log(userCreated);
 			  console.log("Register successful");
-			  return done(null, newUser);
+			  return done(null, userCreated);
 			}
 		  } catch (e) {
 			return done(e);

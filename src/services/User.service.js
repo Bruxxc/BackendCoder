@@ -49,9 +49,9 @@ export class UserService{
         }
     };
 
-    async create(firstName, lastName,age, userName, email, password,role,cart){
+    async create(user){
         try{
-            const userCreated = await UModel.create(firstName, lastName,age, userName, email, password,role,cart);
+            const userCreated = await UModel.create(user);
             return userCreated;
         }
         catch(e){

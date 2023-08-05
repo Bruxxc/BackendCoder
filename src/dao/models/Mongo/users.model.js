@@ -69,20 +69,10 @@ export class UsersModel{
 
 
 
-    async create(firstName, lastName,age, userName, email, password,role,cart){
-        try{
-            const newUser = {
-                email: email,
-                firstName: firstName,
-                lastName:lastName,
-                userName: userName,
-                age:age,
-                role: role,
-                password: password,
-                cart: cart
-            };
+    async create(user){
+        try{ 
             
-            let userCreated = await UserMongoose.create(newUser);
+            let userCreated = await UserMongoose.create(user);
             return userCreated;
         }
         catch(e){

@@ -1,13 +1,21 @@
-export default class UserDTO_OUTPUT {
-    constructor(user){
-        this.fullName= `${user.firstName} ${user.lastName}`;
-        this.firstName=user.firstName;
-        this.lastName=user.lastName;
-        this.age = user.age ? user.age : "---";
-        this.userName= user.userName;
-        this.email=user.email;
-        this.role=user.role;
-        this.cart=user.cart;
-        this._id=user._id;
+import { createHash } from "../utils/bcrypt.js";
+import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
+const CManager= new MDBCartManager;
+
+export class UserDTO_INPUT {
+    constructor(firstName,lastName,age,userName,email,password,role){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age ? age : "---";
+        this.userName = userName;
+        this.email = email;
+        this.password = createHash(password);
+        this.role = role;
+        
     }
-}
+
+    async initCart(){
+        const createCart = await CManager.createCart();
+        this.cart= createCart._id;
+    }
+};
