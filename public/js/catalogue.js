@@ -1,3 +1,35 @@
+//////CURRENT SESSION///////////
+
+let user= undefined;
+
+async function getCurrentUser() {
+    try {
+      const response = await fetch('/api/sessions/current');
+      const userData = await response.json();
+      console.log("usuario:",userData);
+    
+      return userData;
+    } catch (error) {
+      console.error('Error al obtener el usuario actual:', error);
+      return null;
+    }
+}
+  
+async function checkUser(){
+    user= await getCurrentUser();
+    
+    if(user.user){
+        console.log(user);
+    }
+
+}
+  
+checkUser();
+
+/////////////////////////////////////
+
+////////////ADD PRODUCT/////////////
+
 const addProduct=(cid,pid)=>{
     socket.emit("add_to_cart",{
         product:pid,
@@ -5,66 +37,46 @@ const addProduct=(cid,pid)=>{
     });
 };
 
+////////////////////////////////////
+
 const getPagProducts=()=>{
     socket.emit("getPagProducts");
 }
 
-let carritoId= localStorage.getItem("carritoId");
-
-const get_cart=()=>{
-
-    if(carritoId=="undefined"|| carritoId==null){
-
-        const url="http://localhost:8080/api/sessions/current";
-
-        const options={
-            method: "GET",
-            headers:{
-                "Content-Type":"application/json",
-            }
-        };
-
-        fetch(url,options)
-            .then((response)=>response.json())
-            .then((data)=>{
-                console.log('RESPONSE', data);
-                localStorage.setItem("carritoId",data.cart);
-                carritoId=data.cart;
-            })
-            .catch((error)=>{
-                console.error("Error:",error);
-            })
-        
-    }
-    else{
-        console.log(carritoId);
-    }
-
-}
-get_cart();
 
 function putIntoCart(_id){
-    if(carritoId!="undefined" && carritoId!=null){
-    console.log("cart:",carritoId,"product:",_id);
-    const API_URL="http://localhost:8080/api";
-    const url = API_URL + "/carts/" + carritoId + "/products/" + _id;
+    if(user.user){
+        if(user.role=="user"){
+            console.log("cart:",user.cart,"product:",_id);
+            const API_URL="http://localhost:8080/api";
+            const url = API_URL + "/carts/" + user.cart + "/products/" + _id;
+    
+            const options={
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            };
+    
+            fetch(url,options)
+                .then((response)=>response.json())
+                .then(()=>{
+                    alert("agregado");
+                })
+                .catch((error)=>{
+                    console.log("Error:", error);
+                    alert(JSON.stringify(error));
+                })
+        }
+        
+        else{
+            alert("This function is exclusive for users");
+        }
+    
+    }
 
-    const options={
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-    };
-
-    fetch(url,options)
-        .then((response)=>response.json())
-        .then(()=>{
-            alert("agregado");
-        })
-        .catch((error)=>{
-            console.log("Error:", error);
-            alert(JSON.stringify(error));
-        })
+    else{
+        alert("Not logged in");
     }
 }
 
@@ -100,3 +112,18 @@ if(register_redir){
     });
 }
 
+let cart_button=document.querySelector(".cart_button");
+
+cart_button.addEventListener("click",(e)=>{
+    e.preventDefault();
+    console.log("cart");
+    if(user.user){
+        window.location.href = `/views/carts/${user.cart}`;
+    }
+
+    else{
+        alert("Not logged in");
+        window.location.href = "/views/sessions/login";
+    }
+    
+});

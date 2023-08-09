@@ -7,7 +7,7 @@ import { isValidPassword } from "../utils/bcrypt.js";
 import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
 import env from "../config/enviroment.config.js";
 import { UserService } from "../services/User.service.js";
-import {UserDTO_INPUT } from "../dto/user.dto.js";
+import { UserDTO_INPUT } from "../dao/dto/user.dto.js";
 
 const LocalStrategy = local.Strategy;
 const UService= new UserService;

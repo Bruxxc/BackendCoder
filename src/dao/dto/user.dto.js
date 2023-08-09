@@ -1,5 +1,5 @@
-import { createHash } from "../utils/bcrypt.js";
-import { MDBCartManager } from "../dao/helpers/MDBManagers/MDBCartManager.js";
+import { createHash } from "../../utils/bcrypt.js";
+import { MDBCartManager } from "../helpers/MDBManagers/MDBCartManager.js";
 const CManager= new MDBCartManager;
 
 export class UserDTO_INPUT {

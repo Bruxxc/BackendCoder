@@ -1,28 +1,33 @@
 const socket=io();
+let user= undefined;
 
-let user = "";
-
-async function userValidation() {
-    const { value: userName } = await Swal.fire({
-      title: "Enter your username",
-      input: "text",
-      inputLabel: "Your username",
-      inputValue: "",
-      showCancelButton: false,
-      allowOutsideClick: false,
-      inputValidator: (value) => {
-        if (!value) {
-          return "You need to write something!";
-        }
-      },
-    });
+async function getCurrentUser() {
+  try {
+    const response = await fetch('/api/sessions/current');
+    const userData = await response.json();
+    console.log("usuario:",userData);
   
-    user = userName;
+    return userData;
+  } catch (error) {
+    console.error('Error al obtener el usuario actual:', error);
+    return null;
+  }
 }
-userValidation();
 
+async function checkUser(){
+  user= await getCurrentUser();
+  
+  if(!user.user){
+    alert("Not logged in");
+  }
+  else{
+    console.log(user);
+  }
+}
 
-//SET CHAT
+checkUser();
+
+/////SET CHAT
 const setChat= ()=>{
     socket.emit("set_chat");
 }
@@ -60,15 +65,32 @@ const send_msg_btn= document.querySelector(".send_msg_btn");
 const send_msg_input= document.querySelector(".send_msg_input");
 
 const send_msg=()=>{
-    let msg=send_msg_input.value;
-    if(msg.length > 0){
-        console.log(msg);
-        socket.emit("msg_front_to_back", {
-            text: msg,
-            userName: user,
-          });
+  
+  if(user.user){
+    if(user.role=="user"){
+      let msg=send_msg_input.value;
+      if(msg.length > 0){
+          console.log(msg);
+          socket.emit("msg_front_to_back", {
+              text: msg,
+              userName: user.user,
+            });
+      }
+      send_msg_input.value="";
     }
-    send_msg_input.value="";
+
+    else{
+      alert("Only users can write in the chat");
+    }
+
+  }
+
+  else{
+    alert("You must be logged in to use the chat");
+  }
+
+
+
 }
 
 send_msg_btn.addEventListener("click",(event)=>{

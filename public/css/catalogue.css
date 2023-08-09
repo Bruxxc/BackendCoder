@@ -76,3 +76,29 @@ h1{
 .role{
     color:rgb(69, 69, 231);
 }
+
+/* Estilos generales para el botón */
+.cart_button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Estilos cuando el cursor pasa por encima */
+  .cart_button:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Estilos cuando el botón está presionado */
+  .cart_button:active {
+    background-color: #1f67a8;
+  }

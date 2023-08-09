@@ -28,7 +28,7 @@ export class ProductsModel{
             console.log(e);
             throw e;
         }
-    }
+    };
 
     async getById(id){
 
@@ -86,7 +86,7 @@ export class ProductsModel{
             
             throw e;
         }
-    }
+    };
 
     async delete(id){
         const product = await ProductMongoose.find({"_id":id});
@@ -102,6 +102,6 @@ export class ProductsModel{
             const error={message:"product not found"};
             throw error;
         }
-    }
+    };
 
 }

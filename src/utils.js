@@ -8,9 +8,11 @@ import { connect } from "mongoose";
 import env from "./config/enviroment.config.js";
 import { MsgService } from "./services/Msg.service.js";
 import { MDBProductManager } from "./dao/helpers/MDBManagers/MDBProductManager.js";
+import { MDBCartManager } from "./dao/helpers/MDBManagers/MDBCartManager.js";
 
 const MService= new MsgService;
 const PManager= new MDBProductManager;
+const CManager= new MDBCartManager;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -91,8 +93,36 @@ export function connectSocket(httpServer){
 
       
     });
-
 ///RTP END
+
+/////IPQ
+
+socket.on("increaseProductQuantity", async ({ cid, pid }) => {
+  try {
+    const editCart = await CManager.increaseProductQuantity(cid, pid);
+    socket.emit("cartUpdated",{msg:"SUCCESS",newTotal:editCart.total});
+  } catch (error) {
+    socket.emit("cartUpdated",{msg:"ERROR"} );
+    console.log("Error:", error);
+    // Manejar el error, si es necesario
+  }
+});
+
+
+/////DPQ
+
+
+socket.on("decreaseProductQuantity", async ({ cid, pid }) => {
+  try {
+    const editCart = await CManager.decreaseProductQuantity(cid, pid);
+    socket.emit("cartUpdated",{msg:"SUCCESS",newTotal:editCart.total});
+  } catch (error) {
+    socket.emit("cartUpdated",{msg:"ERROR"} );
+    console.log("Error:", error);
+    // Manejar el error, si es necesario
+  }
+});
+
   });
   
   
@@ -111,3 +141,18 @@ export async function connectMongo() {
     throw "can not connect to the db";
   }
 }
+
+//Generar Código aleatorio:
+
+export function genRandomCode() {
+  const longitudCodigo = 16; 
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let code = '';
+
+  for (let i = 0; i < longitudCodigo; i++) {
+    const indice = Math.floor(Math.random() * caracteres.length);
+    code += caracteres.charAt(indice);
+  }
+
+  return code;
+};

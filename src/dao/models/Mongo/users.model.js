@@ -104,6 +104,6 @@ export class UsersModel{
             console.log(e);
             throw e;
         }
-    }
+    };
 
 }

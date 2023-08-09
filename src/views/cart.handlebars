@@ -1,4 +1,4 @@
-<div>
+<div class="cart_main">
     
     <div class="cart_prod_list">
         
@@ -7,15 +7,29 @@
         {{/if}}
 
         {{#each products}}
-                <div class="prod_on_cart">
+                <div class='prod_on_cart _{{this.product._id}}'>
                     <img src="../../static/img/example.jpg" class="example_image">
                     <h3 class="prod_title">{{this.product.title}}</h3>
-                    <h5 class="prod_price">USD {{this.product.price}}</h5>
-                    <h5>x{{this.quantity}}</h5>
+                    <h5 class="prod_price">USD <span class="price{{this.product._id}}">{{this.product.price}} c/u</span></h5>
+                    <h5>x <span class="quant{{this.product._id}}">{{this.quantity}}</span></h5>
+                    <button class="-button" onclick="decreaseProductQuantity('{{@root.userCart}}' ,'{{this.product._id}}')">-</button>
+                    <button class="+button" onclick="increaseProductQuantity('{{@root.userCart}}','{{this.product._id}}')">+</button>
+                    <button class="delete_product_button">X</button>
                 </div>
         {{/each}}
 
     </div>
 
+    <div class="buy_button_container">
+        <h3 class="totalPrice">Total: USD <span class="totalAmount">{{total}}</span></h3>
+        <button class="buy_button">
+            COMPRAR
+        </button>
+    </div>
+
+
 </div>
+
+<script src="/socket.io/socket.io.js"> </script> 
+<script src="../../static/js/cart.js"></script>
 

@@ -15,12 +15,13 @@ import { productsRouter } from "./routes/products.router.js";
 import { realtimeproducts } from "./routes/realTimeProducts.router.js";
 import { registerRouter } from "./routes/register.router.js";
 import { usersRouter } from "./routes/users.router.js";
-import { viewCart } from "./routes/viewcart.route.js";
+import { viewCart } from "./routes/viewCart.router.js";
 import { __dirname, connectMongo, connectSocket } from "./utils.js";
 import { iniPassport } from "./config/passport.config.js";
 import { sessionsRouter } from "./routes/sessions.router.js";
 import cors from "cors";
 import env from './config/enviroment.config.js';
+import { ticketsRouter } from "./routes/tickets.router.js";
 
 console.log(env);
 const app = express();
@@ -71,6 +72,7 @@ app.set("view engine", "handlebars");
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/tickets",ticketsRouter);
 
 //PLANTILLAS
 app.use("/views/home",home);
@@ -91,6 +93,7 @@ app.get(
 	"/views/sessions/githubcallback",
 	passport.authenticate("github", { failureRedirect: "/views/sessions/login" }),
 	(req, res) => {
+		req.session.email= req.user.email;
 		req.session.user = req.user.userName;
 		req.session.role = req.user.role;
 		req.session.cart= req.user.cart;

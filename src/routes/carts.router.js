@@ -1,11 +1,12 @@
 import express from "express";
 import { CartsController } from "../controllers/carts.controller.js";
+import { TicketService } from "../services/Ticket.service.js";
 export const cartsRouter = express.Router();
 
+const TService= new TicketService;
 const CController= new CartsController;
 cartsRouter.get("/", async (req, res) => {
   CController.getAll(req,res);
-
 });
 
 
@@ -40,4 +41,6 @@ cartsRouter.put("/:cid/products/:pid", async (req,res)=>{
   CController.editProductQuantity(req,res);
 });
 
-
+cartsRouter.post("/:cid/purchase", async (req,res)=>{
+ CController.purchase(req,res);
+});

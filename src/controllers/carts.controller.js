@@ -180,6 +180,24 @@ export class CartsController{
             });
 
         }
-    }
+    };
+
+    async purchase(req,res){
+        let cid=req.params.cid;
+        try{
+            let stockInfo= await CManager.cartCheckStock(cid);
+            return res.status(201).json({
+                stockInfo:stockInfo
+            });
+        }
+        catch (e) {
+            console.log(e);
+            return res.status(500).json({
+                status: "error",
+                msg: error.message,
+                data: {},
+            });
+        } 
+    };
 
 }
