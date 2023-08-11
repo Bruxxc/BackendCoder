@@ -59,14 +59,13 @@ export class ProductsController{
     async create(req,res){
         const { title, description, price, code, stock, category, thumbnail } = req.body;
         try {
-        const productCreated = await ProductManager.createProduct(title, description, price, code, stock ,category, thumbnail);
+        const productCreated = await PManager.createProduct(title, description, price, code, stock ,category, thumbnail);
         return res.status(201).json({
             status: "success",
             msg: "product created",
             data: productCreated,
         });
         } catch (e) {
-        console.log(e);
         return res.status(500).json({
             status: "error",
             msg: e.message,
@@ -80,7 +79,7 @@ export class ProductsController{
         const { title, description, price, stock, category, thumbnail, status } = req.body;
 
         try {
-        const productUpdated = await ProductManager.editProduct(id,title,description,price,stock,category,thumbnail,status);
+        const productUpdated = await PManager.editProduct(id,title,description,price,stock,category,thumbnail,status);
         return res.status(201).json({
             status: "success",
             msg: "product updated",
@@ -100,7 +99,7 @@ export class ProductsController{
         const id=req.params.pid;
 
         try{
-            const productDeleted = await ProductManager.deleteProduct(id);
+            const productDeleted = await PManager.deleteProduct(id);
             return res.status(201).json({
             status: "success",
             msg: "product deleted",

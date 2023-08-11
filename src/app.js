@@ -22,6 +22,7 @@ import { sessionsRouter } from "./routes/sessions.router.js";
 import cors from "cors";
 import env from './config/enviroment.config.js';
 import { ticketsRouter } from "./routes/tickets.router.js";
+import { mockingRouter } from "./routes/mocking.router.js";
 
 console.log(env);
 const app = express();
@@ -73,6 +74,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/tickets",ticketsRouter);
+app.use("/api/mocking",mockingRouter);
 
 //PLANTILLAS
 app.use("/views/home",home);

@@ -1,4 +1,6 @@
 import { ProductsModel } from "../../models/Mongo/products.model.js";
+import { generateProductInfoError } from "../../../errors/products/info.js";
+import { resourceNotFoundError } from "../../../errors/custom/resNotFound.js";
 
 const PModel= new ProductsModel;
 
@@ -37,7 +39,7 @@ export class MDBProductManager{
             return product;
             }
             else{
-                const error={message:"product not found"};
+                const error=resourceNotFoundError("PRODUCT");
                 throw error;
             }
         } catch(e){
@@ -47,19 +49,47 @@ export class MDBProductManager{
 
 
     async createProduct(title, description, price, code, stock ,category, thumbnail){
-
+        try{
         if (!title || !description || !price || !code || !stock|| !category){
-            console.log(
-              "validation error: please complete all required fields."
-            );
-            const error={message:"validation error: please complete all required fields."};
+
+            const product={
+                title:title,
+                description:description,
+                price:price,
+                code:code,
+                stock:stock,
+                category:category,
+                thumbnail:thumbnail?thumbnail:undefined
+            }
+            const message=generateProductInfoError(product);
+            const error={message:message};
             throw error;
         }
         else{
+            const product={
+                title:title,
+                description:description,
+                price:price,
+                code:code,
+                stock:stock,
+                category:category,
+                thumbnail:thumbnail?thumbnail:undefined
+            }
+            const message=generateProductInfoError(product);
+            if(typeof title !== "string" || typeof price !== "number" || typeof stock !== "number"){
+                const error={message:message};
+                throw error;
+            }
+
+            else{
             const productCreated = await PModel.create( title, description, price, code, stock ,category, thumbnail);
-            return productCreated;
+            return productCreated;}
         }
-       
+        }
+        catch(e){
+            console.log(e);
+            throw e;
+        }
     };
 
     async editProduct(id, title, description, price, stock, category, thumbnail, status) {

@@ -9,6 +9,87 @@ import env from "./config/enviroment.config.js";
 import { MsgService } from "./services/Msg.service.js";
 import { MDBProductManager } from "./dao/helpers/MDBManagers/MDBProductManager.js";
 import { MDBCartManager } from "./dao/helpers/MDBManagers/MDBCartManager.js";
+import { faker } from "@faker-js/faker";
+
+
+/////////GENERAR EDAD RANDOM
+function randomNum(a,b) {
+  const min = a;
+  const max = b;
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+////////GENERAR CODIGO RANDOM
+
+export function genRandomCode() {
+  const longitudCodigo = 16; 
+  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let code = '';
+
+  for (let i = 0; i < longitudCodigo; i++) {
+    const indice = Math.floor(Math.random() * caracteres.length);
+    code += caracteres.charAt(indice);
+  }
+
+  return code;
+};
+
+/////////GENERAR MOCKING DE USUARIO
+
+export const generateUser=()=>{
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+  const age = randomNum(18,80);
+  const userName = faker.internet.userName();
+  const email = faker.internet.email();
+  const password = faker.internet.password();
+
+  const createdUser = {
+    firstName,
+    lastName,
+    age,
+    userName,
+    email,
+    password
+};
+
+return createdUser;}
+
+///////////////////GENERAR MOCKING DE PRODUCTO
+
+export const generateProduct=()=>{
+  const title = faker.commerce.productName();
+  const description= faker.commerce.productDescription();
+  const price = faker.commerce.price();
+  const code=genRandomCode();
+  const stock = randomNum(1,1000);
+  const category= faker.commerce.department();
+  const thumbnail= faker.image.urlLoremFlickr({ category: 'food' });
+
+
+
+  const createdProduct = {
+    title: title,
+    description: description,
+    price:price,
+    code:code,
+    stock:stock,
+    category:category,
+    thumbnail:thumbnail
+  };
+
+  return createdProduct;}
+
+
+
+
+
+
+
+
+
+
+
 
 const MService= new MsgService;
 const PManager= new MDBProductManager;
@@ -142,17 +223,3 @@ export async function connectMongo() {
   }
 }
 
-//Generar Código aleatorio:
-
-export function genRandomCode() {
-  const longitudCodigo = 16; 
-  const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let code = '';
-
-  for (let i = 0; i < longitudCodigo; i++) {
-    const indice = Math.floor(Math.random() * caracteres.length);
-    code += caracteres.charAt(indice);
-  }
-
-  return code;
-};
