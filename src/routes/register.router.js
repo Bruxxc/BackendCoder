@@ -23,7 +23,7 @@ registerRouter.post("/", async (req, res, next) => {
 registerRouter.get("/", async (req,res)=>{
     const username = req.session.user ;
     if(username){
-      console.log("redirecting");
+      req.logger.info("redirecting");
       return res.redirect("/views/products");
     }
     else{

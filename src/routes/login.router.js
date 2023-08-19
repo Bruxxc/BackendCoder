@@ -11,7 +11,7 @@ loginRouter.post("/",passport.authenticate('login',{failureRedirect:"/views/sess
   }
 
   else{
-    console.log(req.user);
+    req.logger.info(`USER:   ${req.user}`);
     req.session.email= req.user.email;
     req.session.user = req.user.userName;
     req.session.role = req.user.role;
@@ -24,7 +24,7 @@ loginRouter.get("/", async (req,res)=>{
     const username = req.session.user ;
 
     if(username){
-      console.log("redirecting");
+      req.logger.info("redirecting");
       return res.redirect("/views/products");
     }
     else{

@@ -11,14 +11,12 @@ viewCart.get("/:cid", async (req,res)=>{
     try{
         const user=req.session.user;
         const id=req.params.cid;
-        console.log(user);
         if(!user){
             return res.redirect("/views/sessions/login");
         }
         
         else{
             const userCart=req.session.cart;
-            console.log(id==userCart);
             if(id==userCart){
                 const cart=await CartManager.getCartById(userCart);
                 let esVacio;
@@ -30,7 +28,6 @@ viewCart.get("/:cid", async (req,res)=>{
                         total=total+((product.quantity)*(product.product.price));
                     });
                 }
-                console.log(cart[0].products);
                 return res.status(200).render('cart', {
                     style: style,
                     cart: cart,
@@ -49,7 +46,7 @@ viewCart.get("/:cid", async (req,res)=>{
 
     }
     catch(e){
-        console.log(e);
+        req.logger.error(e);
         return res.redirect("/views/products");
     }
   

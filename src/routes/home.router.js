@@ -7,7 +7,6 @@ const PManager= new MDBProductManager;
 home.get("/",async (req,res)=>{
 
     let products=await PManager.getAll();
-    console.log(products);
     const style="home.css";
     return res.status(200).render('home',{style,products});
   

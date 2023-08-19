@@ -19,10 +19,12 @@ import { viewCart } from "./routes/viewCart.router.js";
 import { __dirname, connectMongo, connectSocket } from "./utils.js";
 import { iniPassport } from "./config/passport.config.js";
 import { sessionsRouter } from "./routes/sessions.router.js";
+import { loggerRouter } from "./routes/logger.test.router.js";
 import cors from "cors";
 import env from './config/enviroment.config.js';
 import { ticketsRouter } from "./routes/tickets.router.js";
 import { mockingRouter } from "./routes/mocking.router.js";
+import { addLogger } from "./utils/logger.js";
 
 console.log(env);
 const app = express();
@@ -49,6 +51,7 @@ iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
+app.use(addLogger);
 
 //HTTP SERVER
 const httpServer=app.listen(port, () => {
@@ -75,6 +78,7 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/tickets",ticketsRouter);
 app.use("/api/mocking",mockingRouter);
+app.use("/api/logger",loggerRouter);
 
 //PLANTILLAS
 app.use("/views/home",home);

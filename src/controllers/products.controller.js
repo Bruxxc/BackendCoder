@@ -12,7 +12,6 @@ export class ProductsController{
         try {
         let filter = {};
         const products = await PManager.getProducts(filter,limit,page,sort);
-        console.log("get products");
     
         return res.status(200).json({
             status: "success",
@@ -28,7 +27,7 @@ export class ProductsController{
             nextPage: products.nextPage,
         });
         } catch (error) {
-        console.error("Error retrieving products:", error);
+        req.logger.error(`ERROR AT GETTINGS PRODUCTS---> ${e}`);
         return res.status(500).json({
             status: "error",
             msg: "Failed to retrieve products",
@@ -47,7 +46,7 @@ export class ProductsController{
             data: product,
             });
         } catch (e) {
-        console.log(e);
+            req.logger.error(`ERROR AT GETTING PRODUCT---> ${e}`);
         return res.status(500).json({
             status: "error",
             msg: e.message,
@@ -66,6 +65,7 @@ export class ProductsController{
             data: productCreated,
         });
         } catch (e) {
+        req.logger.error(`ERROR AT CREATING PRODUCT---> ${e}`);
         return res.status(500).json({
             status: "error",
             msg: e.message,
@@ -86,7 +86,7 @@ export class ProductsController{
             data: productUpdated,
         });
         } catch (e) {
-        console.log(e);
+        req.logger.error(`ERROR AT UPDATING PRODUCT---> ${e}`);
         return res.status(500).json({
             status: "error",
             msg: e.message,
@@ -107,7 +107,7 @@ export class ProductsController{
             });
             
         } catch (e) {
-            console.log(e);
+            req.logger.error(`ERROR AT DELETING PRODUCT---> ${e}`);
             return res.status(500).json({
             status: "error",
             msg: e.message,

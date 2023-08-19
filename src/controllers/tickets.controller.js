@@ -15,7 +15,7 @@ export class TicketsController{
               data: tickets,
             });
         } catch (e) {
-            console.log(e);
+            req.logger.error(`ERROR AT GETTING TICKETS--->${e}`);
             return res.status(500).json({
               status: "error",
               msg: "something went wrong :(",
@@ -45,7 +45,7 @@ export class TicketsController{
 
     
         } catch (e) {
-            console.log(e);
+            req.logger.error(`ERROR AT GETTING TICKET--->${e}`);
             return res.status(500).json({
             status: "error",
             msg: e.message,
@@ -59,7 +59,6 @@ export class TicketsController{
         let amount=req.body.amount;
         let purchaser=req.body.purchaser;
         let products=JSON.parse(req.body.products);
-        console.log("PRODUCTS:",products);
         try{
             if(!amount || !purchaser){
                 return res.status(201).json({
@@ -85,7 +84,7 @@ export class TicketsController{
                 return res.status(201).json({status:"Success",msg:"Ticket created", data:ticketCreated});
             }   
         } catch (e) {
-            console.log(e);
+            req.logger.error(`ERROR AT CREATING TICKET--->${e}`);
             return res.status(500).json({
                 status: "error",
                 data: {},

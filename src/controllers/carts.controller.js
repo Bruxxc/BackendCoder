@@ -13,7 +13,7 @@ export class CartsController{
               data: carts,
             });
           } catch (e) {
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
               status: "error",
               msg: "something went wrong :(",
@@ -35,7 +35,7 @@ export class CartsController{
             });
 
         } catch (e) {
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
             status: "error",
             msg: e.message,
@@ -49,7 +49,7 @@ export class CartsController{
             const cartCreated = await CManager.createCart();
             return res.status(201).json({status:"Success",msg:"Cart created", data:cartCreated});
           } catch (e) {
-              console.log(e);
+              req.logger.error(e);
               return res.status(500).json({
                 status: "error",
                 msg: error.message,
@@ -69,7 +69,7 @@ export class CartsController{
             });
         }
         catch(e){
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
             status: "error",
             msg: "something went wrong :(",
@@ -91,7 +91,7 @@ export class CartsController{
             });
 
         } catch(e){
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
             status: "error",
             msg: "something went wrong :(",
@@ -119,7 +119,7 @@ export class CartsController{
               });
       
         } catch(e){
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
               status: "error",
               msg: "something went wrong :(",
@@ -144,7 +144,7 @@ export class CartsController{
             });
 
         } catch(e){
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
@@ -172,7 +172,7 @@ export class CartsController{
                 });
 
         } catch(e){
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
                 status: "error",
                 msg: e.message,
@@ -191,7 +191,7 @@ export class CartsController{
             });
         }
         catch (e) {
-            console.log(e);
+            req.logger.error(e);
             return res.status(500).json({
                 status: "error",
                 msg: error.message,

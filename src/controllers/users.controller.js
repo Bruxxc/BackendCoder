@@ -12,6 +12,7 @@ export class UsersController{
               data: users,
             });
           } catch (e) {
+            req.logger.error(`ERROR AT GETTING USERS--->${e}`);
             return res.status(500).json({
               status: "error",
               msg: e,
@@ -39,6 +40,7 @@ export class UsersController{
                 });
              }
           } catch (e) {
+            req.logger.error(`ERROR AT GETTING USER--->${e}`);
             return res.status(500).json({
               status: "Error",
               msg: e,
@@ -51,7 +53,7 @@ export class UsersController{
         const id=req.params.uid;
         try{
         const user = await UService.getById(id);
-        console.log(user);
+        req.logger.info(`User:${user}`);
         if(user){
             const userDeleted = await UService.delete(id);
             return res.status(201).json({
@@ -63,6 +65,7 @@ export class UsersController{
         }
     
         else{
+          req.logger.info(`User Not Found`);
             return res.status(200).json({
             status: "error",
             msg: "user not found",
@@ -70,12 +73,12 @@ export class UsersController{
     
         }
         } catch (e) {
-        console.log(e);
-        return res.status(500).json({
-            status: "error",
-            msg: "something went wrong :(",
-            data: {},
-        });
+          req.logger.error(`ERROR AT DELETING USER--->${e}`);
+          return res.status(500).json({
+              status: "error",
+              msg: "something went wrong :(",
+              data: {},
+          });
         }
     };
 
@@ -89,7 +92,7 @@ export class UsersController{
               data: { userCreated },
             });
           } catch (e) {
-            console.log(e);
+            req.logger.error(`ERROR AT CREATING USER--->${e}`);
             return res.status(500).json({
               status: "error.",
               msg: "something went wrong :(",
@@ -110,6 +113,7 @@ export class UsersController{
               data: {userUpdated},
             });
           } catch (e) {
+            req.logger.error(`ERROR AT UPDATING USER--->${e}`);
             return res.status(500).json({
               status: "error",
               msg: "something went wrong :(",

@@ -41,7 +41,6 @@ export function iniPassport() {
 					if (user==undefined) {
 						let newUser= new UserDTO_INPUT(profile._json.name,profile._json.name,null,profile._json.login,profile.email,profile.id,"user");
 						const createCart=await newUser.initCart();
-						console.log(newUser);
 						let userCreated = await UService.create(newUser);
 						console.log("User registration succesful");
 						return done(null, userCreated);
