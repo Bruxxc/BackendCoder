@@ -25,10 +25,29 @@ import env from './config/enviroment.config.js';
 import { ticketsRouter } from "./routes/tickets.router.js";
 import { mockingRouter } from "./routes/mocking.router.js";
 import { addLogger } from "./utils/logger.js";
+import nodemailer from "nodemailer";
+import twilio from "twilio";
 
 console.log(env);
 const app = express();
 const port = env.port;
+
+//NODEMAILER
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  port: 587,
+  auth: {
+    user:"elbrunoconde@gmail.com",
+    pass: "iitwopvmoymhldek",
+  },
+});
+
+//TWILIO
+const client = twilio(
+	"ACa7a320230931603b84966fb776ea95e8",
+	"b1fed7c2ec7ff37770c901ae7ec6ebee"
+)
+
 const fileStore = FileStore(session);
 
 app.use(urlencoded({extended:true}));
@@ -110,6 +129,32 @@ app.get(
 app.use("/api/sessions",sessionsRouter);
 
 //OTROS ENDPOINTS
+// app.get("/mail", async (req, res) => {
+// 	const result = await transport.sendMail({
+// 	  from: "elbrunoconde@gmail.com",
+// 	  to: "elbrunoconde@gmail.com",
+// 	  subject: "TEST",
+// 	  html: `
+// 				<div>
+// 					<h1>TEST DE CORREO</h1>
+// 				</div>
+// 			`,
+// 	  attachments: [
+		
+// 	  ],
+// 	})
+// });
+// app.get("/sms", async (req,res)=>{
+// 	const result = await client.messages.create({
+// 		body: "PRUEBA DE MENSAJE",
+// 		from: "+17792106139",
+// 		to:"+598091229510"
+// 	});
+// 	console.log(result);
+
+// 	res.send("SMS sent");
+// });
+
 app.get("*", (req, res) => {
   return res
     .status(404)
