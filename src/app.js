@@ -27,6 +27,7 @@ import { mockingRouter } from "./routes/mocking.router.js";
 import { addLogger } from "./utils/logger.js";
 import nodemailer from "nodemailer";
 import twilio from "twilio";
+import { premiumRouter } from "./routes/premium.router.js";
 
 console.log(env);
 const app = express();
@@ -98,7 +99,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/tickets",ticketsRouter);
 app.use("/api/mocking",mockingRouter);
 app.use("/api/logger",loggerRouter);
-
+app.use("/api/premium",premiumRouter);
 //PLANTILLAS
 app.use("/views/home",home);
 app.use("/views/realtimeproducts",realtimeproducts);

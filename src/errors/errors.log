@@ -1,2 +1,10 @@
 {"level":"error","message":"!!!!!!ERROR!!!!!"}
 {"level":"warn","message":"WARN!!!"}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}
+{"level":"error","message":"ERROR AT GETTING USER--->CastError: Cast to ObjectId failed for value \"premium\" (type string) at path \"_id\" for model \"users\""}

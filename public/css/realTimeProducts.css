@@ -15,6 +15,10 @@ h1{
     column-gap: 20px;
     row-gap: 20px;
     flex-wrap: wrap;
+    border: solid black;
+    width: 700px;
+    height: 600px;
+    overflow-y: auto;
 }
 
 .prod_card{

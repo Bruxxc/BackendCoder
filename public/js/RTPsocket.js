@@ -1,13 +1,14 @@
 const socket=io();
+let user,email,role;
 
 
 
-//GET PRODUCTS
-const setProducts= ()=>{
-  socket.emit("set_products");
+//GET OWNER PRODUCTS
+const setOwnerProducts= (owner)=>{
+  socket.emit("set_owner_products",{owner:owner});
 }
 
-socket.on("set_products_res",(products)=>{
+socket.on("set_owner_products_res",(products)=>{
   console.log("recibido set");
   const prodList=document.querySelector(".prod_list");
   prodList.innerHTML="";
@@ -49,21 +50,35 @@ deleteProductButton.addEventListener("click",(event)=>{
   const pid=document.querySelector(".pid");
   const id=pid.value;
   socket.emit("delete_product",{
-    id:id
+    id:id,
+    owner:email
   });
   console.log("enviado",id);
 })
 
 
 socket.on("delete_res",(res)=>{
-  if(res.res){
-    setProducts();
+  if(res.res==1){
+    setOwnerProducts(email);
     alert("Producto eliminado");
    
   }
 
-  else{
+  else if(res.res==2){
+    alert("NO tienes permisos para eliminar ese producto");
+  }
+
+  else if(res.res==3){
+    alert("ID inválida");
+  }
+
+
+  else if (res.res==0){
     alert("Producto NO encontrado");
+  }
+
+  else{
+    alert("NO tiene permiso para eliminar ese producto");
   }
 });
 
@@ -81,7 +96,6 @@ addProductButton.addEventListener('click',(event)=>{
   const thumbnail= document.querySelector(".add_thumbnail").value;
   const code= document.querySelector(".add_code").value;
   const stock= document.querySelector(".add_stock").value;
-
   console.log(title,description,price,thumbnail,code,stock);
 
   socket.emit("add_product",{
@@ -91,6 +105,7 @@ addProductButton.addEventListener('click',(event)=>{
     price:price,
     thumbnail:thumbnail,
     code:code,
+    owner:email,
     stock:stock
   });
 
@@ -98,7 +113,7 @@ addProductButton.addEventListener('click',(event)=>{
 });
 
 socket.on("add_res",(res)=>{
-    setProducts();
+    setOwnerProducts(email);
     alert("Producto añadido");
 });
 
@@ -110,4 +125,42 @@ socket.on("add_error",(res)=>{
   ;
 })
 
-setProducts();
+
+////GET USER
+
+const getCurrentUserInfo= async ()=>{
+
+  var requestOptions = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json"
+      },
+  };
+
+  fetch("http://localhost:8080/api/sessions/current", requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            if (data.user==null){
+              alert("Not logged in");
+              window.location.href = "/views/sessions/login";
+            }
+
+            else if(data.role=="user"){
+              alert("Funcion exclusiva para usuarios premium");
+              window.location.href = "/views/products";
+            }
+
+            else{
+              console.log(data);
+              email=data.email;
+              user=data.user;
+              role=data.role;
+              setOwnerProducts(email);
+            }
+              
+          })
+          .catch(error => console.error(error));
+}
+
+getCurrentUserInfo();

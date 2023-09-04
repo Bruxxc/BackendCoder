@@ -9,7 +9,9 @@ const schema = new Schema({
   stock: { type: String, required: true, max: 100 },
   category: { type: String, required: true, max: 100 },
   thumbnail: { type: String, required: false, max: 100 },
+  owner: { type: String,default: "admin", required: true, max: 100 },
   status:{ type: Boolean, required: true, max: 100 },
+
 });
 
 mongoosePaginate.paginate.options = {

@@ -23,4 +23,3 @@ usersRouter.post("/", async (req, res) => {
 usersRouter.put("/:uid", async (req, res) => {
   UController.update(req,res);
 });
-

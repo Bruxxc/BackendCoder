@@ -10,6 +10,9 @@ import { MsgService } from "./services/Msg.service.js";
 import { MDBProductManager } from "./dao/helpers/MDBManagers/MDBProductManager.js";
 import { MDBCartManager } from "./dao/helpers/MDBManagers/MDBCartManager.js";
 import { faker } from "@faker-js/faker";
+import { ProductMongoose } from "./dao/models/Mongoose/products.mongoose.js";
+import mongoose from 'mongoose';
+
 
 
 /////////GENERAR EDAD RANDOM
@@ -81,16 +84,6 @@ export const generateProduct=()=>{
   return createdProduct;}
 
 
-
-
-
-
-
-
-
-
-
-
 const MService= new MsgService;
 const PManager= new MDBProductManager;
 const CManager= new MDBCartManager;
@@ -132,27 +125,40 @@ export function connectSocket(httpServer){
       socket.emit("set_products_res",{products:products});
     });
 
+    ///AGREGAR CAPAS
     socket.on("delete_product", async (msg)=>{
-      console.log('recibido',msg.id);
-      const toDelete= await PManager.getProductById(msg.id);
-      console.log(toDelete);
-      if(toDelete[0]){
-
-        try{
-          const productDeleted= await PManager.deleteProduct(msg.id);
-          socket.emit("delete_res",{res:1});
-        } catch(e){
-          console.log(e);
+      console.log('recibido',msg);
+      let res;
+      if(mongoose.isValidObjectId(msg.id)){
+        const product = await ProductMongoose.findOne({"_id":msg.id});
+        console.log(product);
+        if(product){
+          if((product.owner==msg.owner) || (msg.owner==env.adminEmail)){
+            console.log(`OWNER DEL PRODUCTO--->${product.owner}`);
+            console.log(`OWNER REQUEST--->${msg.owner}`);
+            const deleteProduct= await ProductMongoose.deleteOne({"_id":msg.id});
+            res=1;
+            socket.emit("delete_res",{res:res});
+          }
+          else{
+            res=2;
+            socket.emit("delete_res",{res:res});
+          }
         }
-        
+
+        else{
+          res=0;
+          socket.emit("delete_res",{res:res});
+        }
 
       }
-      
+
       else{
-
-        socket.emit("delete_res",{res:0});
+        console.log("id invalida");
+        res=3;
+        socket.emit("delete_res",{res:res})
       }
-      
+
     });
 
     socket.on("add_product", async (prod)=>{
@@ -163,7 +169,9 @@ export function connectSocket(httpServer){
       }
       else{
         try{
-          const productCreated = await PManager.createProduct(prod.title ,prod.description, prod.price, prod.code, prod.stock, prod.category,prod.thumbnail);
+          ////AGREGAR CAPAS
+          console.log("INTENTO DE CREAR PRODUCTO");
+          const productCreated = await ProductMongoose.create({title:prod.title,description:prod.description, price:prod.price, code:prod.code, stock:prod.stock, category:prod.category,thumbnail:prod.thumbnail,owner:prod.owner,status:true});
           console.log(productCreated);
           socket.emit("add_res",{res:productCreated});
         }
@@ -174,6 +182,24 @@ export function connectSocket(httpServer){
 
       
     });
+
+  ///OWNER PRODUCTS
+
+  socket.on("set_owner_products",async (owner)=>{
+    console.log("owner:-->",owner);
+    let products;
+    if(owner.owner==env.adminEmail){
+      console.log("ADMIN");
+      products=await ProductMongoose.find({});
+    }
+
+    else{
+      console.log("PREMIUM USER");
+      products=await ProductMongoose.find({'owner':owner.owner});
+    }
+
+    socket.emit("set_owner_products_res",{products:products});
+  });
 ///RTP END
 
 /////IPQ
