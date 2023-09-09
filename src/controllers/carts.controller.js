@@ -69,6 +69,7 @@ export class CartsController{
             });
         }
         catch(e){
+            console.log(e);
             req.logger.error(e);
             return res.status(500).json({
             status: "error",
@@ -113,9 +114,6 @@ export class CartsController{
             return res.status(200).json({
                 status: "success",
                 msg: "cart updated",
-                data: {
-                  editCart,
-                },
               });
       
         } catch(e){
@@ -137,10 +135,7 @@ export class CartsController{
             const editCart=await CManager.emptyCart(cid);
             return res.status(200).json({
                 status: "success",
-                msg: "cart emptied",
-                data: {
-                    editCart
-                },
+                msg: "cart emptied"
             });
 
         } catch(e){
@@ -186,7 +181,9 @@ export class CartsController{
         let cid=req.params.cid;
         try{
             let stockInfo= await CManager.cartCheckStock(cid);
-            return res.status(201).json({
+            return res.status(200).json({
+                status:"success",
+                msg:"compra válida",
                 stockInfo:stockInfo
             });
         }
@@ -194,7 +191,7 @@ export class CartsController{
             req.logger.error(e);
             return res.status(500).json({
                 status: "error",
-                msg: error.message,
+                msg: e.message,
                 data: {},
             });
         } 

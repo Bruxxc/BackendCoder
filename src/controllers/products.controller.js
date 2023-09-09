@@ -61,8 +61,7 @@ export class ProductsController{
         const productCreated = await PManager.createProduct(title, description, price, code, stock ,category, thumbnail);
         return res.status(201).json({
             status: "success",
-            msg: "product created",
-            data: productCreated,
+            msg: "product created"
         });
         } catch (e) {
         req.logger.error(`ERROR AT CREATING PRODUCT---> ${e}`);
@@ -80,10 +79,9 @@ export class ProductsController{
 
         try {
         const productUpdated = await PManager.editProduct(id,title,description,price,stock,category,thumbnail,status);
-        return res.status(201).json({
+        return res.status(200).json({
             status: "success",
             msg: "product updated",
-            data: productUpdated,
         });
         } catch (e) {
         req.logger.error(`ERROR AT UPDATING PRODUCT---> ${e}`);
@@ -100,10 +98,9 @@ export class ProductsController{
 
         try{
             const productDeleted = await PManager.deleteProduct(id);
-            return res.status(201).json({
+            return res.status(200).json({
             status: "success",
-            msg: "product deleted",
-            info:productDeleted
+            msg: "product deleted"
             });
             
         } catch (e) {

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./src/app.js"
+    "start": "nodemon -e yaml,js ./src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +35,8 @@
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",
     "socket.io": "^4.6.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "sweetalert2": "^11.7.16",
     "twilio": "^4.16.0",
     "winston": "^3.10.0"

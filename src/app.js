@@ -1,33 +1,36 @@
 import MongoStore from "connect-mongo";
 import cookieParser from 'cookie-parser';
+import cors from "cors";
 import express, { urlencoded } from "express";
 import handlebars from "express-handlebars";
 import session from "express-session";
+import nodemailer from "nodemailer";
 import passport from "passport";
 import FileStore from "session-file-store";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+import twilio from "twilio";
+import env from './config/enviroment.config.js';
+import { iniPassport } from "./config/passport.config.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { catalogueRouter } from "./routes/catalogue.router.js";
 import { chatRouter } from "./routes/chat.router.js";
 import { home } from "./routes/home.router.js";
+import { loggerRouter } from "./routes/logger.test.router.js";
 import { loginRouter } from "./routes/login.router.js";
 import { logoutRouter } from "./routes/logout.router.js";
+import { mockingRouter } from "./routes/mocking.router.js";
+import { premiumRouter } from "./routes/premium.router.js";
 import { productsRouter } from "./routes/products.router.js";
 import { realtimeproducts } from "./routes/realTimeProducts.router.js";
 import { registerRouter } from "./routes/register.router.js";
+import { sessionsRouter } from "./routes/sessions.router.js";
+import { ticketsRouter } from "./routes/tickets.router.js";
 import { usersRouter } from "./routes/users.router.js";
 import { viewCart } from "./routes/viewCart.router.js";
 import { __dirname, connectMongo, connectSocket } from "./utils.js";
-import { iniPassport } from "./config/passport.config.js";
-import { sessionsRouter } from "./routes/sessions.router.js";
-import { loggerRouter } from "./routes/logger.test.router.js";
-import cors from "cors";
-import env from './config/enviroment.config.js';
-import { ticketsRouter } from "./routes/tickets.router.js";
-import { mockingRouter } from "./routes/mocking.router.js";
 import { addLogger } from "./utils/logger.js";
-import nodemailer from "nodemailer";
-import twilio from "twilio";
-import { premiumRouter } from "./routes/premium.router.js";
+
 
 console.log(env);
 const app = express();
@@ -79,9 +82,25 @@ const httpServer=app.listen(port, () => {
 });
 
 
+
+  
+
+
 connectSocket(httpServer);
 connectMongo();
 
+//SWAGGER
+const specs = swaggerJSDoc({
+	definition: {
+	  openapi: "3.0.1",
+	  info: {
+		title: "Documentacion API de ecommerce",
+		description: "Proyecto de ecommerce",
+	  },
+	},
+	apis: [`${__dirname}/docs/**/*.yaml`],
+  });
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 //STATIC
 app.use('/static', express.static('public'));
@@ -92,7 +111,8 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
 
-//TODOS MIS ENDPOINTS
+//////TODOS MIS ENDPOINTS
+
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
@@ -100,6 +120,7 @@ app.use("/api/tickets",ticketsRouter);
 app.use("/api/mocking",mockingRouter);
 app.use("/api/logger",loggerRouter);
 app.use("/api/premium",premiumRouter);
+
 //PLANTILLAS
 app.use("/views/home",home);
 app.use("/views/realtimeproducts",realtimeproducts);
@@ -107,7 +128,7 @@ app.use("/views/chat",chatRouter);
 app.use("/views/products",catalogueRouter);
 app.use("/views/carts",viewCart);
 
-//LOGIN PLANTILLAS
+//SESSIONS
 app.use("/views/sessions/login", loginRouter);
 app.use("/views/sessions/logout", logoutRouter);
 app.use("/views/sessions/register", registerRouter);
@@ -128,6 +149,14 @@ app.get(
 );
 
 app.use("/api/sessions",sessionsRouter);
+
+
+app.get("*", (req, res) => {
+  return res
+    .status(404)
+    .json({ status: "error", msg: "no se encuentra esa ruta", data: {} });
+});
+
 
 //OTROS ENDPOINTS
 // app.get("/mail", async (req, res) => {
@@ -155,9 +184,3 @@ app.use("/api/sessions",sessionsRouter);
 
 // 	res.send("SMS sent");
 // });
-
-app.get("*", (req, res) => {
-  return res
-    .status(404)
-    .json({ status: "error", msg: "no se encuentra esa ruta", data: {} });
-});

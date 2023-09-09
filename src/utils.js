@@ -1,17 +1,16 @@
+import { faker } from "@faker-js/faker";
+import mongoose, { connect } from 'mongoose';
+import multer from "multer";
 import path from "path";
 import { Server } from "socket.io";
 import { fileURLToPath } from "url";
+import env from "./config/enviroment.config.js";
+import { MDBCartManager } from "./dao/helpers/MDBManagers/MDBCartManager.js";
+import { MDBProductManager } from "./dao/helpers/MDBManagers/MDBProductManager.js";
+import { ProductMongoose } from "./dao/models/Mongoose/products.mongoose.js";
+import { MsgService } from "./services/Msg.service.js";
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
-import multer from "multer";
-import { connect } from "mongoose";
-import env from "./config/enviroment.config.js";
-import { MsgService } from "./services/Msg.service.js";
-import { MDBProductManager } from "./dao/helpers/MDBManagers/MDBProductManager.js";
-import { MDBCartManager } from "./dao/helpers/MDBManagers/MDBCartManager.js";
-import { faker } from "@faker-js/faker";
-import { ProductMongoose } from "./dao/models/Mongoose/products.mongoose.js";
-import mongoose from 'mongoose';
 
 
 

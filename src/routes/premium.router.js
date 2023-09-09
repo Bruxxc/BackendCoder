@@ -8,7 +8,6 @@ premiumRouter.get("/", async(req,res)=>{
     const role=req.session.role;
     const email=req.session.email;
   try{
-
   
         if(user){
         console.log(user);

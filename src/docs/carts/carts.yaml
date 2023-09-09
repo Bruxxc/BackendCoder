@@ -1,0 +1,237 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos fueron devueltos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success or error
+                  msg:
+                    type: string
+                    description: Mensaje
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Cart"
+                    description: Lista de carritos
+                  
+                example:
+                  status: success
+                  msg: "carts list"
+                  data: ['carritos Encontrados']
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+    post:
+      summary: Crea un carrito
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carrito creado satisfactoriamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+          
+        "500":
+          description: Error al crear producto
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un carrito a partir del ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Carrito encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success or error
+                  msg:
+                    type: string
+                    description: Descripción del mensaje
+                  data:
+                    type: array
+                    items:
+                      type: object
+                    
+                example:
+                  status: success
+                  msg: cart found
+                  data:
+                    _id: "64c2f3b702c5a7724e51e24d"
+                    products: ["Productos en el carrito"]
+                    __v: 0
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+                    
+    put:
+      summary: Actualizar un carrito a partir del ID y un array de productos, pasados por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que se busca
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateCart"
+      responses:
+        "200":
+          description: Carrito modificado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessCart"
+        
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+
+    delete:
+          summary: Vacía un carrito a partir del ID
+          tags:
+            - Carts
+          parameters:
+            - name: cid
+              in: path
+              required: true
+              description: ID del carrito que se quiere vaciar
+          responses:
+            "200":
+              description: Carrito vaciado exitosamente
+              content:
+                application/json:
+                  schema:
+                    $ref: "#components/schemas/SuccessCart"
+            "500":
+              description: Error al vaciar el carrito
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Verifica si es posible comprar el contenido del carrito a partir de su ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Información de Stock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success or error
+                  msg:
+                    type: string
+                    description: Descripción del mensaje
+                  stockInfo:
+                    type: string
+                    description: Chequeo de stock
+                    
+                example:
+                  status: success
+                  msg: compra válida
+                  stockInfo:
+                    valid: true
+                    stockError: ""
+                    products: ["Productos en el carrito"]
+                    __v: 0
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+  /api/carts/{cid}/products/{pid}:
+     delete:
+      summary: Elimina el producto con id pid del carrito con id cid
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito del que se eliminará el producto
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se eliminará del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado exitosamente del carrito
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/SuccessCart"
+components:
+  schemas:
+    SuccessCart:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Estado de la operación (success o error)
+        message:
+          type: string
+          description: Descripción de lo que ocurrió
+      example:
+        status: success
+        message: '>>modificación del carrito<<'
+
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB
+        Products:
+          type: array
+          description: Productos en el carrito
+          items:
+            $ref: "#/components/schemas/Product"
+
+  requestBodies:
+    updateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: String
+          description: Productos a agregar
+
+      example:
+       products: ["64d68797ca4a87904e4ab656","64d69311de8f8888cd9899e6"]

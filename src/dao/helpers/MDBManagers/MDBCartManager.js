@@ -112,10 +112,10 @@ export class MDBCartManager{
 
     async addProductsArray(cid, productsArray) {
         try {
-          console.log(productsArray);
-          for (const product of productsArray) {
-            console.log(product._id);
-            await this.addProductToCart(product._id, cid);
+          console.log("PRODUCTOS A AGREGAR:",productsArray);
+          for (const product of productsArray.products) {
+            console.log(product);
+            await this.addProductToCart(product, cid);
           }
         } catch (e) {
           throw e;
@@ -304,6 +304,7 @@ export class MDBCartManager{
         }
 
         catch(e){
+            console.log(e);
             throw e;
         }
 

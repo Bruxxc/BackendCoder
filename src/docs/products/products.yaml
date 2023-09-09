@@ -1,0 +1,349 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron devueltos satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success or error
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+                    description: Lista de productos
+                  totalDocs:
+                    type: integer
+                    description: Total de documentos/productos
+                  limit:
+                    type: integer
+                    description: Límite de productos por página
+                  totalPages:
+                    type: integer
+                    description: Total de páginas
+                  page:
+                    type: integer
+                    description: Página actual
+                  pagingCounter:
+                    type: integer
+                    description: Contador de paginación
+                  hasPrevPage:
+                    type: boolean
+                    description: Indica si hay una página anterior
+                  hasNextPage:
+                    type: boolean
+                    description: Indica si hay una página siguiente
+                  prevPage:
+                    type: integer
+                    description: Número de página anterior
+                  nextPage:
+                    type: integer
+                    description: Número de página siguiente
+                example:
+                  status: success
+                  payload: ['Productos Encontrados']
+                  totalDocs: 4
+                  limit: 10
+                  totalPages: 1
+                  page: 1
+                  pagingCounter: 1
+                  hasPrevPage: false
+                  hasNextPage: false
+                  prevPage: null
+                  nextPage: null
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+    post:
+      summary: Crea un producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createProduct"
+      responses:
+        "200":
+          description: Producto creado satisfactoriamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+          
+        "500":
+          description: Error al crear producto
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto a partir del ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: success or error
+                  msg:
+                    type: string
+                    description: Descripción del mensaje
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        owner:
+                          type: string
+                          description: Dueño del producto
+                        _id:
+                          type: string
+                          description: ID del producto
+                        title:
+                          type: string
+                          description: Nombre del producto
+                        description:
+                          type: string
+                          description: Descripción del producto
+                        price:
+                          type: number
+                          description: Precio del producto
+                        code:
+                          type: string
+                          description: Código del producto
+                        stock:
+                          type: string
+                          description: Stock disponible del producto
+                        category:
+                          type: string
+                          description: Categoría del producto
+                        thumbnail:
+                          type: string
+                          description: Imagen asociada al producto
+                        status:
+                          type: boolean
+                          description: Disponibilidad del producto
+                        __v:
+                          type: integer
+                          description: Versión del documento
+                example:
+                  status: success
+                  msg: product found
+                  data:
+                    owner: "Carlitos"
+                    _id: "64d68797ca4a87904e4ab656"
+                    title: "Producto ejemplo"
+                    description: "Descripción ejemplo"
+                    price: 1000
+                    code: "abc123"
+                    stock: "100"
+                    category: "Ropa"
+                    thumbnail: "8797ca4a87904esdasd"
+                    status: true
+                    __v: 0
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+                    
+    put:
+      summary: Actualizar un producto a partir del ID
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se busca
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProduct"
+      responses:
+        "200":
+          description: Producto modificado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        
+        "500":
+          description: Error del servidor. Usualmente generando la query o falla la conexion a la DB
+
+    delete:
+          summary: Eliminar un producto a partir del ID
+          tags:
+            - Products
+          parameters:
+            - name: pid
+              in: path
+              required: true
+              description: ID del producto que se quiere eliminar
+          responses:
+            "200":
+              description: Producto eliminado exitosamente
+              content:
+                application/json:
+                  schema:
+                    $ref: "#components/schemas/Success"
+            "500":
+              description: Error al eliminar el producto
+
+                  
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Estado de la operación (success o error)
+        message:
+          type: string
+          description: Descripción de lo que ocurrió
+      example:
+        status: success
+        message: '>>modificación del producto<<'
+
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: string
+          description: Stock disponible del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnail:
+          type: string
+          description: Imagen asociada al producto
+        owner:
+          type: string
+          description: Dueño del producto
+        status:
+          type: boolean
+          description: Disponibilidad del producto
+        __v:
+          type: number
+          description: Campo autogenerado por MongoDB
+      example:
+        _id: "64d68797ca4a87904e4ab656"
+        title: "Producto ejemplo"
+        description: "Descripción ejemplo"
+        price: 1000
+        code: "abc123"
+        stock: "100"
+        category: "Ropa"
+        thumbnail: "8797ca4a87904esdasd"
+        owner: "Carlitos"
+        status: true
+        __v: 0
+
+  requestBodies:
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: string
+          description: Stock disponible del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnail:
+          type: string
+          description: Imagen asociada al producto
+        owner:
+          type: string
+          description: Dueño del producto
+        status:
+          type: boolean
+          description: Disponibilidad del producto
+      example:
+        title: "Producto Modificado"
+        description: "Descripción Modificada"
+        price: 1200
+
+    createProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          description: Precio del producto
+        code:
+          type: string
+          description: Código del producto
+        stock:
+          type: string
+          description: Stock disponible del producto
+        category:
+          type: string
+          description: Categoría del producto
+        thumbnail:
+          type: string
+          description: Imagen asociada al producto
+        status:
+          type: boolean
+          description: Disponibilidad del producto
+      example:
+        title: "Producto Nuevo"
+        description: "Descripción Nueva"
+        price: 1000
+        code: "code123"
+        stock: 100
+        category: "Ropa"
+        thumbnail: "Ejemplo"
+        status: true
