@@ -34,3 +34,9 @@
 {"level":"error"}
 {"level":"error"}
 {"kind":"ObjectId","message":"Cast to ObjectId failed for value \"asdsda\" (type string) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"asdsda\"","value":"asdsda","valueType":"string"}
+{"level":"error","message":"ERROR AT GETTING PRODUCT---> CastError: Cast to ObjectId failed for value \"650a003ca87637ea21886fgd\" (type string) at path \"_id\" for model \"product\""}
+{"level":"error","message":"ERROR AT GETTING PRODUCT---> CastError: Cast to ObjectId failed for value \"650a003ca87637ea2188dsas\" (type string) at path \"_id\" for model \"product\""}
+{"level":"error","message":"ERROR AT DELETING PRODUCT---> [object Object]"}
+{"level":"error","message":"ERROR AT DELETING PRODUCT---> [object Object]"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"BpK57ZOIQBmqd2wjRdLk5yxSy\" (type string) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"BpK57ZOIQBmqd2wjRdLk5yxSy\"","value":"BpK57ZOIQBmqd2wjRdLk5yxSy","valueType":"string"}
+{"level":"error"}

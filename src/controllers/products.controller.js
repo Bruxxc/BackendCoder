@@ -61,14 +61,15 @@ export class ProductsController{
         const productCreated = await PManager.createProduct(title, description, price, code, stock ,category, thumbnail);
         return res.status(201).json({
             status: "success",
-            msg: "product created"
+            msg: "product created",
+            id:productCreated._id
         });
         } catch (e) {
         req.logger.error(`ERROR AT CREATING PRODUCT---> ${e}`);
         return res.status(500).json({
             status: "error",
             msg: e.message,
-            data: {},
+            data: {}
         });
         }
     };

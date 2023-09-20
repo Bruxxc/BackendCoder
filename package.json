@@ -5,7 +5,7 @@
   "main": "./src/app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/supertest.test.js",
     "start": "nodemon -e yaml,js ./src/app.js"
   },
   "keywords": [],
@@ -40,5 +40,10 @@
     "sweetalert2": "^11.7.16",
     "twilio": "^4.16.0",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.8",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

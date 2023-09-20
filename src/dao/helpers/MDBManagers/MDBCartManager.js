@@ -199,6 +199,7 @@ export class MDBCartManager{
         }
     }
 
+    
     async increaseProductQuantity(cid, pid) {
         try {
           const cart = await CModel.getById(cid);
@@ -225,7 +226,6 @@ export class MDBCartManager{
     };
 
 
-
     async decreaseProductQuantity(cid, pid) {
         try {
           const cart = await CModel.getById(cid);
@@ -244,7 +244,6 @@ export class MDBCartManager{
                 }
               return result;
             } else {
-              // Remove the product from the cart if quantity becomes 0
               products.splice(productIndex, 1);
               const editCart = await CModel.update(cid, products);
               let total=await this.totalPrice(cid);

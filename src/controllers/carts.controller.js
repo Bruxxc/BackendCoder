@@ -39,6 +39,7 @@ export class CartsController{
             return res.status(500).json({
             status: "error",
             msg: e.message,
+            error:e,
             data: {},
             });
         }
@@ -47,11 +48,12 @@ export class CartsController{
     async create(req,res){
         try{
             const cartCreated = await CManager.createCart();
-            return res.status(201).json({status:"Success",msg:"Cart created", data:cartCreated});
+            return res.status(201).json({status:"success",msg:"Cart created",id:cartCreated._id ,data:cartCreated});
           } catch (e) {
               req.logger.error(e);
               return res.status(500).json({
                 status: "error",
+                error:e,
                 msg: error.message,
                 data: {},
               });
@@ -74,6 +76,7 @@ export class CartsController{
             return res.status(500).json({
             status: "error",
             msg: "something went wrong :(",
+            error:e,
             data: {},
             });
         }
@@ -96,6 +99,7 @@ export class CartsController{
             return res.status(500).json({
             status: "error",
             msg: "something went wrong :(",
+            error:e,
             data: {},
             });
 
@@ -121,6 +125,7 @@ export class CartsController{
             return res.status(500).json({
               status: "error",
               msg: "something went wrong :(",
+              error:e,
               data: {},
             });
       
@@ -143,6 +148,7 @@ export class CartsController{
             return res.status(500).json({
                 status: "error",
                 msg: "something went wrong :(",
+                error:e,
                 data: {},
             });
 
