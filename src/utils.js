@@ -9,6 +9,8 @@ import { MDBCartManager } from "./dao/helpers/MDBManagers/MDBCartManager.js";
 import { MDBProductManager } from "./dao/helpers/MDBManagers/MDBProductManager.js";
 import { ProductMongoose } from "./dao/models/Mongoose/products.mongoose.js";
 import { MsgService } from "./services/Msg.service.js";
+import fs from "fs";
+import { UserMongoose } from "./dao/models/Mongoose/users.mongoose.js";
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
 
@@ -87,12 +89,60 @@ const MService= new MsgService;
 const PManager= new MDBProductManager;
 const CManager= new MDBCartManager;
 
+///MULTER
+// Función para determinar la carpeta de destino y crearla si no existe
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, __dirname + "/public");
+  destination: function (req, file, cb) {
+    let uploadFolder;
+    if (req.body.fileType === 'profile') {
+      uploadFolder = 'uploads/profiles/';
+    } 
+    else if (req.body.fileType === 'product') {
+      uploadFolder = 'uploads/products/';
+    }
+    else{
+      uploadFolder = 'uploads/documents/';
+    }
+
+    // Crea la carpeta de destino si no existe
+    if (!fs.existsSync(uploadFolder)) {
+      fs.mkdirSync(uploadFolder, { recursive: true });
+    }
+
+    cb(null, uploadFolder);
   },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
+  filename: async function (req, file, cb) {
+    let fName;
+    let uid=req.params.uid;
+    let productNumber;
+    const originalExtension = path.extname(file.originalname); // Obtén la extensión original
+    if (req.body.fileType === 'profile') {
+      fName="profile";
+    }
+    else if (req.body.fileType === 'product') {
+      const checkUser = await UserMongoose.findOne({ _id: uid });
+      const documents = checkUser.documents;
+      
+      // Filtra los documentos con nombre "product"
+      const productDocuments = documents.filter((doc) => doc.name === "Product Image");
+      
+      // Obtiene la cantidad de documentos "product"
+      let productNumber = productDocuments.length + 1;
+
+      fName="product" + productNumber;
+    }
+    else{
+      if(req.body.documentType =='identification'){
+        fName='identification';
+      }
+      else if(req.body.documentType =='address'){
+        fName='address';
+      }
+      else{
+        fName='accountStatus';
+      }
+    }
+    cb(null, fName + '-' + `${uid}` + originalExtension);
   },
 });
 

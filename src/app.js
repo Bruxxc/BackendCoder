@@ -20,7 +20,6 @@ import { loggerRouter } from "./routes/logger.test.router.js";
 import { loginRouter } from "./routes/login.router.js";
 import { logoutRouter } from "./routes/logout.router.js";
 import { mockingRouter } from "./routes/mocking.router.js";
-import { premiumRouter } from "./routes/premium.router.js";
 import { productsRouter } from "./routes/products.router.js";
 import { realtimeproducts } from "./routes/realTimeProducts.router.js";
 import { registerRouter } from "./routes/register.router.js";
@@ -30,6 +29,7 @@ import { usersRouter } from "./routes/users.router.js";
 import { viewCart } from "./routes/viewCart.router.js";
 import { __dirname, connectMongo, connectSocket } from "./utils.js";
 import { addLogger } from "./utils/logger.js";
+import { viewsRouter } from "./routes/views.router.js";
 
 
 console.log(env);
@@ -66,7 +66,7 @@ app.use(
 			mongoUrl: env.mongoUrl,
 			dbName: 'sessions',
 			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-			ttl: 15,
+			ttl: 1800,
 		}),
 	})
 );
@@ -113,13 +113,13 @@ app.set("view engine", "handlebars");
 
 //////TODOS MIS ENDPOINTS
 
+///API
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/tickets",ticketsRouter);
 app.use("/api/mocking",mockingRouter);
 app.use("/api/logger",loggerRouter);
-app.use("/api/premium",premiumRouter);
 
 //PLANTILLAS
 app.use("/views/home",home);
@@ -127,7 +127,7 @@ app.use("/views/realtimeproducts",realtimeproducts);
 app.use("/views/chat",chatRouter);
 app.use("/views/products",catalogueRouter);
 app.use("/views/carts",viewCart);
-
+app.use("/views/misc/", viewsRouter);
 //SESSIONS
 app.use("/views/sessions/login", loginRouter);
 app.use("/views/sessions/logout", logoutRouter);
@@ -148,9 +148,10 @@ app.get(
 	}
 );
 
+///SESSIONS
 app.use("/api/sessions",sessionsRouter);
 
-
+///RUTAS NO CONTEMPLADAS
 app.get("*", (req, res) => {
   return res
     .status(404)

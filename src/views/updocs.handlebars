@@ -1,0 +1,45 @@
+    <h1>Subir Archivo</h1>
+    <form action="/api/users/{{uid}}/documents" method="POST" enctype="multipart/form-data">
+        <label for="fileType">Tipo de Archivo:</label>
+        <select name="fileType" id="fileType">
+            <option value="profile">Profile Image</option>
+            <option value="product">Product Image</option>
+            <option value="document">Document</option>
+        </select>
+        <br>
+        <div id="documentOptions" style="display: none;">
+            <label for="documentType">Tipo de Documento:</label>
+            <select name="documentType" id="documentType">
+                <option value="identification">Identification</option>
+                <option value="address">Address</option>
+                <option value="accountStatus">Account Status</option>
+            </select>
+        </div>
+        <br>
+        <label for="file">Selecciona un archivo:</label>
+        <input type="file" name="file" accept="image/*" id="fileInput" /> <!-- Inicialmente, acepta solo imágenes -->
+        <br>
+        <input type="submit" value="Subir Archivo" />
+    </form>
+
+    <script>
+        // Obtén los elementos select y el input de archivo
+        const fileTypeSelect = document.getElementById('fileType');
+        const documentOptionsDiv = document.getElementById('documentOptions');
+        const documentTypeSelect = document.getElementById('documentType');
+        const fileInput = document.getElementById('fileInput');
+
+        // Agrega un evento change al campo de selección
+        fileTypeSelect.addEventListener('change', () => {
+            const selectedFileType = fileTypeSelect.value;
+
+            // Mostrar/ocultar el campo de selección de documento según la selección
+            if (selectedFileType === 'document') {
+                documentOptionsDiv.style.display = 'block';
+                fileInput.accept = ''; // Acepta cualquier tipo de archivo
+            } else {
+                documentOptionsDiv.style.display = 'none';
+                fileInput.accept = 'image/*'; // Acepta solo imágenes
+            }
+        });
+    </script>
