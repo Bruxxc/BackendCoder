@@ -23,3 +23,45 @@ viewsRouter.get("/documents", async (req,res)=>{
     }
   });
   
+  viewsRouter.get("/profile", async (req,res)=>{
+    try{
+      const email=req.session.email;
+      if(email){
+        const userInfo=await UserMongoose.findOne({email:email});
+        const style="userProfile.css";
+        return res.status(200).render('userProfile',{
+          style: style,
+          uid:userInfo._id,
+          username: userInfo.userName,
+          email: email,
+          role: userInfo.role,
+          firstname: userInfo.firstName,
+          lastname: userInfo.lastName
+        });
+      }
+      else{
+        return res.redirect('/views/sessions/login');
+      }
+    }
+    catch(e){
+      console.log(e);
+      throw e;
+    }
+  });
+
+viewsRouter.get("/viewCart", async (req,res)=>{
+  try{
+    const email=req.session.email;
+    if(email){ 
+      const user=await UserMongoose.findOne({email:email});
+      return res.redirect(`/views/carts/${user.cart}`);
+    }
+    else{
+      return res.redirect('/views/sessions/login');
+    }
+  }
+  catch(e){
+    console.log(e);
+    throw e;
+  }
+})

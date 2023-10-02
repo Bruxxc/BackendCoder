@@ -1,3 +1,4 @@
+import { CartMongoose } from "../dao/models/Mongoose/carts.mongoose.js";
 import { UserService } from "../services/User.service.js";
 
 const UService= new UserService;
@@ -55,6 +56,10 @@ export class UsersController{
         const user = await UService.getById(id);
         req.logger.info(`User:${user}`);
         if(user){
+            if(user.cart){
+              const cart= user.cart;
+              const cartDeleted = await CartMongoose.deleteOne({cart});
+            }
             const userDeleted = await UService.delete(id);
             return res.status(201).json({
             status: "success",
@@ -104,8 +109,8 @@ export class UsersController{
     async update(req,res){
         try {
             const id = req.params.uid;
-            const {firstName, lastName, userName, email, password} = req.body;
-            const userUpdated = await UService.update(id ,{firstName, lastName, userName, email, password});
+            const {firstName, lastName, userName, email, password, role} = req.body;
+            const userUpdated = await UService.update(id ,{firstName, lastName, userName, email, password, role});
         
             return res.status(201).json({
               status: "success",

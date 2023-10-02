@@ -35,6 +35,7 @@ viewCart.get("/:cid", async (req,res)=>{
                     esVacio: esVacio,
                     total: total,
                     products: cart[0].products,
+                    username:user
                 });
             }
             

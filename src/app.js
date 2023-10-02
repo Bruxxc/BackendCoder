@@ -30,6 +30,7 @@ import { viewCart } from "./routes/viewCart.router.js";
 import { __dirname, connectMongo, connectSocket } from "./utils.js";
 import { addLogger } from "./utils/logger.js";
 import { viewsRouter } from "./routes/views.router.js";
+import { adminRouter } from "./routes/admin.router.js";
 
 
 console.log(env);
@@ -127,7 +128,9 @@ app.use("/views/realtimeproducts",realtimeproducts);
 app.use("/views/chat",chatRouter);
 app.use("/views/products",catalogueRouter);
 app.use("/views/carts",viewCart);
-app.use("/views/misc/", viewsRouter);
+app.use("/views/misc", viewsRouter);
+app.use("/views/admin", adminRouter);
+
 //SESSIONS
 app.use("/views/sessions/login", loginRouter);
 app.use("/views/sessions/logout", logoutRouter);

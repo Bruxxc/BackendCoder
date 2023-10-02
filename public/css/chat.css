@@ -11,6 +11,8 @@
 }
 .msg_container{
     border:black solid;
+    width: 493px;
+    overflow-wrap: break-word;
 }
 .msg_input_container{
     display: flex;

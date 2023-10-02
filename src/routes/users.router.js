@@ -6,10 +6,56 @@ import { UserMongoose } from "../dao/models/Mongoose/users.mongoose.js";
 import { uploader } from "../utils.js";
 export const usersRouter = express.Router();
 
+
+
 const UController= new UsersController;
-usersRouter.get("/", async (req, res) => {
- UController.getAll(req,res);
+
+/// TRAER TODOS LOS USUARIOS SOLO CON LOS DATOS ELEGIDOS
+usersRouter.get("/", async (req,res)=>{
+  const users= await UserMongoose.find({});
+  const filteredUsers= users.map(user => ({
+    email: user.email,
+    userName: user.userName,
+    role: user.role
+  }));
+  return res.status(200).json({users:filteredUsers});
 });
+
+
+///PARSE DATE
+function parseDateFromString(dateString) {
+  if (dateString === "_") {
+    return null; // Valor nulo para usuarios que nunca se han conectado
+  }
+
+  const parts = dateString.split(/, | /);
+  const [day, month, year, time] = parts.slice(0, 4);
+  const [hour, minute, second] = time.split(':');
+  const monthIndex = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'].indexOf(month.toLowerCase());
+  return new Date(year, monthIndex, day, hour, minute, second);
+}
+
+/// ELIMINAR USUARIOS QUE NO SE HAYAN CONECTADO EN 2 DÍAS
+usersRouter.delete("/", async (req,res)=>{
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - 2); // Restar dos días
+  const users= await UserMongoose.find({});
+  const usuariosActivos = users.filter(user => {
+    const lastConnectionDate = parseDateFromString(user.last_connection);
+
+    // Verificar si lastConnectionDate es null o es mayor o igual a la fecha límite
+    return lastConnectionDate || lastConnectionDate >= currentDate;
+  });
+
+  // Reemplazar el arreglo de usuarios con los usuarios activos
+  users.length = 0;
+  users.push(...usuariosActivos);
+  console.log(users);
+  return res.status(200).json({
+    activeUsers: usuariosActivos
+  });
+})
+
 
 ///HACE PREMIUM AL USUARIO ACTUAL
 usersRouter.get("/premium", async(req,res)=>{
@@ -106,6 +152,10 @@ usersRouter.get("/premium/:uid", async(req,res)=>{
     throw e;
   }
 });
+
+
+
+
 
 usersRouter.get("/:uid", async (req, res) => {
  UController.getById(req,res);

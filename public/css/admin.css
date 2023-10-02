@@ -1,0 +1,30 @@
+.admin-main-container{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-container{
+    width: 400px;
+    height: 400px;
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #CCC;
+    text-align: center;
+
+}
+
+.admin-container h6{
+    height: 50px;
+    border: 1px solid #CCC;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+.admin-container h6:hover{
+    border: 1px solid #F6511D;
+    cursor: pointer;
+    color:#F6511D;
+
+}

@@ -1,0 +1,36 @@
+.user-profile-container{
+    display: grid;
+    justify-content: center;
+}
+
+.user-profile h5{
+    height: 20px ;
+}
+
+.user-profile p{
+    height: 20px ;
+}
+
+.user-profile{
+    padding: 10px;
+    margin-top: 20px;
+    width: 500px;
+    background-color: #fff;
+    border-bottom:1px solid #CCC;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
+.updocs-container{
+    margin-top: 20px;
+}
+
+.updocs{
+    padding: 10px;
+    margin-top: 20px;
+    width: 500px;
+    background-color: #fff;
+    border-bottom:1px solid #CCC;
+    margin-bottom: 20px;
+}

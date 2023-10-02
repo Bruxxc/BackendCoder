@@ -6,7 +6,7 @@ import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.
 const ProductManager= new MDBProductManager();
 
 catalogueRouter.get("/", async (req,res)=>{
-    let limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    let limit = req.query.limit ? parseInt(req.query.limit) : 12;
     let page = req.query.page ? parseInt(req.query.page) : 1;
     let sort = req.query.sort || "";
     let filter = {};
@@ -15,8 +15,6 @@ catalogueRouter.get("/", async (req,res)=>{
     const role = req.session.role;
     const cart= req.session.cart;
     const fullName= req.session.fullName;
-    console.log(req.session);
-    console.log(role,username,cart);
 
     const style="catalogue.css";
     return res.status(200).render('catalogue',{

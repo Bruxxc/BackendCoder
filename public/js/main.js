@@ -1,3 +1,14 @@
+(function($) {
+	"use strict"
+
+	// Mobile Nav toggle
+	$('.menu-toggle > a').on('click', function (e) {
+		e.preventDefault();
+		$('#responsive-nav').toggleClass('active');
+	})
+
+	})(jQuery);
+
 //////CURRENT SESSION///////////
 
 let user= undefined;
@@ -80,39 +91,7 @@ function putIntoCart(_id){
     }
 }
 
-let login_redir=document.querySelector(".login_redir");
-
-if(login_redir){
-    login_redir.addEventListener("click",(e)=>{
-        e.preventDefault();
-        window.location.href = "/views/sessions/login";
-        console.log("login");
-    });
-}
-
-let logout_redir=document.querySelector(".logout_redir");
-
-if(logout_redir){
-    logout_redir.addEventListener("click",(e)=>{
-        e.preventDefault();
-        console.log("logout");
-        localStorage.removeItem("carritoId");
-        window.location.href = "/views/sessions/logout";
-        
-    });
-}
-
-let register_redir=document.querySelector(".register_redir");
-
-if(register_redir){
-    register_redir.addEventListener("click",(e)=>{
-        e.preventDefault();
-        window.location.href = "/views/sessions/register";
-        console.log("register");
-    });
-}
-
-let cart_button=document.querySelector(".cart_button");
+let cart_button=document.querySelector(".dropdown");
 
 cart_button.addEventListener("click",(e)=>{
     e.preventDefault();

@@ -83,9 +83,10 @@ export class UsersModel{
 
     async update(id,info){
         try{
+            console.log("INFO--->",info);
             const userUpdated = await UserMongoose.updateOne(
                 { _id: id },
-                {info}
+                info
             );
             return userUpdated;
         }

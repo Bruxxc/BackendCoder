@@ -1,0 +1,71 @@
+<div class="user-profile-container">
+    <h2>USER PROFILE</h2>
+    <div class="user-profile">
+
+        <div class="user_info_headers">
+            <h5>Username</h5>
+            <h5>Email</h5>
+            <h5>Firstname</h5>
+            <h5>Lastname</h5>
+            <h5>Role</h5>
+        </div>
+        
+        <div class="user_info">
+            <p>{{username}}</p>
+            <p>{{email}}</p>
+            <p>{{firstname}}</p>
+            <p>{{lastname}}</p>
+            <p>{{role}}</p>
+        </div>
+    </div> 
+    
+    <div class="updocs-container">
+        <h2>Subir Archivos</h2>
+        <div class="updocs">
+            <form action="/api/users/{{uid}}/documents" method="POST" enctype="multipart/form-data">
+                <label for="fileType">Tipo de Archivo:</label>
+                <select name="fileType" id="fileType">
+                    <option value="profile">Profile Image</option>
+                    <option value="product">Product Image</option>
+                    <option value="document">Document</option>
+                </select>
+                <br>
+                <div id="documentOptions" style="display: none;">
+                    <label for="documentType">Tipo de Documento:</label>
+                    <select name="documentType" id="documentType">
+                        <option value="identification">Identification</option>
+                        <option value="address">Address</option>
+                        <option value="accountStatus">Account Status</option>
+                    </select>
+                </div>
+                <br>
+                <label for="file">Selecciona un archivo:</label>
+                <input type="file" name="file" accept="image/*" id="fileInput" /> <!-- Inicialmente, acepta solo imágenes -->
+                <br>
+                <input type="submit" value="Subir Archivo" />
+            </form>
+        </div>
+    </div> 
+</div>
+
+        <script>
+            // Obtén los elementos select y el input de archivo
+            const fileTypeSelect = document.getElementById('fileType');
+            const documentOptionsDiv = document.getElementById('documentOptions');
+            const documentTypeSelect = document.getElementById('documentType');
+            const fileInput = document.getElementById('fileInput');
+
+            // Agrega un evento change al campo de selección
+            fileTypeSelect.addEventListener('change', () => {
+                const selectedFileType = fileTypeSelect.value;
+
+                // Mostrar/ocultar el campo de selección de documento según la selección
+                if (selectedFileType === 'document') {
+                    documentOptionsDiv.style.display = 'block';
+                    fileInput.accept = ''; // Acepta cualquier tipo de archivo
+                } else {
+                    documentOptionsDiv.style.display = 'none';
+                    fileInput.accept = 'image/*'; // Acepta solo imágenes
+                }
+            });
+        </script>

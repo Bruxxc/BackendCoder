@@ -1,34 +1,24 @@
 <div class="catalogue_main">
-  
-    {{#if username}}
-      <p>
-        <span class="role">{{role}}</span>:
-
-        {{username}}
-        
-      </p>
-      <button class="logout_redir">Logout</button>
-      {{else}}
-
-      <button class="login_redir">Login</button>
-      <button class="register_redir">Register</button>
-
-    {{/if}}
-
+    <h1>
+      Explora todos los productos
+    </h1>
     <div class="catalogue">
 
         <div class="catalogue_container">
-
             {{#each products}}
-                <div class="prod_card">
-                    <p class="prod_id">{{this._id}}</p>
+                <div class="product-card">
+                    <div class="product-image">
                     <img src="../../static/img/example.jpg" class="example_image">
-                    <h3 class="prod_title">{{this.title}}</h3>
-                    <h5 class="prod_price">USD {{this.price}}</h5>
-                    <button onclick="putIntoCart('{{this._id}}')" class="add_button add{{this._id}}">Agregar al carrito</button>
+                    </div>
+                    
+                    <div class="product-details">
+                      <p>{{this.category}}</p>
+                      <p class="product-title">{{this.title}}</p>
+                      <div class="price product-price">${{this.price}}</div>
+                      <button onclick="putIntoCart('{{this._id}}')" class="add_button add{{this._id}} product-button" style="background-color: #FFBE0B;">Añadir al carrito</button>
+                    </div>
                 </div>
             {{/each}}
-
         </div>
 
     </div>
@@ -48,11 +38,6 @@
     </div>
 
   </div>
-
-
-  <button class="cart_button">
-    IR AL CARRITO
-  </button>
 
 </div>
 

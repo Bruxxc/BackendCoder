@@ -1,0 +1,37 @@
+<div class="manage-users-main-container">
+
+    <div>
+        <p>P : Make user role "premium"</p>
+        <p>U : Make user role "user"</p>
+        <p>x : Delete user</p>
+    </div>
+
+    <div class="users-list-container">
+        
+        <div class="list-headers">
+            <h6>Email</h6>
+            <h6>Username</h6>
+            <h6>Role</h6>
+        </div>
+
+        <div class="users-list">
+        {{#each users}}
+            <div class="user-container user-container_{{this._id}}">
+                <h6>{{this.email}}</h6>
+                <p>{{this.userName}}</p>
+                <p class="role_{{this._id}}">{{this.role}}</p>
+                <div class="user_buttons">
+                    <button onclick="changeRole('{{this._id}}','premium')" class="user_manage_button user_manage_upgrade">P</button>
+                    <button onclick="changeRole('{{this._id}}','user')" class="user_manage_button user_manage_downgrade">U</button>
+                    <button onclick="deleteUser('{{this._id}}')" class="user_manage_button user_manage_delete">x</button>
+                </div>
+
+            </div>
+        {{/each}}
+        </div>
+
+    </div>
+    <script src="../../../static/js/manageUsers.js">
+
+    </script>
+</div>
