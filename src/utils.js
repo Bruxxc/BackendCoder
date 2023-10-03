@@ -114,7 +114,6 @@ const storage = multer.diskStorage({
   filename: async function (req, file, cb) {
     let fName;
     let uid=req.params.uid;
-    let productNumber;
     const originalExtension = path.extname(file.originalname); // Obtén la extensión original
     if (req.body.fileType === 'profile') {
       fName="profile";
@@ -128,7 +127,7 @@ const storage = multer.diskStorage({
       
       // Obtiene la cantidad de documentos "product"
       let productNumber = productDocuments.length + 1;
-
+      
       fName="product" + productNumber;
     }
     else{

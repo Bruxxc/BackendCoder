@@ -28,6 +28,11 @@ viewsRouter.get("/documents", async (req,res)=>{
       const email=req.session.email;
       if(email){
         const userInfo=await UserMongoose.findOne({email:email});
+        let documents=userInfo.documents;
+          ///CHECKEAR LOS DOCUMENTOS SUBIDOS
+        const hasIdentification = documents.some((doc) => doc.name === "Identification");
+        const hasAddress = documents.some((doc) => doc.name === "Address");
+        const hasAccountStatus = documents.some((doc) => doc.name === "Account Status");
         const style="userProfile.css";
         return res.status(200).render('userProfile',{
           style: style,
@@ -36,7 +41,11 @@ viewsRouter.get("/documents", async (req,res)=>{
           email: email,
           role: userInfo.role,
           firstname: userInfo.firstName,
-          lastname: userInfo.lastName
+          lastname: userInfo.lastName,
+          hasIdentification:hasIdentification,
+          hasAddress:hasAddress,
+          hasAccountStatus:hasAccountStatus
+          
         });
       }
       else{

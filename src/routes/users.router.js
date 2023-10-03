@@ -82,9 +82,6 @@ usersRouter.get("/premium", async(req,res)=>{
                 const hasIdentification = documents.some((doc) => doc.name === "Identification");
                 const hasAddress = documents.some((doc) => doc.name === "Address");
                 const hasAccountStatus = documents.some((doc) => doc.name === "Account Status");
-                console.log("---> Has Identification:", hasIdentification);
-                console.log("---> Has Address:", hasAddress);
-                console.log("---> Has Account Status:", hasAccountStatus);
                 ///SI TIENE TODOS LOS DOCUMENTOS, HACER PREMIUM
                 if(hasAddress && hasAccountStatus && hasIdentification){
                   const premiumUpgrade= await UserMongoose.updateOne({email:email},{role:"premium"});
@@ -190,11 +187,6 @@ usersRouter.post('/:uid/documents', uploader.single('file'), async (req, res) =>
     const hasAccountStatus = documents.some((doc) => doc.name === "Account Status");
     const hasProfileImg = documents.some((doc) => doc.name === "Profile Image");
 
-    console.log("---> Has Identification:", hasIdentification);
-    console.log("---> Has Address:", hasAddress);
-    console.log("---> Has Account Status:", hasAccountStatus);
-    console.log("---> Has Profile Image:", hasProfileImg);
-
     if(req.body.fileType=="profile"){
       if(!hasProfileImg){
         const newDocument = {
@@ -241,10 +233,10 @@ usersRouter.post('/:uid/documents', uploader.single('file'), async (req, res) =>
       }
     }
     const updateUser= await UserMongoose.updateOne({_id:uid},{documents});
-    return res.status(200).json({ message: 'Documento subido exitosamente' });
+    return res.status(200).json({ status:"success",message: 'Documento subido exitosamente' });
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error al subir documento' });
+    res.status(500).json({ status:"error", message: 'Error al subir documento' });
   }
 });
