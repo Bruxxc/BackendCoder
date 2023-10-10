@@ -6,7 +6,6 @@ import handlebars from "express-handlebars";
 import session from "express-session";
 import nodemailer from "nodemailer";
 import passport from "passport";
-import FileStore from "session-file-store";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
 import twilio from "twilio";
@@ -31,6 +30,7 @@ import { __dirname, connectMongo, connectSocket } from "./utils.js";
 import { addLogger } from "./utils/logger.js";
 import { viewsRouter } from "./routes/views.router.js";
 import { adminRouter } from "./routes/admin.router.js";
+import { paymentsRouter } from "./routes/payments.router.js";
 
 
 console.log(env);
@@ -38,7 +38,7 @@ const app = express();
 const port = env.port;
 
 //NODEMAILER
-const transport = nodemailer.createTransport({
+export const transportMailer = nodemailer.createTransport({
   service: "gmail",
   port: 587,
   auth: {
@@ -52,8 +52,6 @@ const client = twilio(
 	"ACa7a320230931603b84966fb776ea95e8",
 	"b1fed7c2ec7ff37770c901ae7ec6ebee"
 )
-
-const fileStore = FileStore(session);
 
 app.use(urlencoded({extended:true}));
 app.use(express.json());
@@ -81,10 +79,6 @@ app.use(addLogger);
 const httpServer=app.listen(port, () => {
   console.log(`Example app listening http://localhost:${port}`);
 });
-
-
-
-  
 
 
 connectSocket(httpServer);
@@ -121,6 +115,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/tickets",ticketsRouter);
 app.use("/api/mocking",mockingRouter);
 app.use("/api/logger",loggerRouter);
+app.use("/api/payments",paymentsRouter);
 
 //PLANTILLAS
 app.use("/views/home",home);

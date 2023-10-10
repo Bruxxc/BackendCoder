@@ -1,5 +1,5 @@
 import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.js";
-
+import { transportMailer } from "../app.js";
 const PManager= new MDBProductManager;
 
 export class ProductsController{
@@ -98,10 +98,29 @@ export class ProductsController{
         const id=req.params.pid;
 
         try{
+            ////si el usuario es premium, se manda un mail al eliminar
+            let product= await PManager.getProductById(id);
+            product=product[0];
+            if(product.owner!="admin"){
+                    const mail={
+                        from: "elbrunoconde@gmail.com",
+                        to: product.owner,
+                        subject: "SU PRODUCTO HA SIDO ELIMINADO",
+                        html: `
+                                  <div>
+                                      <h2>SU PRODUCTO ${product.title} HA SIDO ELIMINADO</h2>
+                                      <h5>FLAMING</h5>
+                                  </div>
+                              `,
+                    }
+                    console.log(mail);
+                	const result = await transportMailer.sendMail(mail)
+            }
             const productDeleted = await PManager.deleteProduct(id);
             return res.status(200).json({
             status: "success",
-            msg: "product deleted"
+            msg: "product deleted",
+            product:product
             });
             
         } catch (e) {

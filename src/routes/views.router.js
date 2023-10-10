@@ -1,28 +1,8 @@
 import express from "express";
 import { UserMongoose } from "../dao/models/Mongoose/users.mongoose.js";
 export const viewsRouter = express.Router();
-
-viewsRouter.get("/documents", async (req,res)=>{
-    const user=req.session.user;
-    const email=req.session.email;
-    try{
-      if(!user){
-        return res.redirect("/views/sessions/login");
-      }
-      else{
-        const style="updocs.css";
-        const checkUser=await UserMongoose.findOne({email:email});
-        const uid=checkUser._id;
-        return res.status(200).render('updocs',{style,uid});
-      }
-  
-    }
-    catch(e){
-      console.log(e);
-      throw e;
-    }
-  });
-  
+ 
+  //// PERFIL DE USUARIO
   viewsRouter.get("/profile", async (req,res)=>{
     try{
       const email=req.session.email;
@@ -34,6 +14,8 @@ viewsRouter.get("/documents", async (req,res)=>{
         const hasAddress = documents.some((doc) => doc.name === "Address");
         const hasAccountStatus = documents.some((doc) => doc.name === "Account Status");
         const style="userProfile.css";
+        const isAdmin= userInfo.role=="admin";
+        const isUser=!isAdmin;
         return res.status(200).render('userProfile',{
           style: style,
           uid:userInfo._id,
@@ -44,7 +26,9 @@ viewsRouter.get("/documents", async (req,res)=>{
           lastname: userInfo.lastName,
           hasIdentification:hasIdentification,
           hasAddress:hasAddress,
-          hasAccountStatus:hasAccountStatus
+          hasAccountStatus:hasAccountStatus,
+          isAdmin:isAdmin,
+          isUser:isUser
           
         });
       }
@@ -58,6 +42,7 @@ viewsRouter.get("/documents", async (req,res)=>{
     }
   });
 
+//// MOSTRAR CARRITO
 viewsRouter.get("/viewCart", async (req,res)=>{
   try{
     const email=req.session.email;
@@ -73,4 +58,10 @@ viewsRouter.get("/viewCart", async (req,res)=>{
     console.log(e);
     throw e;
   }
-})
+});
+
+viewsRouter.get("/payment/intent", async (req,res)=>{
+  const style="payment.css";
+  return res.status(200).render('payment',{style});
+});
+

@@ -31,4 +31,4 @@ registerRouter.get("/", async (req,res)=>{
       return res.status(200).render('register',{style});
     }
 
-  });
+});

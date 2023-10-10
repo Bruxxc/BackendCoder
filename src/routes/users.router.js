@@ -28,33 +28,68 @@ function parseDateFromString(dateString) {
     return null; // Valor nulo para usuarios que nunca se han conectado
   }
 
-  const parts = dateString.split(/, | /);
-  const [day, month, year, time] = parts.slice(0, 4);
+  const spanishMonths = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+
+  const regexDate = /(\d+) de ([a-z]+) de (\d+), (\d+:\d+:\d+)/i;
+  const match = dateString.match(regexDate);
+
+  if (!match) {
+    throw new Error('Formato de fecha no válido: ' + dateString);
+  }
+
+  const [, day, month, year, time] = match;
+  const monthIndex = spanishMonths.indexOf(month.toLowerCase());
+
+  if (monthIndex === -1) {
+    throw new Error('Mes no válido en la cadena de fecha: ' + month);
+  }
+
   const [hour, minute, second] = time.split(':');
-  const monthIndex = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'].indexOf(month.toLowerCase());
   return new Date(year, monthIndex, day, hour, minute, second);
 }
 
 /// ELIMINAR USUARIOS QUE NO SE HAYAN CONECTADO EN 2 DÍAS
-usersRouter.delete("/", async (req,res)=>{
-  const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() - 2); // Restar dos días
-  const users= await UserMongoose.find({});
-  const usuariosActivos = users.filter(user => {
-    const lastConnectionDate = parseDateFromString(user.last_connection);
 
-    // Verificar si lastConnectionDate es null o es mayor o igual a la fecha límite
-    return lastConnectionDate || lastConnectionDate >= currentDate;
-  });
+usersRouter.delete("/", async (req, res) => {
+  try {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - 2); // Restar dos días
+    const users = await UserMongoose.find({});
+    console.log('FECHA LIMITE--->', currentDate);
 
-  // Reemplazar el arreglo de usuarios con los usuarios activos
-  users.length = 0;
-  users.push(...usuariosActivos);
-  console.log(users);
-  return res.status(200).json({
-    activeUsers: usuariosActivos
-  });
-})
+    const usuariosInactivos = [];
+
+    for (const user of users) {
+      const lastConnectionDate = parseDateFromString(user.last_connection);
+      console.log("ULTIMA CONEXION--->", lastConnectionDate, "----->", (lastConnectionDate < currentDate));
+
+      if (!lastConnectionDate || lastConnectionDate < currentDate) {
+        // El usuario es inactivo, así que lo eliminamos
+        await UserMongoose.findByIdAndDelete(user._id);
+        usuariosInactivos.push(user);
+      }
+    }
+
+    console.log(`Usuarios inactivos eliminados: ${usuariosInactivos.length}`);
+
+    return res.status(200).json({
+      message: `Usuarios inactivos eliminados: ${usuariosInactivos.length}`,
+      inactiveUsers: usuariosInactivos,
+    });
+  } catch (error) {
+    console.error("Error al eliminar usuarios inactivos:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
+
+
+
+
+
+
 
 
 ///HACE PREMIUM AL USUARIO ACTUAL

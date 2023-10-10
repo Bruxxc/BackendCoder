@@ -78,8 +78,6 @@ export class TicketsController{
                     products:products
                 }
                 const ticketCreated = await TService.create(newTicket);
-                let toEmpty= await CManager.getCartByEmail(purchaser);
-                let emptyCart= await CManager.emptyCart(toEmpty[0]._id);
                 
                 return res.status(201).json({status:"Success",msg:"Ticket created", data:ticketCreated});
             }   

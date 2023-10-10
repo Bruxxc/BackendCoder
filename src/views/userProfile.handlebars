@@ -36,7 +36,11 @@
             {{/if}}
         </div>
     </div> 
-    
+    {{#if isAdmin}}
+        <div>
+            <a href="../../../views/admin/manage"><button>ADMIN MANAGER</button></a>
+        </div>
+    {{/if}}
     <div class="updocs-container">
         <h2>Subir Archivos</h2>
         <div class="updocs">

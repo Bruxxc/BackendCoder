@@ -1,34 +1,5 @@
 socket=io();
 
-///////CURRENT SESSION///////////
-let user= undefined;
-
-async function getCurrentUser() {
-    try {
-      const response = await fetch('/api/sessions/current');
-      const userData = await response.json();
-      console.log("usuario:",userData);
-    
-      return userData;
-    } catch (error) {
-      console.error('Error al obtener el usuario actual:', error);
-      return null;
-    }
-}
-  
-async function checkUser(){
-    user= await getCurrentUser();
-    
-    if(user.user){
-        console.log(user);
-    }
-
-}
-  
-checkUser();
-
-
-
 //////////IPQ
 function increaseProductQuantity(cid, pid) {
   try {
@@ -82,7 +53,7 @@ buy_button.addEventListener("click", async (e) => {
     if (amount == 0) {
       alert("El carrito está vacío");
     } else {
-      const API_URL = "http://localhost:8080/api";
+      const API_URL = "/api";
       const url = API_URL + `/carts/${user.cart}/purchase`;
       const options = {
         method: "POST",
@@ -97,7 +68,7 @@ buy_button.addEventListener("click", async (e) => {
         console.log(data);
   
         if (!data.stockInfo.valid) {
-          alert("Error en stock");
+          alert("Stock insuficiente");
           console.log(data.stockInfo.stockError);
         } else {
           alert("Válido");
@@ -116,7 +87,7 @@ buy_button.addEventListener("click", async (e) => {
               products: productList,
             }),
           };
-          
+
           try {
             const createTicket = await fetch(ticketURL, ticketOptions)
             .then(response => {
