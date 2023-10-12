@@ -1,7 +1,6 @@
 const changeButton=document.querySelector(".change_button");
-const API_URL="http://localhost:8080/api";
-const url = API_URL + "views/sessions/login/changePassword";
-
+let api_url= window.location.origin;
+///VALIDAR CONTRASEÑA
 function checkPasswords() {
     let password = document.getElementById("password").value;
     let repeatPassword = document.getElementById("repeat-password").value;
@@ -18,9 +17,7 @@ function checkPasswords() {
     return true;
 }
 
-
-
-
+///BOTÓN CAMBIAR CONTRASEÑA
 changeButton.addEventListener("click", async (e)=>{
     e.preventDefault();
     if(checkPasswords()){ 
@@ -37,8 +34,8 @@ changeButton.addEventListener("click", async (e)=>{
             body: JSON.stringify(data),
             redirect: "follow"
         };
-
-        fetch("http://localhost:8080/views/sessions/login/changePassword", requestOptions)
+        let url=api_url + '/views/sessions/login/changePassword';
+        fetch(url, requestOptions)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);

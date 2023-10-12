@@ -5,13 +5,10 @@ const setChat= ()=>{
     socket.emit("set_chat");
 }
 
-//
-
+///SETEAR CHAT FUNCIÓN
 socket.on("set_chat_res",(msgs)=>{
     console.log("recibido set chat");
     console.log(msgs.msgs);
-
-
     const chat=document.querySelector(".chat_msg_list");
     chat.innerHTML="";
     
@@ -37,6 +34,7 @@ socket.on("set_chat_res",(msgs)=>{
 const send_msg_btn= document.querySelector(".send_msg_btn");
 const send_msg_input= document.querySelector(".send_msg_input");
 
+///MANDAR MENSAJE
 const send_msg=()=>{
   
   if(user.user){
@@ -62,15 +60,13 @@ const send_msg=()=>{
     alert("You must be logged in to use the chat");
   }
 
-
-
 }
 
+///BOTÓN MANDAR MENSAJE
 send_msg_btn.addEventListener("click",(event)=>{
     event.preventDefault();
     send_msg();
 });
 
-
-
+///SETEAR CHAT
 setChat();

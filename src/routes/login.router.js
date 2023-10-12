@@ -6,6 +6,7 @@ import { createHash } from "../utils/bcrypt.js";
 import { RecoverCodesMongoose } from "../dao/models/Mongoose/recover-codes.mongoose.js";
 import { UserMongoose } from "../dao/models/Mongoose/users.mongoose.js";
 import { isValidPassword } from "../utils/bcrypt.js";
+import env from "../config/enviroment.config.js";
 export const loginRouter = express.Router();
 
 
@@ -18,6 +19,7 @@ const transport = nodemailer.createTransport({
   },
 });
 
+///PROCESO DE LOGIN
 loginRouter.post("/",passport.authenticate('login',{failureRedirect:"/views/sessions/login?error=true"}),async (req,res)=>{
   
  
@@ -35,6 +37,7 @@ loginRouter.post("/",passport.authenticate('login',{failureRedirect:"/views/sess
   }
 })
 
+///PÁGINA DE LOGIN
 loginRouter.get("/", async (req,res)=>{
     const username = req.session.user ;
 
@@ -53,6 +56,7 @@ loginRouter.get("/", async (req,res)=>{
 
 });
 
+///RECUPERAR CONTRASEÑA
 loginRouter.get("/retrievePassword", async (req,res)=>{
   const username = req.session.user ;
 
@@ -80,7 +84,7 @@ loginRouter.post("/retrievePassword", async (req,res)=>{
       html: `
           <div>
             <p>Tu código para cambiar la contraseña es: ${token}</p>
-            <a href="http://localhost:8080/views/sessions/login/changePassword?token=${token}&email=${email}">CAMBIAR CONTRASEÑA</a>
+            <a href="${env.api_url}/views/sessions/login/changePassword?token=${token}&email=${email}">CAMBIAR CONTRASEÑA</a>
           </div>
         `,
       attachments: [

@@ -2,6 +2,7 @@ import express from "express";
 import { UserMongoose } from "../dao/models/Mongoose/users.mongoose.js";
 export const logoutRouter = express.Router();
 
+///LOGOUT
 logoutRouter.get("/", async (req,res)=>{
     try{
       req.logger.info("log out");

@@ -14,7 +14,6 @@ import { iniPassport } from "./config/passport.config.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { catalogueRouter } from "./routes/catalogue.router.js";
 import { chatRouter } from "./routes/chat.router.js";
-import { home } from "./routes/home.router.js";
 import { loggerRouter } from "./routes/logger.test.router.js";
 import { loginRouter } from "./routes/login.router.js";
 import { logoutRouter } from "./routes/logout.router.js";
@@ -118,7 +117,6 @@ app.use("/api/logger",loggerRouter);
 app.use("/api/payments",paymentsRouter);
 
 //PLANTILLAS
-app.use("/views/home",home);
 app.use("/views/realtimeproducts",realtimeproducts);
 app.use("/views/chat",chatRouter);
 app.use("/views/products",catalogueRouter);

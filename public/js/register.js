@@ -2,6 +2,7 @@ const socket=io();
 
 let register_btn=document.querySelector(".register_btn");
 
+///VALIDAR CONTRASEÑAS
 function checkPasswords() {
     let password = document.getElementById("password").value;
     let repeatPassword = document.getElementById("repeat-password").value;
@@ -18,6 +19,7 @@ function checkPasswords() {
     return true;
 }
 
+///VALIDAR EMAIL
 function checkEmail() {
     let email = document.getElementById("email").value;
     let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,6 +31,7 @@ function checkEmail() {
     return true;
 }
 
+///VALIDAR USUARIO
 function checkUsername() {
     let username = document.getElementById("username").value;
     if (username.length < 4) {
@@ -39,6 +42,7 @@ function checkUsername() {
     return true;
 }
 
+///VALIDAR NOMBRE, APELLIDO Y EDAD
 function checkNames(){
     let firstName = document.getElementById("first-name").value;
     let lastName = document.getElementById("last-name").value;
@@ -56,6 +60,7 @@ function checkNames(){
     return true;
 }
 
+///VALIDAR FORMULARIO
 function validateForm() {
     let isValid = true;
 
@@ -79,6 +84,7 @@ function validateForm() {
     return isValid;
 }
 
+///BOTÓN REGISTRARSE
 register_btn.addEventListener("click", (e) => {
   e.preventDefault();
   if (validateForm()) {
@@ -129,11 +135,13 @@ register_btn.addEventListener("click", (e) => {
   }
 });
 
+///RECIBIR SEÑAL DE USUARIO CREADO SATISFACTORIAMENTE
 socket.on("userCreated",()=>{
     alert("User created successfully");
     window.location.href = "/views/sessions/login";
 });
 
+///RECIBIR SEÑAL DE ERROR AL CREAR USUARIO
 socket.on("errorCreatingUser",(e)=>{
     alert(e.error);
 });

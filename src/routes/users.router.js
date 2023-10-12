@@ -6,8 +6,6 @@ import { UserMongoose } from "../dao/models/Mongoose/users.mongoose.js";
 import { uploader } from "../utils.js";
 export const usersRouter = express.Router();
 
-
-
 const UController= new UsersController;
 
 /// TRAER TODOS LOS USUARIOS SOLO CON LOS DATOS ELEGIDOS
@@ -21,8 +19,7 @@ usersRouter.get("/", async (req,res)=>{
   return res.status(200).json({users:filteredUsers});
 });
 
-
-///PARSE DATE
+///PARSE DATE: transforma el formato de las fechas para que puedan compararse 
 function parseDateFromString(dateString) {
   if (dateString === "_") {
     return null; // Valor nulo para usuarios que nunca se han conectado
@@ -51,7 +48,6 @@ function parseDateFromString(dateString) {
 }
 
 /// ELIMINAR USUARIOS QUE NO SE HAYAN CONECTADO EN 2 DÍAS
-
 usersRouter.delete("/", async (req, res) => {
   try {
     const currentDate = new Date();
@@ -83,14 +79,6 @@ usersRouter.delete("/", async (req, res) => {
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
-
-
-
-
-
-
-
-
 
 ///HACE PREMIUM AL USUARIO ACTUAL
 usersRouter.get("/premium", async(req,res)=>{
@@ -185,27 +173,27 @@ usersRouter.get("/premium/:uid", async(req,res)=>{
   }
 });
 
-
-
-
-
+///OBTIENER USUARIO POR ID
 usersRouter.get("/:uid", async (req, res) => {
  UController.getById(req,res);
 });
 
+///ELIMINAR USUARIO POR ID
 usersRouter.delete("/:uid", async (req,res)=>{
  UController.delete(req,res);
 });
 
+///CREAR USUARIO
 usersRouter.post("/", async (req, res) => {
   UController.create(req,res)
 });
 
+///MODIFICAR USUARIO POR ID
 usersRouter.put("/:uid", async (req, res) => {
   UController.update(req,res);
 });
 
-
+///SUBIR DOCUMENTOS DE USUARIO
 usersRouter.post('/:uid/documents', uploader.single('file'), async (req, res) => {
   try {
     const { uid } = req.params;

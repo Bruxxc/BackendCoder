@@ -1,3 +1,4 @@
+///FUNCION PARA EL FUNCIONAMIENTO DEL NAVBAR 
 (function($) {
 	"use strict"
 

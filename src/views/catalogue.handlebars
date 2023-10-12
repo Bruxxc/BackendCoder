@@ -30,10 +30,10 @@
 
     <div class="page_arrows">
       {{#if hasPrevPage}}
-        <a class="prev_arrow" style='text-decoration: none' href='http://localhost:8080/views/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}'> ⬅️ </a>
+        <a class="prev_arrow" style='text-decoration: none' href='{{api_url}}/views/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}'> ⬅️ </a>
       {{/if}}
       {{#if hasNextPage}}
-        <a class="next_arrow" style='text-decoration: none' href='http://localhost:8080/views/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}'> ➡️</a>
+        <a class="next_arrow" style='text-decoration: none' href='{{api_url}}/views/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}'> ➡️</a>
       {{/if}}
     </div>
 

@@ -1,6 +1,6 @@
 socket=io();
 
-//////////IPQ
+///AUMENTAR CANTIDAD DE PRODUCTO
 function increaseProductQuantity(cid, pid) {
   try {
     socket.emit("increaseProductQuantity", { cid, pid });
@@ -14,7 +14,7 @@ function increaseProductQuantity(cid, pid) {
   }
 };
 
-////////DPQ
+///DISMINUIR CANTIDAD DE PRODUCTO
 function decreaseProductQuantity(cid, pid) {
   try {
     socket.emit("decreaseProductQuantity", { cid, pid });
@@ -34,16 +34,13 @@ function decreaseProductQuantity(cid, pid) {
   }
 }
 
-/////AL RECIBIR LA RESPUESTA
+/////MODIFICAR RESULTADO AL RECIBIR RESPUESTA DEL SERVIDOR
 socket.on("cartUpdated",(msg)=>{
   document.querySelector(".totalAmount").innerText=msg.newTotal;
 });
 
-
-
-////BOTON COMPRAR////
+////BOTON COMPRAR
 let buy_button=document.querySelector(".buy_button");
-
 buy_button.addEventListener("click", async (e) => {
     e.preventDefault();
     const amount = document.querySelector(".totalAmount").innerText;

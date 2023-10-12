@@ -1,6 +1,7 @@
 import express from "express";
 export const chatRouter = express.Router();
 
+///PÁGINA DE CHAT
 chatRouter.get("/", (req, res) => {
   const username = req.session.user ;
   const role = req.session.role;

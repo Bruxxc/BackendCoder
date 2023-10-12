@@ -5,7 +5,7 @@ export const viewCart = express.Router();
 
 const CartManager= new MDBCartManager();
 
-
+///PÁGINA PARA VISUALIZAR EL CARRITO CON ID=CID (solo disponible para su usuario)
 viewCart.get("/:cid", async (req,res)=>{
 
     try{
@@ -23,6 +23,7 @@ viewCart.get("/:cid", async (req,res)=>{
                 let total=0;
                 const style="viewCart.css";
                 esVacio=cart[0].products.length==0;
+                console.log("CARRITO",cart[0].products);
                 if(!esVacio){
                     cart[0].products.forEach(product => {
                         total=total+((product.quantity)*(product.product.price));
@@ -47,7 +48,7 @@ viewCart.get("/:cid", async (req,res)=>{
 
     }
     catch(e){
-        req.logger.error(e);
+        throw e;
         return res.redirect("/views/products");
     }
   

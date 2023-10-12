@@ -9,7 +9,7 @@ export const viewsRouter = express.Router();
       if(email){
         const userInfo=await UserMongoose.findOne({email:email});
         let documents=userInfo.documents;
-          ///CHECKEAR LOS DOCUMENTOS SUBIDOS
+        ///CHECKEAR LOS DOCUMENTOS SUBIDOS
         const hasIdentification = documents.some((doc) => doc.name === "Identification");
         const hasAddress = documents.some((doc) => doc.name === "Address");
         const hasAccountStatus = documents.some((doc) => doc.name === "Account Status");

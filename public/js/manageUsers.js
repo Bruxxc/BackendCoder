@@ -1,6 +1,8 @@
+///MANAGER DE USUARIOS (ADMIN)
+const API_URL=window.location.origin;
+///CAMBIAR ROL DE USUARIO
 function changeRole(_id,role){
-    const API_URL="http://localhost:8080/api";
-    const url = API_URL + "/users/" + _id;
+    const url = API_URL + "/api/users/" + _id;
     const options = {
         method: "PUT",
         headers: {
@@ -24,9 +26,9 @@ function changeRole(_id,role){
     });
 }
 
+///ELIMINAR USUARIO
 function deleteUser(_id){
-    const API_URL="http://localhost:8080/api";
-    const url = API_URL + "/users/" + _id;
+    const url = API_URL + "/api/users/" + _id;
     const options = {
         method: "DELETE",
         headers: {

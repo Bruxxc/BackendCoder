@@ -1,5 +1,6 @@
+const API_URL=window.location.origin;
 const socket=io();
-let user,email,role;
+let email,role;
 
 
 
@@ -9,7 +10,6 @@ const setOwnerProducts= (owner)=>{
 }
 
 socket.on("set_owner_products_res",(products)=>{
-  console.log("recibido set");
   const prodList=document.querySelector(".prod_list");
   prodList.innerHTML="";
   products.products.forEach((product) => {
@@ -136,11 +136,10 @@ const getCurrentUserInfo= async ()=>{
           "Content-Type": "application/json"
       },
   };
-
-  fetch("http://localhost:8080/api/sessions/current", requestOptions)
+  let url=API_URL+'/api/sessions/current';
+  fetch(url, requestOptions)
           .then(response => response.json())
           .then(data => {
-            console.log(data);
             if (data.user==null){
               alert("Not logged in");
               window.location.href = "/views/sessions/login";
@@ -152,7 +151,6 @@ const getCurrentUserInfo= async ()=>{
             }
 
             else{
-              console.log(data);
               email=data.email;
               user=data.user;
               role=data.role;

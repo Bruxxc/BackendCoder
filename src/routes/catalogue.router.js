@@ -1,10 +1,12 @@
 import express from "express";
 export const catalogueRouter = express.Router();
 import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.js";
+import env from "../config/enviroment.config.js";
 
 
 const ProductManager= new MDBProductManager();
 
+///PÁGINA DE CATÁLOGO CON TODOS LOS PRODUCTOS
 catalogueRouter.get("/", async (req,res)=>{
     let limit = req.query.limit ? parseInt(req.query.limit) : 12;
     let page = req.query.page ? parseInt(req.query.page) : 1;
@@ -32,7 +34,8 @@ catalogueRouter.get("/", async (req,res)=>{
         username: username,
         fullName:fullName,
         role:role,
-        cart:cart
+        cart:cart,
+        api_url:env.api_url
     })
   
   });

@@ -2,6 +2,7 @@ import express from "express";
 import PaymentService from "../services/Payment.service.js";
 export const paymentsRouter = express.Router();
 
+///CREAR PAYMENT INTENT
 paymentsRouter.post("/intent", async (req,res)=>{
     const paymentIntentInfo ={
         amount: 1000,

@@ -2,7 +2,7 @@ import express from "express";
 import passport from "passport";
 export const registerRouter = express.Router();
 
-
+///PROCESO DE REGISTRO
 registerRouter.post("/", async (req, res, next) => {
   passport.authenticate('register', (err, user, info) => {
     if (err) {
@@ -19,7 +19,7 @@ registerRouter.post("/", async (req, res, next) => {
   })(req, res, next);
 });
 
-
+///PÁGINA DE REGISTR
 registerRouter.get("/", async (req,res)=>{
     const username = req.session.user ;
     if(username){

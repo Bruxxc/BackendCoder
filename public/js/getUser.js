@@ -2,6 +2,7 @@
 
 let user= undefined;
 
+///OBTENER USUARIO ACTUAL
 async function getCurrentUser() {
     try {
       const response = await fetch('/api/sessions/current');
@@ -14,14 +15,10 @@ async function getCurrentUser() {
       return null;
     }
 }
-  
+
+
 async function checkUser(){
     user= await getCurrentUser();
-    
-    if(user.user){
-        console.log(user);
-    }
-
 }
   
 checkUser();

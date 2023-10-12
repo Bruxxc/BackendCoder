@@ -5,6 +5,8 @@ import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.
 
 const PManager=new MDBProductManager;
 
+
+///CREAR MOCKING USER
 mockingRouter.get("/user", async (req,res)=>{
     const user= generateUser();
 
@@ -16,6 +18,7 @@ mockingRouter.get("/user", async (req,res)=>{
 
 });
 
+///CREAR MOCKING PRODUCT
 mockingRouter.get("/product",async (req,res)=>{
    const product= generateProduct();
 
@@ -26,11 +29,12 @@ mockingRouter.get("/product",async (req,res)=>{
   });
 });
 
+///CARGA LA BASE DE DATOS CON 20 MOCKING PRODUCTS
 mockingRouter.get("/mockingproducts",async (req,res)=>{
   try{
     let productsArray=[];
 
-    for(let i=0;i<20;i++){
+    for(let i=0;i<20;i++){///modificar el rango de i para cambiar la cantidad de productos
       let prod=generateProduct();
       let createProd= await PManager.createProduct(prod.title,prod.description,parseFloat(prod.price),prod.code,prod.stock,prod.category,prod.thumbnail);
       productsArray.push(prod);

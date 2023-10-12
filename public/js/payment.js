@@ -1,8 +1,7 @@
-// This is your test publishable API key.
+const API_URL=window.location.origin;
+///PARTE DEL CÓDIGO FUE OBTENIDO DE LA DOCUMENTACIÓN DE STRIPE
+
 const stripe = Stripe("pk_test_51NzLL2De7DytpuXRISV3eCm7UH9OZXweR0xwxGE5sZ0Xfwu8T2XqUxwgf3YW4sY5uYcIwf17Pbikj8DzgO1VEKOw00U87q3Cj0");
-
-// The items the customer wants to buy
-
 let elements;
 
 initialize();
@@ -14,7 +13,8 @@ let emailAddress = '';
 // Fetches a payment intent and captures the client secret
 async function initialize() {
   let clientSecret;
-  const response = await fetch(`http://localhost:8080/api/payments/intent`, {
+  let url= API_URL + '/api/payments/intent';
+  const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     
@@ -51,12 +51,12 @@ async function initialize() {
 async function handleSubmit(e) {
   e.preventDefault();
   setLoading(true);
-
+  let returnUrl=API_URL+'/views/misc/paymentCompleted';
   const { error } = await stripe.confirmPayment({
     elements,
     confirmParams: {
-      // Make sure to change this to your payment completion page
-      return_url: "http://localhost:8080/views/misc/paymentCompleted",  
+      //payment completion page
+      return_url: returnUrl,  
       receipt_email: emailAddress,
     },
   });

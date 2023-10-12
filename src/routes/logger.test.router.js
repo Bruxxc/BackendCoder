@@ -2,6 +2,7 @@ import express from "express";
 export const loggerRouter = express.Router();
 
 
+////LOGGER
 loggerRouter.get('/',(req,res)=>{
 ///////ERROR Y WARN SON LOS DE MAYOR NIVEL
     req.logger.error("!!!!!!ERROR!!!!!");

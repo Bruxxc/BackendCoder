@@ -1,8 +1,9 @@
 import chai from "chai";
 import supertest from "supertest";
 import { faker } from "@faker-js/faker";
+import env from "../src/config/enviroment.config";
 const expect = chai.expect;
-const requester= supertest('http://localhost:8080/');
+const requester= supertest(`${env.api_url}`);
 let testProductId="";
 let testCartId="";
 describe("TESTING", ()=>{

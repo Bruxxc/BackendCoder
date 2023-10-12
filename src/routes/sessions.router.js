@@ -3,6 +3,8 @@ import express from "express";
 export const sessionsRouter = express.Router();
 
 
+///DEVUELVE LA SESIÓN ACTUAL
+
 sessionsRouter.get("/current",(req,res)=>{
     const user=req.session.user;
     const role=req.session.role;
