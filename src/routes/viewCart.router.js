@@ -21,7 +21,6 @@ viewCart.get("/:cid", async (req,res)=>{
                 const cart=await CartManager.getCartById(userCart);
                 let esVacio;
                 let total=0;
-                const style="viewCart.css";
                 esVacio=cart[0].products.length==0;
                 console.log("CARRITO",cart[0].products);
                 if(!esVacio){
@@ -29,6 +28,7 @@ viewCart.get("/:cid", async (req,res)=>{
                         total=total+((product.quantity)*(product.product.price));
                     });
                 }
+                const style="viewCart.css";
                 return res.status(200).render('cart', {
                     style: style,
                     cart: cart,
@@ -49,7 +49,6 @@ viewCart.get("/:cid", async (req,res)=>{
     }
     catch(e){
         throw e;
-        return res.redirect("/views/products");
     }
   
 });

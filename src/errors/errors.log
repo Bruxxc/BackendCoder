@@ -127,3 +127,6 @@
 {"level":"error"}
 {"level":"error"}
 {"level":"error"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"undefined\" (type string) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"undefined\"","value":"undefined","valueType":"string"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"undefined\" (type string) at path \"_id\" for model \"cart\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"undefined\"","value":"undefined","valueType":"string"}
+{"level":"error","message":"ERROR AT CREATING TICKET--->[object Object]"}

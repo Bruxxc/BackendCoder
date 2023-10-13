@@ -269,8 +269,9 @@ export class MDBCartManager{
             let availableList='';
 
             if(cart[0]){
-
+                let amount=0;
                 cart[0].products.forEach(product => {
+                    amount=amount+((product.quantity)*(product.product.price));
                     if(product.product.stock < product.quantity){
                         availableList=availableList + `<br>` + `${product.product.title} stock is: ${product.product.stock}`;
                     }
@@ -280,7 +281,8 @@ export class MDBCartManager{
                     let info={
                         valid: true,
                         stockError: availableList,
-                        products:cart[0].products
+                        products:cart[0].products,
+                        amount:amount
                     }
                     return info;
                 }

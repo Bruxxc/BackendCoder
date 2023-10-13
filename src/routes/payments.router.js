@@ -4,14 +4,25 @@ export const paymentsRouter = express.Router();
 
 ///CREAR PAYMENT INTENT
 paymentsRouter.post("/intent", async (req,res)=>{
-    const paymentIntentInfo ={
-        amount: 1000,
-        currency: "usd"
-    };
-    const service= new PaymentService();
-    let result = await service.createPaymentIntent(paymentIntentInfo);
-    console.log(result);
-    return res.send({status:"success",payload:result});
+    try{
+        if(req.body.amount==0){
+            console.log('REDIRECIONAR, CARRITO VACÍO');
+            return res.send({status:"error",'message':'empty cart'});
+        }
+        else{
+            const realAmount=req.body.amount * 100;
+            const paymentIntentInfo ={
+                amount: realAmount,
+                currency: "usd"
+            };
+            const service= new PaymentService();
+            let result = await service.createPaymentIntent(paymentIntentInfo);
+            console.log("PAYMENT INTENT", result)
+            return res.send({status:"success",payload:result});}
+    }
+    catch(e){
+        throw e;
+    }
 });
 
 

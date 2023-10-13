@@ -1,0 +1,16 @@
+ <div class="ticket">
+        <h2>INFORMACIÓN DE COMPRA</h2>
+
+        <p>Fecha de compra: {{date}}</p>
+
+        <h3>Lista de compra</h3>
+        {{#each products}}
+            <div class="item">
+                <span>x{{this.quantity}}</span>
+                <span>{{this.product.title}}</span>
+                <span>USD{{this.product.price}} p/u</span>
+            </div>
+        {{/each}}
+
+        <p>Total: USD {{amount}}</p>
+    </div>

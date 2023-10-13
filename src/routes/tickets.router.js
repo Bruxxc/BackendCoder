@@ -9,10 +9,16 @@ ticketsRouter.get("/", async (req, res) => {
     TController.getAll(req,res);
 });
 
+///CREAR TICKET Y VACIAR CARRITO
+ticketsRouter.post("/final-ticket",async (req,res)=>{
+    TController.createFinalTicket(req,res);
+})
+
 ///OBTENER TICKET POR ID
 ticketsRouter.get("/:tid", async (req,res)=>{
     TController.getById(req,res);
 });
+
 
 ///CREAR TICKET
 ticketsRouter.post("/", async (req,res)=>{

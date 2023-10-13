@@ -187,10 +187,19 @@ export class CartsController{
         let cid=req.params.cid;
         try{
             let stockInfo= await CManager.cartCheckStock(cid);
+            const cart=await CManager.getCartById(cid);
+            let esVacio;
+            let amount=0;
+            if(!esVacio){
+                cart[0].products.forEach(product => {
+                    amount=amount+((product.quantity)*(product.product.price));
+                });
+            }
             return res.status(200).json({
                 status:"success",
                 msg:"compra válida",
-                stockInfo:stockInfo
+                stockInfo:stockInfo,
+                amount:amount,
             });
         }
         catch (e) {

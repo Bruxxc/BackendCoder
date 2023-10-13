@@ -62,45 +62,14 @@ buy_button.addEventListener("click", async (e) => {
       try {
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log(data);
   
         if (!data.stockInfo.valid) {
           alert("Stock insuficiente");
           console.log(data.stockInfo.stockError);
         } else {
           alert("Válido");
-          const ticketURL= API_URL + `/tickets`;
-          let productList= JSON.stringify(data.stockInfo.products);
-          console.log(productList);
+          window.location.href= window.location.origin + '/views/misc/payment-intent';
 
-          const ticketOptions = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              amount: amount,
-              purchaser: purchaser,
-              products: productList,
-            }),
-          };
-
-          try {
-            const createTicket = await fetch(ticketURL, ticketOptions)
-            .then(response => {
-                if (response.ok) {
-                    alert('Compra realizada con éxito');
-                    window.location.href = '/views/products';
-                } else {
-                    alert('Error al realizar la compra');
-                }
-            })
-            .catch(error => {
-                console.error('Error en la solicitud:', error);
-            });
-          } catch (error) {
-            console.log("Error:", error);
-          }
         }
       } catch (error) {
         console.log("Error:", error);

@@ -22,4 +22,13 @@ const schema = new Schema({
       },
 });
 
+
+schema.pre('findOne', function () {
+  this.populate('products.product');
+});
+
+schema.pre('find', function () {
+  this.populate('products.product');
+});
+
 export const TicketMongoose = model("ticket", schema);

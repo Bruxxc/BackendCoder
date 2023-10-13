@@ -90,4 +90,40 @@ export class TicketsController{
         }
     }
 
+    async createFinalTicket(req,res){
+        let amount=req.body.amount;
+        let purchaser=req.body.purchaser;
+        let products=JSON.parse(req.body.products);
+        let cid=req.body.cart;
+        try{
+            if(!amount || !purchaser){
+                return res.status(201).json({
+                    status: "error",
+                    msg: "provide amount and purchaser info",
+                });
+            }
+            else{
+                let code=genRandomCode();
+                let purchase_datetime= new Date;
+
+                const newTicket={
+                    code:code,
+                    purchase_datetime:purchase_datetime,
+                    amount:amount,
+                    purchaser:purchaser,
+                    products:products
+                }
+                const ticketCreated = await TService.create(newTicket);
+                const emptyCart= await CManager.emptyCart(cid);
+                return res.status(201).json({status:"Success",msg:"Ticket created", data:ticketCreated});
+            }   
+        } catch (e) {
+            req.logger.error(`ERROR AT CREATING TICKET--->${e}`);
+            return res.status(500).json({
+                status: "error",
+                data: {},
+            });
+        }
+    }
+
 }

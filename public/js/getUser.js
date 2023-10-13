@@ -1,7 +1,5 @@
 //////CURRENT SESSION///////////
-
 let user= undefined;
-
 ///OBTENER USUARIO ACTUAL
 async function getCurrentUser() {
     try {
@@ -20,7 +18,7 @@ async function getCurrentUser() {
 async function checkUser(){
     user= await getCurrentUser();
 }
-  
-checkUser();
 
 /////////////////////////////////////
+
+checkUser();

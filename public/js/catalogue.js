@@ -1,4 +1,3 @@
-
 ///SETEAR TODOS LOS PRODUCTOS EN LA PÁGINA
 const getPagProducts=()=>{
     socket.emit("getPagProducts");

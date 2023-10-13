@@ -27,7 +27,7 @@ export class TicketsModel{
     async getById(id){
 
         try{
-            const ticket= await TicketMongoose.find({"_id":id});
+            const ticket= await TicketMongoose.find({"_id":id}).lean();
             return ticket;
         }
         catch(e){
