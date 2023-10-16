@@ -8,7 +8,6 @@ export class UsersModel{
             return users;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -26,7 +25,6 @@ export class UsersModel{
             
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -44,7 +42,6 @@ export class UsersModel{
             
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -62,7 +59,6 @@ export class UsersModel{
             
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -76,14 +72,12 @@ export class UsersModel{
             return userCreated;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
 
     async update(id,info){
         try{
-            console.log("INFO--->",info);
             const userUpdated = await UserMongoose.updateOne(
                 { _id: id },
                 info
@@ -91,7 +85,6 @@ export class UsersModel{
             return userUpdated;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -102,7 +95,6 @@ export class UsersModel{
             return userDeleted;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };

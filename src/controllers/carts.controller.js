@@ -71,7 +71,6 @@ export class CartsController{
             });
         }
         catch(e){
-            console.log(e);
             req.logger.error(e);
             return res.status(500).json({
             status: "error",

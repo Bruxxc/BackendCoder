@@ -113,7 +113,6 @@ export class ProductsController{
                                   </div>
                               `,
                     }
-                    console.log(mail);
                 	const result = await transportMailer.sendMail(mail)
             }
             const productDeleted = await PManager.deleteProduct(id);

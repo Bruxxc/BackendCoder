@@ -14,14 +14,12 @@ function changeRole(_id,role){
     fetch(url,options)
     .then((response)=>response.json())
     .then((data)=>{
-        console.log(data);
         let roleDisplay=document.querySelector(`.role_${_id}`);
         roleDisplay.innerText=role;
         alert("User updated");
         
     })
     .catch((error)=>{
-      console.log("Error:", error);
       alert(JSON.stringify(error));
     });
 }
@@ -39,14 +37,12 @@ function deleteUser(_id){
     fetch(url,options)
     .then((response)=>response.json())
     .then((data)=>{
-        console.log(data);
         let userDisplay=document.querySelector(`.user-container_${_id}`);
         userDisplay.remove();
         alert("User deleted");
         
     })
     .catch((error)=>{
-      console.log("Error:", error);
       alert(JSON.stringify(error));
     });
 

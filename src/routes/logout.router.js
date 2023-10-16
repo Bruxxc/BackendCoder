@@ -31,7 +31,7 @@ logoutRouter.get("/", async (req,res)=>{
       });
     }
     catch(e){
-      console.log(e);
+      req.logger.error(`ERROR LOGGIN OUT ---> ${e}`);
       throw e;
     }
 });

@@ -10,13 +10,7 @@ const UController= new UsersController;
 
 /// TRAER TODOS LOS USUARIOS SOLO CON LOS DATOS ELEGIDOS
 usersRouter.get("/", async (req,res)=>{
-  const users= await UserMongoose.find({});
-  const filteredUsers= users.map(user => ({
-    email: user.email,
-    userName: user.userName,
-    role: user.role
-  }));
-  return res.status(200).json({users:filteredUsers});
+  UController.getAll(req,res);
 });
 
 ///PARSE DATE: transforma el formato de las fechas para que puedan compararse 
@@ -53,29 +47,23 @@ usersRouter.delete("/", async (req, res) => {
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() - 2); // Restar dos días
     const users = await UserMongoose.find({});
-    console.log('FECHA LIMITE--->', currentDate);
 
     const usuariosInactivos = [];
 
     for (const user of users) {
       const lastConnectionDate = parseDateFromString(user.last_connection);
-      console.log("ULTIMA CONEXION--->", lastConnectionDate, "----->", (lastConnectionDate < currentDate));
-
       if (!lastConnectionDate || lastConnectionDate < currentDate) {
         // El usuario es inactivo, así que lo eliminamos
         await UserMongoose.findByIdAndDelete(user._id);
         usuariosInactivos.push(user);
       }
     }
-
-    console.log(`Usuarios inactivos eliminados: ${usuariosInactivos.length}`);
-
     return res.status(200).json({
       message: `Usuarios inactivos eliminados: ${usuariosInactivos.length}`,
       inactiveUsers: usuariosInactivos,
     });
   } catch (error) {
-    console.error("Error al eliminar usuarios inactivos:", error);
+    req.logger.error(`ERROR AT DELETING INACTIVE USERS --->${e}`);
     return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
@@ -88,7 +76,6 @@ usersRouter.get("/premium", async(req,res)=>{
     try{
 
           if(user){
-          console.log(user);
           if(email==env.adminEmail){
               return res.send("ERES ADMIN");
           }
@@ -134,8 +121,8 @@ usersRouter.get("/premium", async(req,res)=>{
 
       }
       catch(e){
-          console.log(e);
-          throw e;
+          req.logger.error(`ERROR AT PREMIUM ROUTER --->${e}`);
+          return res.status(500).json({ error: "Error interno del servidor" });
       }
 });
 
@@ -168,8 +155,8 @@ usersRouter.get("/premium/:uid", async(req,res)=>{
 
   }
   catch(e){
-    console.log(e);
-    throw e;
+    req.logger.error(`ERROR AT PREMIUM ROUTER --->${e}`);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 });
 
@@ -204,7 +191,6 @@ usersRouter.post('/:uid/documents', uploader.single('file'), async (req, res) =>
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
     let documents=user.documents;
-    console.log("DOCUMENTS:",documents);
     const hasIdentification = documents.some((doc) => doc.name === "Identification");
     const hasAddress = documents.some((doc) => doc.name === "Address");
     const hasAccountStatus = documents.some((doc) => doc.name === "Account Status");
@@ -258,8 +244,8 @@ usersRouter.post('/:uid/documents', uploader.single('file'), async (req, res) =>
     const updateUser= await UserMongoose.updateOne({_id:uid},{documents});
     return res.status(200).json({ status:"success",message: 'Documento subido exitosamente' });
 
-  } catch (error) {
-    console.error(error);
+  } catch (e) {
+    req.logger.error(`ERROR AT UPLOADING DOCS ---> ${e}`);
     res.status(500).json({ status:"error", message: 'Error al subir documento' });
   }
 });

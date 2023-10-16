@@ -175,15 +175,11 @@ export function connectSocket(httpServer){
 
     ///AGREGAR CAPAS
     socket.on("delete_product", async (msg)=>{
-      console.log('recibido',msg);
       let res;
       if(mongoose.isValidObjectId(msg.id)){
         const product = await ProductMongoose.findOne({"_id":msg.id});
-        console.log(product);
         if(product){
           if((product.owner==msg.owner) || (msg.owner==env.adminEmail)){
-            console.log(`OWNER DEL PRODUCTO--->${product.owner}`);
-            console.log(`OWNER REQUEST--->${msg.owner}`);
             const deleteProduct= await ProductMongoose.deleteOne({"_id":msg.id});
             res=1;
             socket.emit("delete_res",{res:res});
@@ -202,7 +198,6 @@ export function connectSocket(httpServer){
       }
 
       else{
-        console.log("id invalida");
         res=3;
         socket.emit("delete_res",{res:res})
       }
@@ -210,21 +205,19 @@ export function connectSocket(httpServer){
     });
 
     socket.on("add_product", async (prod)=>{
-      console.log('recibido',prod);
+
       if(!prod.title || !prod.description || !prod.price || !prod.code || !prod.category || !prod.stock){
-        console.log("empty fields");
         socket.emit("add_error",{res:1});
       }
       else{
         try{
           ////AGREGAR CAPAS
-          console.log("INTENTO DE CREAR PRODUCTO");
           const productCreated = await ProductMongoose.create({title:prod.title,description:prod.description, price:prod.price, code:prod.code, stock:prod.stock, category:prod.category,thumbnail:prod.thumbnail,owner:prod.owner,status:true});
-          console.log(productCreated);
           socket.emit("add_res",{res:productCreated});
         }
         catch(e){
           console.log(e);
+          throw e;
         }
       }
 
@@ -234,15 +227,12 @@ export function connectSocket(httpServer){
   ///OWNER PRODUCTS
 
   socket.on("set_owner_products",async (owner)=>{
-    console.log("owner:-->",owner);
     let products;
     if(owner.owner==env.adminEmail){
-      console.log("ADMIN");
       products=await ProductMongoose.find({});
     }
 
     else{
-      console.log("PREMIUM USER");
       products=await ProductMongoose.find({'owner':owner.owner});
     }
 
@@ -258,7 +248,6 @@ socket.on("increaseProductQuantity", async ({ cid, pid }) => {
     socket.emit("cartUpdated",{msg:"SUCCESS",newTotal:editCart.total});
   } catch (error) {
     socket.emit("cartUpdated",{msg:"ERROR"} );
-    console.log("Error:", error);
     // Manejar el error, si es necesario
   }
 });

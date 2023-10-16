@@ -7,8 +7,6 @@ const setChat= ()=>{
 
 ///SETEAR CHAT FUNCIÓN
 socket.on("set_chat_res",(msgs)=>{
-    console.log("recibido set chat");
-    console.log(msgs.msgs);
     const chat=document.querySelector(".chat_msg_list");
     chat.innerHTML="";
     
@@ -41,7 +39,6 @@ const send_msg=()=>{
     if(user.role=="user"){
       let msg=send_msg_input.value;
       if(msg.length > 0){
-          console.log(msg);
           socket.emit("msg_front_to_back", {
               text: msg,
               userName: user.user,

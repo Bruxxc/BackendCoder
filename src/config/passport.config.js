@@ -42,14 +42,11 @@ export function iniPassport() {
 						let newUser= new UserDTO_INPUT(profile._json.name,profile._json.name,null,profile._json.login,profile.email,profile.id,"user");
 						const createCart=await newUser.initCart();
 						let userCreated = await UService.create(newUser);
-						console.log("User registration succesful");
 						return done(null, userCreated);
 					} else {
-						console.log("User already exists");
 						return done(null, user);
 					}
 				} catch (e) {
-					console.log("Error en auth github");
 					console.log(e);
 					return done(e);
 				}
@@ -76,7 +73,6 @@ export function iniPassport() {
 					const hashedpwd=createHash(env.adminPassword);
 					const newCart = await CManager.createCart();
 					let createAdmin= await UService.create('ADMIN','CODER',666,'4DM1N',env.adminEmail,hashedpwd,"admin",newCart._id,);
-					console.log("ADMIN CREADO::::");
 					if(env.adminPassword==password){
 						return done(null, createAdmin);
 					}
@@ -90,10 +86,7 @@ export function iniPassport() {
 
 			else{
 				let user = await UService.getByEmail(email);
-				console.log(email,password);
-				console.log(user);
 				if(!user){
-					console.log("user doesnt exist");
 					return done(null,false);
 				}
 				else{
@@ -120,18 +113,13 @@ export function iniPassport() {
 			let user2 = await UService.getByUsername(userName);
 	  
 			if (user || email==env.adminEmail) {
-			  console.log("Email already in use");
 			  return done(null, false, { message: 'Email already in use' });
 			} else if (user2) {
-			  console.log("Username already in use");
 			  return done(null, false, { message: 'Username already in use' });
 			} else {
-			  console.log("creating user...");	
 			  const newUser= new UserDTO_INPUT(firstName,lastName,age,userName,email,password,"user");
 			  const createCart= await newUser.initCart();
 			  const userCreated= await UService.create(newUser);		
-			  console.log(userCreated);
-			  console.log("Register successful");
 			  return done(null, userCreated);
 			}
 		  } catch (e) {

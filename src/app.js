@@ -106,6 +106,9 @@ app.set("view engine", "handlebars");
 
 
 //////TODOS MIS ENDPOINTS
+app.get('/', (req, res) => {
+	res.redirect('/views/products');
+  });
 
 ///API
 app.use("/api/products", productsRouter);
@@ -154,30 +157,3 @@ app.get("*", (req, res) => {
     .json({ status: "error", msg: "no se encuentra esa ruta", data: {} });
 });
 
-
-//OTROS ENDPOINTS
-// app.get("/mail", async (req, res) => {
-// 	const result = await transport.sendMail({
-// 	  from: "elbrunoconde@gmail.com",
-// 	  to: "elbrunoconde@gmail.com",
-// 	  subject: "TEST",
-// 	  html: `
-// 				<div>
-// 					<h1>TEST DE CORREO</h1>
-// 				</div>
-// 			`,
-// 	  attachments: [
-		
-// 	  ],
-// 	})
-// });
-// app.get("/sms", async (req,res)=>{
-// 	const result = await client.messages.create({
-// 		body: "PRUEBA DE MENSAJE",
-// 		from: "+17792106139",
-// 		to:"+598091229510"
-// 	});
-// 	console.log(result);
-
-// 	res.send("SMS sent");
-// });

@@ -76,7 +76,6 @@ async function checkStatus() {
   }
 
   const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-  console.log(paymentIntent);
   
 
 }
@@ -122,7 +121,6 @@ async function handleSubmit(e) {
             const createTicket = await fetch(ticketURL, ticketOptions)
             .then(response => response.json())
             .then(data=>{
-              console.log('TICKET',data);
                 if (data.status=='Success') {
                   alert('Compra realizada con éxito');
                   window.location.href= API_URL+ `/views/misc/ticket/${data.data._id}`
@@ -136,7 +134,7 @@ async function handleSubmit(e) {
                 console.error('Error en la solicitud:', error);
             });
           } catch (error) {
-            console.log("Error:", error);
+            alert("Error:", error);
           }
     }
 
@@ -195,7 +193,7 @@ async function initPayment(){
   let initCheckStatus= await checkStatus();/////chequea el payment intent creado
   }
   catch(e){
-    console.log(e);
+    alert("ERROR");
   }
 }
 

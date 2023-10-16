@@ -5,7 +5,6 @@ export class CartsModel{
     async getAll(){
         try{
         const carts = await CartMongoose.find({});
-        console.log("get carts");
         return carts;
         }
 
@@ -16,8 +15,7 @@ export class CartsModel{
 
     async getById(id){
         try{
-            const cart = await CartMongoose.find({_id:id}).lean();
-            console.log(`get cart ${id}`);      
+            const cart = await CartMongoose.find({_id:id}).lean(); 
 
             if(cart[0]){
                 return cart;
@@ -39,7 +37,6 @@ export class CartsModel{
     async create(){
         try{
         const cartCreated = await CartMongoose.create({});
-        console.log("Cart created");
         return cartCreated;
         }
         catch(e){
@@ -68,7 +65,6 @@ export class CartsModel{
             throw error;
           }
       
-          console.log(`Cart deleted: ${cid}`);
           return deletedCart;
         } catch (e) {
           throw e;

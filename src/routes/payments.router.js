@@ -6,7 +6,6 @@ export const paymentsRouter = express.Router();
 paymentsRouter.post("/intent", async (req,res)=>{
     try{
         if(req.body.amount==0){
-            console.log('REDIRECIONAR, CARRITO VACÍO');
             return res.send({status:"error",'message':'empty cart'});
         }
         else{
@@ -17,7 +16,6 @@ paymentsRouter.post("/intent", async (req,res)=>{
             };
             const service= new PaymentService();
             let result = await service.createPaymentIntent(paymentIntentInfo);
-            console.log("PAYMENT INTENT", result)
             return res.send({status:"success",payload:result});}
     }
     catch(e){

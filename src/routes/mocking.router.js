@@ -6,7 +6,7 @@ import { MDBProductManager } from "../dao/helpers/MDBManagers/MDBProductManager.
 const PManager=new MDBProductManager;
 
 
-///CREAR MOCKING USER
+///CREAR 1 MOCKING USER
 mockingRouter.get("/user", async (req,res)=>{
     const user= generateUser();
 
@@ -18,7 +18,7 @@ mockingRouter.get("/user", async (req,res)=>{
 
 });
 
-///CREAR MOCKING PRODUCT
+///CREAR 1 MOCKING PRODUCT
 mockingRouter.get("/product",async (req,res)=>{
    const product= generateProduct();
 
@@ -48,7 +48,7 @@ mockingRouter.get("/mockingproducts",async (req,res)=>{
   }
 
   catch(e){
-    console.log(e);
+    req.logger.error(`ERROR AT MOCKING PRODUCTS ---> ${e}`);
     throw e;
   }
     

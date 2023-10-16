@@ -5,7 +5,6 @@ async function getCurrentUser() {
     try {
       const response = await fetch('/api/sessions/current');
       const userData = await response.json();
-      console.log("usuario:",userData);
     
       return userData;
     } catch (error) {

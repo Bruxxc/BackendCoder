@@ -42,7 +42,7 @@ viewsRouter.get("/profile", async (req,res)=>{
       }
     }
     catch(e){
-      console.log(e);
+      req.logger.error(`ERROR AT RENDERING ~PROFILE~--->${e}`);
       throw e;
     }
 });
@@ -60,7 +60,7 @@ viewsRouter.get("/viewCart", async (req,res)=>{
     }
   }
   catch(e){
-    console.log(e);
+    req.logger.error(`ERROR AT RENDERING ~CART~--->${e}`);
     throw e;
   }
 });
@@ -85,6 +85,7 @@ viewsRouter.get("/payment-intent", async (req,res)=>{
     }
   }
   catch(e){
+    req.logger.error(`ERROR AT RENDERING ~PAYMENT~--->${e}`);
     throw e;
   }
 });
@@ -95,9 +96,7 @@ viewsRouter.get("/ticket/:tid", async (req,res)=>{
   const email=req.session.email;
   try{
     const ticket= await TService.getById(tid);
-    console.log('TICKET--->',ticket);
     if(!ticket[0] || !email || email!=ticket[0].purchaser){
-      console.log('NO ESTA LOGGEADO O NO SE ENCUENTRA EL TICKET');
       return res.redirect('/views/products');
     }
     else{
@@ -124,6 +123,7 @@ viewsRouter.get("/ticket/:tid", async (req,res)=>{
     }
   }
   catch(e){
+    req.logger.error(`ERROR AT RENDERING ~TICKET~--->${e}`);
     throw e;
   }
 

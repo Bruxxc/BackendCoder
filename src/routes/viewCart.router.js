@@ -22,7 +22,6 @@ viewCart.get("/:cid", async (req,res)=>{
                 let esVacio;
                 let total=0;
                 esVacio=cart[0].products.length==0;
-                console.log("CARRITO",cart[0].products);
                 if(!esVacio){
                     cart[0].products.forEach(product => {
                         total=total+((product.quantity)*(product.product.price));
@@ -48,6 +47,7 @@ viewCart.get("/:cid", async (req,res)=>{
 
     }
     catch(e){
+        req.logger.error(`ERROR--->${e}`);
         throw e;
     }
   

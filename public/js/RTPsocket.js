@@ -39,7 +39,6 @@ socket.on("set_owner_products_res",(products)=>{
 
     prodList.appendChild(listItem);
   });
-  console.log(products);
 });
 
 //DELETE PRODUCT
@@ -53,7 +52,6 @@ deleteProductButton.addEventListener("click",(event)=>{
     id:id,
     owner:email
   });
-  console.log("enviado",id);
 })
 
 
@@ -96,7 +94,6 @@ addProductButton.addEventListener('click',(event)=>{
   const thumbnail= document.querySelector(".add_thumbnail").value;
   const code= document.querySelector(".add_code").value;
   const stock= document.querySelector(".add_stock").value;
-  console.log(title,description,price,thumbnail,code,stock);
 
   socket.emit("add_product",{
     title:title,

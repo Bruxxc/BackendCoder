@@ -7,7 +7,6 @@ export class MsgsModel {
             return msgs;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     }
@@ -18,7 +17,6 @@ export class MsgsModel {
             return createmsg;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     }

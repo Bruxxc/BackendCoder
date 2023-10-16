@@ -76,7 +76,6 @@ loginRouter.post("/retrievePassword", async (req,res)=>{
   const expire= Date.now() + 3600000;
   try{
     const recoverCode= await RecoverCodesMongoose.create({email,token,expire});
-    console.log(token,email);
     const result = await transport.sendMail({
       from: "elbrunoconde@gmail.com",
       to: email,
@@ -94,7 +93,7 @@ loginRouter.post("/retrievePassword", async (req,res)=>{
     res.render('checkEmail');
   }
   catch(e){
-    console.log(e);
+    req.logger.error(e);
     res.send("ERROR");
   }
 
@@ -121,17 +120,14 @@ loginRouter.post("/changePassword", async (req,res)=>{
   let newPassword=req.body.new_Password
   let token= req.body.token;
   let email= req.body.email;
-  console.log(req.body);
   try{
     let hashedPassword=createHash(newPassword);
 
     const validCode= await RecoverCodesMongoose.findOne({email,token});
-    console.log(validCode);
     if(validCode){
 
       const user= await UserMongoose.findOne({email});
       const lastPassword=user.password;
-      console.log(isValidPassword(newPassword,lastPassword));
       if(isValidPassword(newPassword,lastPassword)){
         res.status(200).json({
           redir:false,
@@ -156,6 +152,10 @@ loginRouter.post("/changePassword", async (req,res)=>{
     }
 
   }catch(e){
-    console.log(e);
+    req.logger.error(`ERROR ---> ${e}`);
+    return res.status(500).json({
+      redir:false,
+      msg:"ERROR INTERNO DEL SERVIDOR"}
+    );
   }
 });

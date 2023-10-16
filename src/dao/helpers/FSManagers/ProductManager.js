@@ -41,7 +41,6 @@ export class ProductManager{
     addProduct(product){
         let products=this.getProducts();
         if (!product.title || !product.description || !product.price || !product.code || !product.stock|| !product.category){
-            console.log("Todos los campos son obligatorios");
             return 0;
         }
 

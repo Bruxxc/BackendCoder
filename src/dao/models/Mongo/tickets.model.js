@@ -8,7 +8,6 @@ export class TicketsModel{
             return tickets;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -19,7 +18,6 @@ export class TicketsModel{
             return tickets;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -31,7 +29,6 @@ export class TicketsModel{
             return ticket;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
 
@@ -44,7 +41,6 @@ export class TicketsModel{
             return ticketCreated;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -58,7 +54,6 @@ export class TicketsModel{
             return ticketUpdated;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -69,7 +64,6 @@ export class TicketsModel{
             return ticketDeleted;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };

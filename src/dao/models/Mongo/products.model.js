@@ -25,7 +25,6 @@ export class ProductsModel{
            return products; 
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
@@ -50,9 +49,6 @@ export class ProductsModel{
     async create(title, description, price, code, stock ,category, thumbnail){
 
         if (!title || !description || !price || !code || !stock|| !category){
-            console.log(
-              "validation error: please complete all required fields."
-            );
             const error={message:"validation error: please complete all required fields."};
             throw error;
         }
@@ -67,7 +63,6 @@ export class ProductsModel{
 
     async update(id, title, description, price, stock, category, thumbnail, status) {
         try {
-           console.log(title,description,price,stock,category,thumbnail,status);
             const found = await ProductMongoose.find({ "_id": id });
     
             if (found[0]) {
@@ -90,7 +85,6 @@ export class ProductsModel{
 
     async delete(id){
         const product = await ProductMongoose.find({"_id":id});
-        console.log(product);
         if(product[0]){
           const productDeleted = await ProductMongoose.deleteOne(
             { _id: id },

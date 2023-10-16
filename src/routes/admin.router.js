@@ -16,12 +16,19 @@ adminRouter.get('/manage', async (req,res)=>{
 });
 
 adminRouter.get('/manage/users', async (req,res)=>{
-    if(req.session.role=="admin"){
-    const users = await UserMongoose.find({ role: { $ne: 'admin' } }).lean();
-    const username=req.session.user;
-    const style="manageUsers.css";
-    return res.render('manageUsers',{style:style,users:users,username:username});}
-    else{
-        return res.redirect("/views/products");
+    try{
+        if(req.session.role=="admin"){
+        const users = await UserMongoose.find({ role: { $ne: 'admin' } }).lean();
+        const username=req.session.user;
+        const style="manageUsers.css";
+        ///si es admin, permitir el acceso
+        return res.render('manageUsers',{style:style,users:users,username:username});}
+        else{
+        ///si NO es admin, redireccionar
+            return res.redirect("/views/products");
+        }
+    }
+    catch(e){
+        req.logger.error(e);
     }
 });

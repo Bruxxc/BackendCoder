@@ -112,7 +112,6 @@ register_btn.addEventListener("click", (e) => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         if(data.status=="error"){
           alert(data.error);
         }
@@ -122,7 +121,6 @@ register_btn.addEventListener("click", (e) => {
             title: 'User created',
           })
           .then(()=>{
-            console.log("Registro exitoso:", data);
             window.location.href="/views/sessions/login";
           })      
         }

@@ -20,8 +20,7 @@ export class MDBCartManager{
 
     async getCartById(id){
         try{
-            const cart = await CModel.getById(id);
-            console.log(`get cart ${id}`);      
+            const cart = await CModel.getById(id);  
 
             if(cart[0]){
                 return cart;
@@ -43,12 +42,8 @@ export class MDBCartManager{
 
         try{
             const user=await UService.getByEmail(email);
-            console.log(user.cart);
             let cid= user.cart;
             const cart = await CModel.getById(cid);     
-            console.log("AAAA",cart);
-            console.log(cart[0]!=undefined);
-
             if(cart[0]!=undefined){
                 return cart;
             }
@@ -69,7 +64,6 @@ export class MDBCartManager{
     async createCart(){
         try{
         const cartCreated = await CModel.create();
-        console.log("Cart created");
         return cartCreated;
         }
         catch(e){
@@ -112,9 +106,7 @@ export class MDBCartManager{
 
     async addProductsArray(cid, productsArray) {
         try {
-          console.log("PRODUCTOS A AGREGAR:",productsArray);
           for (const product of productsArray.products) {
-            console.log(product);
             await this.addProductToCart(product, cid);
           }
         } catch (e) {
@@ -155,7 +147,6 @@ export class MDBCartManager{
         try{
         const cart = await CModel.getById(cid);
         let products= cart[0].products;
-        console.log(products);
         let ANY=products.filter(prod=>prod.product._id==pid);
         if(ANY.length>0){
             let index=products.findIndex(prod=>prod.product._id==pid);
@@ -204,7 +195,6 @@ export class MDBCartManager{
         try {
           const cart = await CModel.getById(cid);
           let products = cart[0].products;
-          console.log(products);
           let productIndex = products.findIndex(prod => prod.product._id == pid);
       
           if (productIndex !== -1) {
@@ -230,7 +220,6 @@ export class MDBCartManager{
         try {
           const cart = await CModel.getById(cid);
           let products = cart[0].products;
-          console.log(products);
           let productIndex = products.findIndex(prod => prod.product._id == pid);
       
           if (productIndex !== -1) {
@@ -276,7 +265,6 @@ export class MDBCartManager{
                         availableList=availableList + `<br>` + `${product.product.title} stock is: ${product.product.stock}`;
                     }
                 });
-                console.log(availableList);
                 if(availableList == ''){
                     let info={
                         valid: true,

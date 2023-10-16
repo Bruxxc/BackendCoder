@@ -7,7 +7,6 @@ const getPagProducts=()=>{
 function putIntoCart(_id){
     if(user.user){
         if(user.role=="user"){
-            console.log("cart:",user.cart,"product:",_id);
             const API_URL=window.location.origin + `/api`;
             const url = API_URL + "/carts/" + user.cart + "/products/" + _id;
     
@@ -23,7 +22,7 @@ function putIntoCart(_id){
                     alert("agregado");
                 })
                 .catch((error)=>{
-                    console.log("Error:", error);
+                    alert("Error:", error);
                     alert(JSON.stringify(error));
                 })
         }

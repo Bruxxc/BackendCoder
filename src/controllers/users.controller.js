@@ -5,21 +5,19 @@ const UService= new UserService;
 
 export class UsersController{
     async getAll(req,res){
-        try {
-            const users = await UService.getAll();
-            return res.status(200).json({
-              status: "success",
-              msg: "users list",
-              data: users,
-            });
-          } catch (e) {
-            req.logger.error(`ERROR AT GETTING USERS--->${e}`);
-            return res.status(500).json({
-              status: "error",
-              msg: e,
-              data: {},
-            });
-          }
+        try{
+          const users= await UService.getAll();
+          const filteredUsers= users.map(user => ({
+            email: user.email,
+            userName: user.userName,
+            role: user.role
+          }));
+          return res.status(200).json({users:filteredUsers});
+        }
+        catch(e){
+          req.logger.error(`ERROR AT GETTING USERS --->${e}`);
+          return res.status(500).json({ error: "Error interno del servidor" });
+        }
     };
     
     async getById(req,res){

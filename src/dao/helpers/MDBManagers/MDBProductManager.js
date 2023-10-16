@@ -87,16 +87,13 @@ export class MDBProductManager{
         }
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     };
 
     async editProduct(id, title, description, price, stock, category, thumbnail, status) {
         try {
-            console.log(title,description,price,stock,category,thumbnail,status);
             if (!title && !description && !price && !stock && !category && !thumbnail && status==undefined) {
-                console.log("validation error: all fields are empty. Nivel 1");
                 const error = { message: "validation error: all fields are empty. Nivel 1" };
                 throw error;
             } else {
@@ -114,7 +111,6 @@ export class MDBProductManager{
                 }
             }
         } catch (e) {
-            console.log(e);
             throw e;
         }
     }
@@ -125,7 +121,6 @@ export class MDBProductManager{
           return productDeleted;
         }
         catch(e){
-            console.log(e);
             throw e;
         }
     }

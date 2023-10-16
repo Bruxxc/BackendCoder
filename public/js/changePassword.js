@@ -38,7 +38,6 @@ changeButton.addEventListener("click", async (e)=>{
         fetch(url, requestOptions)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     alert(data.msg);
                     if(data.redir){
                         window.location.href = "/views/sessions/login";
